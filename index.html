@@ -8,18 +8,16 @@
 </head>
 
 <body
-    style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #a0a0a0;">
-        <h1 style="margin-top: 1em; color: #333; font-family: 'Courier New', Courier, monospace; font-size: 3em; " id="timer">00:05</h1>
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #faf9ea;">
+    <h1 style="margin-top: 1em; color: #333; font-family: 'Courier New', Courier, monospace; font-size: 4em; "
+        id="timer">00:05</h1>
 
     <button onclick="startMeditation()"
-        style="padding: 1em 2em; font-size: 2em; border-radius:0.5em; background-color: #333; color: #cfd300; cursor: pointer;">Commencer</button>
+        style="padding: 1em; font-size: 1.5em; border-width: 0; border-radius:0.5em; background-color: #333; color: white; cursor: pointer;">Commencer</button>
     <script>
         var remainingTime = 5; // 5 seconds for testing
         const timerElement = document.getElementById('timer');
         timerElement.textContent = timeToDisplay(remainingTime);
-
-        
-
 
         function timeToDisplay(seconds) {
             const mins = Math.floor(seconds / 60);
@@ -35,18 +33,18 @@
             var audio2 = new Audio("https://d1yei2z3i6k35z.cloudfront.net/1219563/67f3e6c481cca_Grosgong.mp3");
             // Unlock the audio element
             audio2.load(); // Optional but helps on iOS
-            
+
             const countdownInterval = setInterval(() => {
-            if (remainingTime > 0) {
-                remainingTime--;
-                timerElement.textContent = timeToDisplay(remainingTime);
-            } 
-            if (remainingTime === 0) {
-                clearInterval(countdownInterval);
-                audio2.currentTime = 0;
-                audio2.play();
-            }
-        }, 1000);
+                if (remainingTime > 0) {
+                    remainingTime--;
+                    timerElement.textContent = timeToDisplay(remainingTime);
+                }
+                if (remainingTime === 0) {
+                    clearInterval(countdownInterval);
+                    audio2.currentTime = 0;
+                    audio2.play();
+                }
+            }, 1000);
 
         }
     </script>
