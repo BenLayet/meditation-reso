@@ -57,6 +57,24 @@ const getSavedGongEnabled = (): boolean => {
   return true; // Default to enabled
 };
 
+// Fullscreen helper functions
+const enterFullscreen = () => {
+  const elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem
+      .requestFullscreen()
+      .catch(err => console.error("Fullscreen failed:", err));
+  }
+};
+
+const exitFullscreen = () => {
+  if (document.fullscreenElement) {
+    document
+      .exitFullscreen()
+      .catch(err => console.error("Exit fullscreen failed:", err));
+  }
+};
+
 export const Timer = () => {
   const [durationMinutes, setDurationMinutes] = useState(getSavedDuration());
   const [remainingSeconds, setRemainingSeconds] = useState(
@@ -94,6 +112,9 @@ export const Timer = () => {
     setIsRunning(true);
     setIsReadyToStart(false);
 
+    // Enter fullscreen
+    enterFullscreen();
+
     // Play gong sound at start
     if (startAudioRef.current) {
       startAudioRef.current.currentTime = 0;
@@ -111,6 +132,10 @@ export const Timer = () => {
     setIsRunning(false);
     setIsReadyToStart(true);
     setRemainingSeconds(durationMinutes * 60);
+
+    // Exit fullscreen
+    exitFullscreen();
+
     if (stopAudioRef.current) {
       stopAudioRef.current.pause();
     }
@@ -142,6 +167,10 @@ export const Timer = () => {
   useEffect(() => {
     if (remainingSeconds <= 0) {
       setIsRunning(false);
+
+      // Exit fullscreen when timer finishes
+      exitFullscreen();
+
       // Play gong sound when timer finishes
       if (stopAudioRef.current) {
         stopAudioRef.current.currentTime = 0;
