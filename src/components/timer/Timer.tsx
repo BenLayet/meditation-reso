@@ -17,11 +17,39 @@ import gongSound from "../../assets/gong.mp3";
 
 const DURATION_INCREMENT_MINUTES = 5;
 const DEFAULT_DURATION_MINUTES = 20;
+const DURATION_COOKIE_NAME = "reso_meditation_duration_minutes";
+
+// Cookie helper functions
+const setCookie = (name: string, value: string, days: number = 365) => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+};
+
+const getCookie = (name: string): string | null => {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === " ") c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+};
+
+const getSavedDuration = (): number => {
+  const saved = getCookie(DURATION_COOKIE_NAME);
+  if (saved) {
+    const parsed = parseInt(saved, 10);
+    if (!isNaN(parsed) && parsed > 0) {
+      return parsed;
+    }
+  }
+  return DEFAULT_DURATION_MINUTES;
+};
 
 export const Timer = () => {
-  const [durationMinutes, setDurationMinutes] = useState(
-    DEFAULT_DURATION_MINUTES,
-  );
+  const [durationMinutes, setDurationMinutes] = useState(getSavedDuration());
   const [remainingSeconds, setRemainingSeconds] = useState(
     durationMinutes * 60,
   );
@@ -96,6 +124,8 @@ export const Timer = () => {
 
   useEffect(() => {
     setRemainingSeconds(durationMinutes * 60);
+    // Save duration to cookie whenever it changes
+    setCookie(DURATION_COOKIE_NAME, durationMinutes.toString());
   }, [durationMinutes]);
 
   useEffect(() => {
