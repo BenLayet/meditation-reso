@@ -1,0 +1,56 @@
+<div class="richedit_wrap" style="">
+  <iframe
+    src="https://benlayet.github.io/meditation-reso/"
+    allow="fullscreen; screen-wake-lock"
+    allowfullscreen="allowfullscreen"
+    style="
+      width: 100%;
+      height: 100vh;
+      border: none;
+      min-height: 400px;
+      background-color: white;
+    "
+  ></iframe>
+  <script prevent-tag-removal="">
+    let wakeLock = null;
+
+    window.addEventListener("load", () => {
+      requestWakeLock();
+    });
+
+    async function requestWakeLock() {
+      try {
+        if ("wakeLock" in navigator) {
+          wakeLock = await navigator.wakeLock.request("screen");
+          console.log("Wake Lock activated");
+          return wakeLock;
+        }
+      } catch (err) {
+        console.error("Wake Lock failed:", err);
+      }
+    }
+
+    async function releaseWakeLock() {
+      if (wakeLock) {
+        try {
+          await wakeLock.release();
+          wakeLock = null;
+          console.log("Wake Lock released");
+        } catch (err) {
+          console.error("Wake Lock release failed:", err);
+        }
+      }
+    }
+
+    // Release wake lock when page is hidden/unloaded
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        releaseWakeLock();
+      }
+    });
+
+    window.addEventListener("beforeunload", () => {
+      releaseWakeLock();
+    });
+  </script>
+</div>
