@@ -75,6 +75,31 @@ const exitFullscreen = () => {
   }
 };
 
+// Wake lock helper functions to prevent sleep
+const requestWakeLock = async (): Promise<WakeLockSentinel | null> => {
+  try {
+    if ("wakeLock" in navigator) {
+      const wakeLock = await navigator.wakeLock.request("screen");
+      console.log("Wake Lock activated");
+      return wakeLock;
+    }
+  } catch (err) {
+    console.error("Wake Lock failed:", err);
+  }
+  return null;
+};
+
+const releaseWakeLock = async (wakeLock: WakeLockSentinel | null) => {
+  if (wakeLock) {
+    try {
+      await wakeLock.release();
+      console.log("Wake Lock released");
+    } catch (err) {
+      console.error("Wake Lock release failed:", err);
+    }
+  }
+};
+
 export const Timer = () => {
   const [durationMinutes, setDurationMinutes] = useState(getSavedDuration());
   const [remainingSeconds, setRemainingSeconds] = useState(
@@ -90,12 +115,22 @@ export const Timer = () => {
   const startAudioRef = useRef<HTMLAudioElement | null>(null);
   const stopAudioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Wake lock ref to keep screen awake
+  const wakeLockRef = useRef<WakeLockSentinel | null>(null);
+
   // Initialize audio on mount
   useEffect(() => {
     startAudioRef.current = new Audio(gongSound);
     startAudioRef.current.preload = "auto";
     stopAudioRef.current = new Audio(gongSound);
     stopAudioRef.current.preload = "auto";
+
+    // Cleanup: release wake lock on unmount
+    return () => {
+      if (wakeLockRef.current) {
+        releaseWakeLock(wakeLockRef.current);
+      }
+    };
   }, []);
 
   const plusClicked = () => {
@@ -108,12 +143,15 @@ export const Timer = () => {
       calculateDecrementedDuration(durationMinutes, DURATION_INCREMENT_MINUTES),
     );
   };
-  const startClicked = () => {
+  const startClicked = async () => {
     setIsRunning(true);
     setIsReadyToStart(false);
 
     // Enter fullscreen
     enterFullscreen();
+
+    // Request wake lock to prevent sleep
+    wakeLockRef.current = await requestWakeLock();
 
     // Play gong sound at start
     if (startAudioRef.current) {
@@ -128,13 +166,17 @@ export const Timer = () => {
       stopAudioRef.current.load();
     }
   };
-  const stopClicked = () => {
+  const stopClicked = async () => {
     setIsRunning(false);
     setIsReadyToStart(true);
     setRemainingSeconds(durationMinutes * 60);
 
     // Exit fullscreen
     exitFullscreen();
+
+    // Release wake lock
+    await releaseWakeLock(wakeLockRef.current);
+    wakeLockRef.current = null;
 
     if (stopAudioRef.current) {
       stopAudioRef.current.pause();
@@ -170,6 +212,10 @@ export const Timer = () => {
 
       // Exit fullscreen when timer finishes
       exitFullscreen();
+
+      // Release wake lock when timer finishes
+      releaseWakeLock(wakeLockRef.current);
+      wakeLockRef.current = null;
 
       // Play gong sound when timer finishes
       if (stopAudioRef.current) {
