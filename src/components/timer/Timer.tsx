@@ -18,6 +18,7 @@ import gongSound from "../../assets/gong.mp3";
 const DURATION_INCREMENT_MINUTES = 5;
 const DEFAULT_DURATION_MINUTES = 20;
 const DURATION_COOKIE_NAME = "reso_meditation_duration_minutes";
+const GONG_COOKIE_NAME = "reso_meditation_gong_enabled";
 
 // Cookie helper functions
 const setCookie = (name: string, value: string, days: number = 365) => {
@@ -48,12 +49,20 @@ const getSavedDuration = (): number => {
   return DEFAULT_DURATION_MINUTES;
 };
 
+const getSavedGongEnabled = (): boolean => {
+  const saved = getCookie(GONG_COOKIE_NAME);
+  if (saved !== null) {
+    return saved === "true";
+  }
+  return true; // Default to enabled
+};
+
 export const Timer = () => {
   const [durationMinutes, setDurationMinutes] = useState(getSavedDuration());
   const [remainingSeconds, setRemainingSeconds] = useState(
     durationMinutes * 60,
   );
-  const [isGongOn, setIsGongOn] = useState(true);
+  const [isGongOn, setIsGongOn] = useState(getSavedGongEnabled());
   const [isRunning, setIsRunning] = useState(false);
   const [isReadyToStart, setIsReadyToStart] = useState(true);
   const canBeStopped = !isReadyToStart;
@@ -120,6 +129,8 @@ export const Timer = () => {
     if (startAudioRef.current) {
       startAudioRef.current.volume = isGongOn ? 1.0 : 0.0;
     }
+    // Save gong setting to cookie whenever it changes
+    setCookie(GONG_COOKIE_NAME, isGongOn.toString());
   }, [isGongOn]);
 
   useEffect(() => {
