@@ -110,6 +110,8 @@ export const Timer = () => {
   const [isReadyToStart, setIsReadyToStart] = useState(true);
   const canBeStopped = !isReadyToStart;
   const timeString = formatSeconds(remainingSeconds);
+  const completion =
+    (durationMinutes * 60 - remainingSeconds) / (durationMinutes * 60);
 
   // Audio ref for the gong sound
   const startAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -250,35 +252,65 @@ export const Timer = () => {
 
   return (
     <div style={{ maxWidth: "40em" }}>
+      {/* Container for settings and progress visualization */}
       <div
-        style={{ minHeight: "5em", fontSize: "2em" }}
-        className={`fadein ${isReadyToStart ? "" : "hidden"}`}
+        style={{ minHeight: "200px", fontSize: "2em", position: "relative" }}
       >
-        <div className="horizontal">
-          <span>Durée&nbsp;</span>
-          <button
-            aria-label="Augmenter la durée de la méditation"
-            onClick={() => plusClicked()}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
-          <button
-            aria-label="Diminuer la durée de la méditation"
-            onClick={() => minusClicked()}
-          >
-            <FontAwesomeIcon icon={faMinus} />
-          </button>
+        {/* Settings panel - shown before meditation starts */}
+        <div className={`fadein ${isReadyToStart ? "" : "hidden"}`}>
+          {/* Duration adjustment controls */}
+          <div className="horizontal">
+            <span>Durée&nbsp;</span>
+            <button
+              aria-label="Augmenter la durée de la méditation"
+              onClick={() => plusClicked()}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+            <button
+              aria-label="Diminuer la durée de la méditation"
+              onClick={() => minusClicked()}
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
+          </div>
+          {/* Gong sound toggle */}
+          <div className="horizontal">
+            <span>Gong&nbsp;</span>
+            <button onClick={() => gongToggleClicked()}>
+              {isGongOn ? "on " : "off"}&nbsp;
+              <FontAwesomeIcon icon={isGongOn ? faVolumeHigh : faVolumeXmark} />
+            </button>
+          </div>
         </div>
-        <div className="horizontal">
-          <span>Gong&nbsp;</span>
-          <button onClick={() => gongToggleClicked()}>
-            {isGongOn ? "on " : "off"}&nbsp;
-            <FontAwesomeIcon icon={isGongOn ? faVolumeHigh : faVolumeXmark} />
-          </button>
+        {/* Circular progress indicator - shown during meditation */}
+        <div
+          style={{
+            minHeight: "200px",
+            position: "absolute",
+            top: 0,
+            pointerEvents: "none",
+          }}
+          className={`fadein ${!isReadyToStart ? "" : "hidden"}`}
+        >
+          <svg width="200" height="200" viewBox="0 0 200 200">
+            {/* Camembert - background */}
+            <circle cx="100" cy="100" r="95" fill="black" />
+            {/* white portion - progress of meditation */}
+            <path
+              d={`M 100 100 L 100 10 A 90 90 0 ${completion > 0.5 ? 1 : 0} 1 ${
+                100 + 90 * Math.sin(completion * 2 * Math.PI)
+              } ${100 - 90 * Math.cos(completion * 2 * Math.PI)} Z`}
+              fill="white"
+            />
+          </svg>
         </div>
       </div>
-      <div style={{ fontSize: "5em" }}>
-        <div>{timeString}</div>
+      {/* Timer display and start/stop controls */}
+      <div style={{ fontSize: "6em" }}>
+        {/* Remaining time display */}
+        <div style={{ fontSize: "0.7em" }}>{timeString}</div>
+        {/* Start button - shown when ready to begin */}
         {isReadyToStart && (
           <button
             aria-label="Commencer la méditation"
@@ -287,6 +319,7 @@ export const Timer = () => {
             <FontAwesomeIcon icon={faPlay} />
           </button>
         )}
+        {/* Stop button - shown during meditation */}
         {canBeStopped && (
           <button
             aria-label="Arrêter la méditation"

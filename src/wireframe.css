@@ -9,6 +9,9 @@
   background-color: transparent !important;
 }
 
+body {
+  height: 100dvh;
+}
 /* Body and containers */
 body,
 div,
