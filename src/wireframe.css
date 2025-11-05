@@ -62,7 +62,6 @@ input[type="submit"],
   font-weight: bold !important;
   box-shadow: 3px 3px 0 #111 !important;
   margin: 0.5em;
-  font-size: 0.4em;
 }
 
 button:hover,
@@ -159,35 +158,20 @@ th {
   text-transform: uppercase !important;
 }
 
-/* Cards/Panels */
-.card,
-.panel,
-[class*="card"],
-[class*="panel"] {
-  background-color: #fafafa !important;
-  border: 2px solid #333 !important;
-  box-shadow: 4px 4px 0 #ddd !important;
-  padding: 15px !important;
-  margin: 10px !important;
-}
-
 /* Checkbox and Radio */
 input[type="checkbox"],
 input[type="radio"] {
-  width: 2em !important;
-  height: 2em !important;
-  border: 2px solid #eee !important;
+  width: 2em;
+  height: 2em;
+  border: 1px solid #eee !important;
   appearance: none !important;
   -webkit-appearance: none !important;
   position: relative;
 }
 
 input[type="checkbox"]:checked::before {
-  content: "✓" !important;
-  display: block !important;
-  text-align: center !important;
-  font-weight: bold !important;
-  color: #fff !important;
+  content: "✓";
+  color: #eee;
   font-size: 4em;
   position: absolute;
   top: -0.5em;
@@ -207,8 +191,7 @@ input[type="radio"]:checked::before {
 /* Exception for buttons - keep minimal shadow */
 button,
 input[type="button"],
-input[type="submit"],
-.btn {
+input[type="submit"] {
   box-shadow: 3px 3px 0 #ccc !important;
 }
 
@@ -229,10 +212,11 @@ input[type="submit"],
 
 /* basic animation */
 .fadein {
-  transition: opacity 0.5s ease-in-out !important;
+  transition: opacity 1s ease-in-out !important;
 }
 .hidden {
   opacity: 0;
+  pointer-events: none;
 }
 
 .svg-inline--fa {

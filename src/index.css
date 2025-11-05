@@ -6,3 +6,30 @@
   flex-direction: row;
   justify-content: flex-start;
 }
+.settings-value label {
+  font-size: 0.7em;
+  display: flex;
+  align-items: end;
+}
+@keyframes fillArc {
+  from {
+    stroke-dashoffset: 565.48; /* Hidden */
+  }
+  to {
+    stroke-dashoffset: 0; /* Fully visible */
+  }
+}
+
+/* Black screen overlay */
+.black-screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000 !important;
+  z-index: 9999;
+  cursor: pointer;
+  opacity: 0;
+  transition: 2s ease opacity;
+}

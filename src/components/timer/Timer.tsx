@@ -14,6 +14,7 @@ import {
   calculateIncrementedDuration,
   formatSeconds,
 } from "../../util/duration.functions";
+import { ProgressIndicator } from "./ProgressIndicator";
 
 const DURATION_INCREMENT_MINUTES = 5;
 const DEFAULT_DURATION_MINUTES = 20;
@@ -21,6 +22,7 @@ const DURATION_COOKIE_NAME = "reso_meditation_duration_minutes";
 const GONG_COOKIE_NAME = "reso_meditation_gong_enabled";
 const SHOW_TIME_COOKIE_NAME = "reso_meditation_show_time";
 const SHOW_PROGRESS_COOKIE_NAME = "reso_meditation_show_progress";
+const BLACK_SCREEN_COOKIE_NAME = "reso_meditation_black_screen";
 
 // Cookie helper functions
 const setCookie = (name: string, value: string, days: number = 365) => {
@@ -73,6 +75,14 @@ const getSavedShowProgress = (): boolean => {
     return saved === "true";
   }
   return true; // Default to shown
+};
+
+const getSavedBlackScreen = (): boolean => {
+  const saved = getCookie(BLACK_SCREEN_COOKIE_NAME);
+  if (saved !== null) {
+    return saved === "true";
+  }
+  return true; // Default to enabled
 };
 
 // Fullscreen helper functions
@@ -128,10 +138,14 @@ export const Timer = () => {
   const [isReadyToStart, setIsReadyToStart] = useState(true);
   const [showProgress, setShowProgress] = useState(getSavedShowProgress());
   const [showTime, setShowTime] = useState(getSavedShowTime());
+  const [showBlackScreenFromStart, setShowBlackScreenFromStart] = useState(
+    getSavedBlackScreen(),
+  );
+  const [showBlackScreenNow, setShowBlackScreenNow] = useState(
+    showBlackScreenFromStart,
+  );
   const canBeStopped = !isReadyToStart;
   const timeString = formatSeconds(remainingSeconds);
-  const completion =
-    (durationMinutes * 60 - remainingSeconds) / (durationMinutes * 60);
 
   // Audio ref for the gong sound
   const startAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -211,6 +225,13 @@ export const Timer = () => {
     setIsGongOn(prev => !prev);
   };
 
+  const reactivateScreenTemporarily = () => {
+    setShowBlackScreenNow(false);
+    setTimeout(() => {
+      setShowBlackScreenNow(true);
+    }, 3000);
+  };
+
   useEffect(() => {
     if (stopAudioRef.current) {
       stopAudioRef.current.volume = isGongOn ? 1.0 : 0.0;
@@ -239,11 +260,15 @@ export const Timer = () => {
   }, [showProgress]);
 
   useEffect(() => {
+    // Save showBlackScreen setting to cookie whenever it changes
+    setCookie(BLACK_SCREEN_COOKIE_NAME, showBlackScreenFromStart.toString());
+    setShowBlackScreenNow(showBlackScreenFromStart);
+  }, [showBlackScreenFromStart]);
+
+  useEffect(() => {
     if (remainingSeconds <= 0) {
       setIsRunning(false);
-
-      // Exit fullscreen when timer finishes
-      exitFullscreen();
+      setShowBlackScreenNow(false); // Deactivate black screen when timer finishes
 
       // Release wake lock when timer finishes
       releaseWakeLock(wakeLockRef.current);
@@ -281,126 +306,139 @@ export const Timer = () => {
   }, [isRunning]);
 
   return (
-    <div style={{ maxWidth: "40em" }}>
-      {/* Container for settings and progress visualization */}
-      <div
-        style={{ minHeight: "200px", fontSize: "2em", position: "relative" }}
-      >
-        {/* Settings panel - shown before meditation starts */}
-        <div className={`fadein ${isReadyToStart ? "" : "hidden"}`}>
-          {/* Duration adjustment controls */}
-          <div className="horizontal">
-            <div style={{ width: "50%" }} className="settings-key">
-              Durée&nbsp;
-            </div>
-            <div style={{ width: "50%" }} className="horizontal settings-value">
-              <button
-                aria-label="Augmenter la durée de la méditation"
-                onClick={() => plusClicked()}
+    <>
+      <div style={{ maxWidth: "35em" }}>
+        {/* Container for settings and progress visualization */}
+        <div
+          style={{
+            minHeight: "200px",
+            fontSize: "1.5em",
+            position: "relative",
+          }}
+        >
+          {/* Settings panel - shown before meditation starts */}
+          <div className={`settings fadein ${isReadyToStart ? "" : "hidden"}`}>
+            {/* Duration adjustment controls */}
+            <div className="horizontal">
+              <div style={{ width: "50%" }} className="settings-key">
+                Durée&nbsp;
+              </div>
+              <div
+                style={{ width: "50%" }}
+                className="horizontal settings-value"
               >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <button
-                aria-label="Diminuer la durée de la méditation"
-                onClick={() => minusClicked()}
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
+                <button
+                  aria-label="Augmenter la durée de la méditation"
+                  onClick={() => plusClicked()}
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+                <button
+                  aria-label="Diminuer la durée de la méditation"
+                  onClick={() => minusClicked()}
+                >
+                  <FontAwesomeIcon icon={faMinus} />
+                </button>
+              </div>
             </div>
-          </div>
-          {/* Gong sound toggle */}
-          <div className="horizontal">
-            <div style={{ width: "50%" }} className="settings-key">
-              Gong&nbsp;
-            </div>
-            <div style={{ width: "50%" }} className="settings-value">
-              <button onClick={() => gongToggleClicked()}>
-                {isGongOn ? "on " : "off"}&nbsp;
-                <FontAwesomeIcon
-                  icon={isGongOn ? faVolumeHigh : faVolumeXmark}
-                />
-              </button>
-            </div>
-          </div>
-          {/* Display options */}
-          <div className="horizontal">
-            <div style={{ width: "50%" }} className="settings-key">
-              Affichage&nbsp;
-            </div>
-            <div style={{ width: "50%" }} className="settings-value">
-              <div style={{ alignItems: "flex-start" }}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={showProgress}
-                    onChange={e => setShowProgress(e.target.checked)}
+            {/* Gong sound toggle */}
+            <div className="horizontal">
+              <div style={{ width: "50%" }} className="settings-key">
+                Gong&nbsp;
+              </div>
+              <div style={{ width: "50%" }} className="settings-value">
+                <button onClick={() => gongToggleClicked()}>
+                  {isGongOn ? "on " : "off"}&nbsp;
+                  <FontAwesomeIcon
+                    icon={isGongOn ? faVolumeHigh : faVolumeXmark}
                   />
-                  &nbsp;Progression
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={showTime}
-                    onChange={e => setShowTime(e.target.checked)}
-                  />
-                  &nbsp;Temps restant
-                </label>
+                </button>
+              </div>
+            </div>
+            {/* Display options */}
+            <div className="horizontal">
+              <div style={{ width: "50%" }} className="settings-key">
+                Affichage&nbsp;
+              </div>
+              <div style={{ width: "50%" }} className="settings-value">
+                <div style={{ alignItems: "flex-start" }}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={showProgress}
+                      onChange={e => setShowProgress(e.target.checked)}
+                    />
+                    &nbsp;Progression
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={showTime}
+                      onChange={e => setShowTime(e.target.checked)}
+                    />
+                    &nbsp;Temps restant
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={showBlackScreenFromStart}
+                      onChange={e =>
+                        setShowBlackScreenFromStart(e.target.checked)
+                      }
+                    />
+                    &nbsp;Écran noir
+                  </label>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {/* Circular progress indicator - shown during meditation */}
-        {showProgress && (
-          <div
-            style={{
-              minHeight: "200px",
-              position: "absolute",
-              top: 0,
-              pointerEvents: "none",
-            }}
-            className={`fadein ${!isReadyToStart ? "" : "hidden"}`}
-          >
-            <svg width="200" height="200" viewBox="0 0 200 200">
-              {/* Progress - background */}
-              <circle cx="100" cy="100" r="95" fill="#111111" />
-              {/* white portion - progress of meditation */}
-              <path
-                d={`M 100 100 L 100 10 A 90 90 0 ${completion > 0.5 ? 1 : 0} 1 ${
-                  100 + 90 * Math.sin(completion * 2 * Math.PI)
-                } ${100 - 90 * Math.cos(completion * 2 * Math.PI)} Z`}
-                fill="white"
-              />
-            </svg>
+
+          <div className={`fadein ${!isReadyToStart ? "" : "hidden"}`}>
+            {/* Circular progress indicator - shown during meditation */}
+            {canBeStopped && showProgress && (
+              <ProgressIndicator durationMinutes={durationMinutes} />
+            )}
           </div>
-        )}
-      </div>
-      {/* Timer display and start/stop controls */}
-      <div style={{ fontSize: "6em" }}>
-        {/* Remaining time display */}
-        {(showTime || !isRunning) && (
-          <div style={{ fontSize: "0.7em" }}>{timeString}</div>
-        )}
-        {/* Start button - shown when ready to begin */}
+        </div>
+        {/* Timer display and start/stop controls */}
+        <div style={{ fontSize: "3em" }}>
+          {/* Remaining time display */}
+          {(showTime || isReadyToStart) && <div>{timeString}</div>}
+          {/* Start button - shown when ready to begin */}
+          {isReadyToStart && (
+            <button
+              aria-label="Commencer la méditation"
+              onClick={() => startClicked()}
+            >
+              <FontAwesomeIcon icon={faPlay} />
+            </button>
+          )}
+          {/* Stop button - shown during meditation */}
+          {canBeStopped && (
+            <button
+              aria-label="Arrêter la méditation"
+              onClick={() => stopClicked()}
+            >
+              <FontAwesomeIcon icon={faStop} />
+            </button>
+          )}
+        </div>
         {isReadyToStart && (
-          <button
-            aria-label="Commencer la méditation"
-            onClick={() => startClicked()}
-          >
-            <FontAwesomeIcon icon={faPlay} />
-          </button>
-        )}
-        {/* Stop button - shown during meditation */}
-        {canBeStopped && (
-          <button
-            aria-label="Arrêter la méditation"
-            onClick={() => stopClicked()}
-            style={{ opacity: 0.5 }}
-          >
-            <FontAwesomeIcon icon={faStop} />
-          </button>
+          <p style={{ fontSize: "0.8em", opacity: 0.4 }}>v0.2.0</p>
         )}
       </div>
-      {!isRunning && <p style={{ fontSize: "0.8em", opacity: 0.4 }}>v0.2.0</p>}
-    </div>
+      {/* Black screen overlay during meditation */}
+      <div
+        className="black-screen-overlay"
+        style={{
+          opacity: !isReadyToStart && showBlackScreenNow ? 1 : 0,
+          pointerEvents:
+            !isReadyToStart && showBlackScreenNow ? "auto" : "none",
+        }}
+        onClick={() => reactivateScreenTemporarily()}
+      >
+        <h1 style={{ opacity: 0.2 }}>Toucher pour réactiver l'écran</h1>
+      </div>
+    </>
   );
 };
