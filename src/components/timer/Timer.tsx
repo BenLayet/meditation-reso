@@ -152,9 +152,6 @@ export const Timer = () => {
     // Enter fullscreen
     enterFullscreen();
 
-    // Request wake lock to prevent sleep
-    wakeLockRef.current = await requestWakeLock();
-
     // Play gong sound at start
     if (startAudioRef.current) {
       startAudioRef.current.currentTime = 0;
@@ -167,6 +164,9 @@ export const Timer = () => {
       stopAudioRef.current.currentTime = 0;
       stopAudioRef.current.load();
     }
+
+    // Request wake lock to prevent sleep
+    wakeLockRef.current = await requestWakeLock();
   };
   const stopClicked = async () => {
     setIsRunning(false);
@@ -329,6 +329,7 @@ export const Timer = () => {
           </button>
         )}
       </div>
+      <p style={{ fontSize: "0.7em", opacity: 0.3 }}>v0.1.0</p>
     </div>
   );
 };
