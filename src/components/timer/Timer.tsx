@@ -19,6 +19,8 @@ const DURATION_INCREMENT_MINUTES = 5;
 const DEFAULT_DURATION_MINUTES = 20;
 const DURATION_COOKIE_NAME = "reso_meditation_duration_minutes";
 const GONG_COOKIE_NAME = "reso_meditation_gong_enabled";
+const SHOW_TIME_COOKIE_NAME = "reso_meditation_show_time";
+const SHOW_PROGRESS_COOKIE_NAME = "reso_meditation_show_progress";
 
 // Cookie helper functions
 const setCookie = (name: string, value: string, days: number = 365) => {
@@ -55,6 +57,22 @@ const getSavedGongEnabled = (): boolean => {
     return saved === "true";
   }
   return true; // Default to enabled
+};
+
+const getSavedShowTime = (): boolean => {
+  const saved = getCookie(SHOW_TIME_COOKIE_NAME);
+  if (saved !== null) {
+    return saved === "true";
+  }
+  return true; // Default to shown
+};
+
+const getSavedShowProgress = (): boolean => {
+  const saved = getCookie(SHOW_PROGRESS_COOKIE_NAME);
+  if (saved !== null) {
+    return saved === "true";
+  }
+  return true; // Default to shown
 };
 
 // Fullscreen helper functions
@@ -108,8 +126,8 @@ export const Timer = () => {
   const [isGongOn, setIsGongOn] = useState(getSavedGongEnabled());
   const [isRunning, setIsRunning] = useState(false);
   const [isReadyToStart, setIsReadyToStart] = useState(true);
-  const [showProgress, setShowProgress] = useState(true);
-  const [showTime, setShowTime] = useState(true);
+  const [showProgress, setShowProgress] = useState(getSavedShowProgress());
+  const [showTime, setShowTime] = useState(getSavedShowTime());
   const canBeStopped = !isReadyToStart;
   const timeString = formatSeconds(remainingSeconds);
   const completion =
@@ -209,6 +227,16 @@ export const Timer = () => {
     // Save duration to cookie whenever it changes
     setCookie(DURATION_COOKIE_NAME, durationMinutes.toString());
   }, [durationMinutes]);
+
+  useEffect(() => {
+    // Save showTime setting to cookie whenever it changes
+    setCookie(SHOW_TIME_COOKIE_NAME, showTime.toString());
+  }, [showTime]);
+
+  useEffect(() => {
+    // Save showProgress setting to cookie whenever it changes
+    setCookie(SHOW_PROGRESS_COOKIE_NAME, showProgress.toString());
+  }, [showProgress]);
 
   useEffect(() => {
     if (remainingSeconds <= 0) {
