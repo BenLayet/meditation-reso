@@ -1,1 +1,8 @@
 @import "./wireframe.css";
+
+.settings-key,
+.settings-value {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}

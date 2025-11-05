@@ -7,13 +7,13 @@ import {
   faVolumeXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import gongSound from "../../assets/gong.mp3";
 import {
   calculateDecrementedDuration,
   calculateIncrementedDuration,
   formatSeconds,
 } from "../../util/duration.functions";
-import gongSound from "../../assets/gong.mp3";
 
 const DURATION_INCREMENT_MINUTES = 5;
 const DEFAULT_DURATION_MINUTES = 20;
@@ -108,6 +108,8 @@ export const Timer = () => {
   const [isGongOn, setIsGongOn] = useState(getSavedGongEnabled());
   const [isRunning, setIsRunning] = useState(false);
   const [isReadyToStart, setIsReadyToStart] = useState(true);
+  const [showProgress, setShowProgress] = useState(true);
+  const [showTime, setShowTime] = useState(true);
   const canBeStopped = !isReadyToStart;
   const timeString = formatSeconds(remainingSeconds);
   const completion =
@@ -260,56 +262,96 @@ export const Timer = () => {
         <div className={`fadein ${isReadyToStart ? "" : "hidden"}`}>
           {/* Duration adjustment controls */}
           <div className="horizontal">
-            <span>Durée&nbsp;</span>
-            <button
-              aria-label="Augmenter la durée de la méditation"
-              onClick={() => plusClicked()}
-            >
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
-            <button
-              aria-label="Diminuer la durée de la méditation"
-              onClick={() => minusClicked()}
-            >
-              <FontAwesomeIcon icon={faMinus} />
-            </button>
+            <div style={{ width: "50%" }} className="settings-key">
+              Durée&nbsp;
+            </div>
+            <div style={{ width: "50%" }} className="horizontal settings-value">
+              <button
+                aria-label="Augmenter la durée de la méditation"
+                onClick={() => plusClicked()}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+              <button
+                aria-label="Diminuer la durée de la méditation"
+                onClick={() => minusClicked()}
+              >
+                <FontAwesomeIcon icon={faMinus} />
+              </button>
+            </div>
           </div>
           {/* Gong sound toggle */}
           <div className="horizontal">
-            <span>Gong&nbsp;</span>
-            <button onClick={() => gongToggleClicked()}>
-              {isGongOn ? "on " : "off"}&nbsp;
-              <FontAwesomeIcon icon={isGongOn ? faVolumeHigh : faVolumeXmark} />
-            </button>
+            <div style={{ width: "50%" }} className="settings-key">
+              Gong&nbsp;
+            </div>
+            <div style={{ width: "50%" }} className="settings-value">
+              <button onClick={() => gongToggleClicked()}>
+                {isGongOn ? "on " : "off"}&nbsp;
+                <FontAwesomeIcon
+                  icon={isGongOn ? faVolumeHigh : faVolumeXmark}
+                />
+              </button>
+            </div>
+          </div>
+          {/* Display options */}
+          <div className="horizontal">
+            <div style={{ width: "50%" }} className="settings-key">
+              Affichage&nbsp;
+            </div>
+            <div style={{ width: "50%" }} className="settings-value">
+              <div style={{ alignItems: "flex-start" }}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={showProgress}
+                    onChange={e => setShowProgress(e.target.checked)}
+                  />
+                  &nbsp;Progression
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={showTime}
+                    onChange={e => setShowTime(e.target.checked)}
+                  />
+                  &nbsp;Temps restant
+                </label>
+              </div>
+            </div>
           </div>
         </div>
         {/* Circular progress indicator - shown during meditation */}
-        <div
-          style={{
-            minHeight: "200px",
-            position: "absolute",
-            top: 0,
-            pointerEvents: "none",
-          }}
-          className={`fadein ${!isReadyToStart ? "" : "hidden"}`}
-        >
-          <svg width="200" height="200" viewBox="0 0 200 200">
-            {/* Camembert - background */}
-            <circle cx="100" cy="100" r="95" fill="black" />
-            {/* white portion - progress of meditation */}
-            <path
-              d={`M 100 100 L 100 10 A 90 90 0 ${completion > 0.5 ? 1 : 0} 1 ${
-                100 + 90 * Math.sin(completion * 2 * Math.PI)
-              } ${100 - 90 * Math.cos(completion * 2 * Math.PI)} Z`}
-              fill="white"
-            />
-          </svg>
-        </div>
+        {showProgress && (
+          <div
+            style={{
+              minHeight: "200px",
+              position: "absolute",
+              top: 0,
+              pointerEvents: "none",
+            }}
+            className={`fadein ${!isReadyToStart ? "" : "hidden"}`}
+          >
+            <svg width="200" height="200" viewBox="0 0 200 200">
+              {/* Progress - background */}
+              <circle cx="100" cy="100" r="95" fill="#111111" />
+              {/* white portion - progress of meditation */}
+              <path
+                d={`M 100 100 L 100 10 A 90 90 0 ${completion > 0.5 ? 1 : 0} 1 ${
+                  100 + 90 * Math.sin(completion * 2 * Math.PI)
+                } ${100 - 90 * Math.cos(completion * 2 * Math.PI)} Z`}
+                fill="white"
+              />
+            </svg>
+          </div>
+        )}
       </div>
       {/* Timer display and start/stop controls */}
       <div style={{ fontSize: "6em" }}>
         {/* Remaining time display */}
-        <div style={{ fontSize: "0.7em" }}>{timeString}</div>
+        {(showTime || !isRunning) && (
+          <div style={{ fontSize: "0.7em" }}>{timeString}</div>
+        )}
         {/* Start button - shown when ready to begin */}
         {isReadyToStart && (
           <button
@@ -324,12 +366,13 @@ export const Timer = () => {
           <button
             aria-label="Arrêter la méditation"
             onClick={() => stopClicked()}
+            style={{ opacity: 0.5 }}
           >
             <FontAwesomeIcon icon={faStop} />
           </button>
         )}
       </div>
-      <p style={{ fontSize: "0.7em", opacity: 0.3 }}>v0.1.0</p>
+      {!isRunning && <p style={{ fontSize: "0.8em", opacity: 0.4 }}>v0.2.0</p>}
     </div>
   );
 };
