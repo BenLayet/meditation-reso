@@ -82,7 +82,7 @@ const getSavedBlackScreen = (): boolean => {
   if (saved !== null) {
     return saved === "true";
   }
-  return true; // Default to enabled
+  return false; // Default to disabled
 };
 
 // Fullscreen helper functions
@@ -439,7 +439,9 @@ export const Timer = () => {
         }}
         onClick={() => reactivateScreenTemporarily()}
       >
-        <h1 style={{ opacity: 0.2 }}>Toucher pour revoir le timer</h1>
+        <h1 style={{ opacity: 0.2, textAlign: "center" }}>
+          Cliquer pour voir quelques secondes
+        </h1>
       </div>
     </>
   );
