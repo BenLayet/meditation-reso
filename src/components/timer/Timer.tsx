@@ -307,7 +307,7 @@ export const Timer = () => {
 
   return (
     <>
-      <div style={{ maxWidth: "35em" }}>
+      <div style={{ maxWidth: "25em" }}>
         {/* Container for settings and progress visualization */}
         <div
           style={{
@@ -407,6 +407,7 @@ export const Timer = () => {
           {/* Start button - shown when ready to begin */}
           {isReadyToStart && (
             <button
+              style={{ fontSize: "0.7em" }}
               aria-label="Commencer la méditation"
               onClick={() => startClicked()}
             >
@@ -416,6 +417,7 @@ export const Timer = () => {
           {/* Stop button - shown during meditation */}
           {canBeStopped && (
             <button
+              style={{ fontSize: "0.7em" }}
               aria-label="Arrêter la méditation"
               onClick={() => stopClicked()}
             >

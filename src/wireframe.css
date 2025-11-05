@@ -12,6 +12,7 @@
 body {
   height: 100vh;
   background-color: #000000 !important;
+  padding: 1em;
 }
 /* Body and containers */
 body,
