@@ -229,7 +229,7 @@ export const Timer = () => {
     setShowBlackScreenNow(false);
     setTimeout(() => {
       setShowBlackScreenNow(true);
-    }, 3000);
+    }, 5000);
   };
 
   useEffect(() => {
@@ -437,7 +437,7 @@ export const Timer = () => {
         }}
         onClick={() => reactivateScreenTemporarily()}
       >
-        <h1 style={{ opacity: 0.2 }}>Toucher pour réactiver l'écran</h1>
+        <h1 style={{ opacity: 0.2 }}>Toucher pour revoir le timer</h1>
       </div>
     </>
   );
