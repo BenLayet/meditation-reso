@@ -1,17 +1,17 @@
-/* wireframe.css - Dark Mode Design */
+/* wireframe.css - Light Mode Design */
 
 * {
   /* Wireframe font */
   font-family: "Courier New", "Courier", monospace !important;
 
-  /* Dark mode colors */
-  color: #131313 !important;
+  /* Light mode colors */
+  color: #333333 !important;
   background-color: transparent !important;
 }
 
 body {
   height: 100vh;
-  background-color: transparent !important;
+  background-color: #ffffff !important;
   position: relative;
 }
 /* Body and containers */
@@ -51,45 +51,45 @@ h6 {
   letter-spacing: 2px !important;
 }
 
-/* Buttons - dark mode style */
+/* Buttons - light mode style */
 button,
 input[type="button"],
 input[type="submit"],
 .btn {
-  background-color: #b4b4b4 !important;
-  border: 2px solid #a0a0a0 !important;
+  background-color: #f5f5f5 !important;
+  border: 2px solid #333 !important;
   padding: 8px 16px !important;
   cursor: pointer !important;
   text-transform: uppercase !important;
   font-weight: bold !important;
-  box-shadow: 3px 3px 0 #bbbbbb !important;
+  box-shadow: 3px 3px 0 #ddd !important;
   margin: 0.5em;
 }
 
 button:hover,
 input[type="button"]:hover,
 input[type="submit"]:hover {
-  background-color: #b4b4b4 !important;
+  background-color: #e5e5e5 !important;
   transform: translate(1px, 1px) !important;
-  box-shadow: 2px 2px 0 #bbbbbb !important;
+  box-shadow: 2px 2px 0 #ddd !important;
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: #666 !important;
+  color: #999 !important;
   font-style: italic !important;
 }
 
-/* Links - underlined and simple (dark mode) */
+/* Links - underlined and simple (light mode) */
 a {
-  color: #888 !important;
+  color: #0066cc !important;
   text-decoration: underline !important;
   text-decoration-style: dashed !important;
 }
 
 a:hover {
   text-decoration-style: solid !important;
-  color: #aaa !important;
+  color: #004499 !important;
 }
 
 /* Checkbox and Radio */
@@ -97,7 +97,7 @@ input[type="checkbox"],
 input[type="radio"] {
   width: 2em;
   height: 2em;
-  border: 1px solid #353535 !important;
+  border: 1px solid #333 !important;
   appearance: none !important;
   -webkit-appearance: none !important;
   position: relative;
@@ -105,7 +105,7 @@ input[type="radio"] {
 
 input[type="checkbox"]:checked::before {
   content: "✓";
-  color: #313131;
+  color: #333;
   font-size: 4em;
   position: absolute;
   top: -0.5em;
@@ -126,7 +126,7 @@ input[type="radio"]:checked::before {
 button,
 input[type="button"],
 input[type="submit"] {
-  box-shadow: 3px 3px 0 #535353 !important;
+  box-shadow: 3px 3px 0 #ddd !important;
 }
 
 /* basic animation */

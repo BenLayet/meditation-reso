@@ -16,8 +16,6 @@ const DURATION_INCREMENT_MINUTES = 5;
 const DEFAULT_DURATION_MINUTES = 20;
 const DURATION_COOKIE_NAME = "reso_meditation_duration_minutes";
 const GONG_COOKIE_NAME = "reso_meditation_gong_enabled";
-const SHOW_TIME_COOKIE_NAME = "reso_meditation_show_time";
-const SHOW_PROGRESS_COOKIE_NAME = "reso_meditation_show_progress";
 const BLACK_SCREEN_COOKIE_NAME = "reso_meditation_black_screen";
 
 // Cookie helper functions
@@ -55,22 +53,6 @@ const getSavedGongEnabled = (): boolean => {
     return saved === "true";
   }
   return true; // Default to enabled
-};
-
-const getSavedShowTime = (): boolean => {
-  const saved = getCookie(SHOW_TIME_COOKIE_NAME);
-  if (saved !== null) {
-    return saved === "true";
-  }
-  return true; // Default to shown
-};
-
-const getSavedShowProgress = (): boolean => {
-  const saved = getCookie(SHOW_PROGRESS_COOKIE_NAME);
-  if (saved !== null) {
-    return saved === "true";
-  }
-  return true; // Default to shown
 };
 
 const getSavedBlackScreen = (): boolean => {

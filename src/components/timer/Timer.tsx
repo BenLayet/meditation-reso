@@ -2,11 +2,7 @@ import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import gongSound from "../../assets/gong.mp3";
-import {
-  calculateDecrementedDuration,
-  calculateIncrementedDuration,
-  formatSeconds,
-} from "../../util/duration.functions";
+import { formatSeconds } from "../../util/duration.functions";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { Settings } from "./Settings";
 
