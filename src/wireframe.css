@@ -12,7 +12,7 @@
 body {
   height: 100vh;
   background-color: #000000 !important;
-  padding: 1em;
+  position: relative;
 }
 /* Body and containers */
 body,
@@ -29,6 +29,7 @@ main {
   align-items: center;
   justify-content: center;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .horizontal {

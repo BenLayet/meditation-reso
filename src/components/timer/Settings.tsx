@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import {
   calculateDecrementedDuration,
   calculateIncrementedDuration,
+  formatSeconds,
 } from "../../util/duration.functions";
 
 const DURATION_INCREMENT_MINUTES = 5;
@@ -92,11 +93,7 @@ export const Settings = ({
 }: SettingsProps) => {
   const [durationMinutes, setDurationMinutes] = useState(getSavedDuration());
   const [isGongOn, setIsGongOn] = useState(getSavedGongEnabled());
-  const [showProgress, setShowProgress] = useState(getSavedShowProgress());
-  const [showTime, setShowTime] = useState(getSavedShowTime());
-  const [showBlackScreen, setShowBlackScreenFromStart] = useState(
-    getSavedBlackScreen(),
-  );
+  const [showBlackScreen, setShowBlackScreen] = useState(getSavedBlackScreen());
   const plusClicked = () => {
     setDurationMinutes(
       calculateIncrementedDuration(durationMinutes, DURATION_INCREMENT_MINUTES),
@@ -106,9 +103,6 @@ export const Settings = ({
     setDurationMinutes(
       calculateDecrementedDuration(durationMinutes, DURATION_INCREMENT_MINUTES),
     );
-  };
-  const gongToggleClicked = () => {
-    setIsGongOn(prev => !prev);
   };
   useEffect(() => {
     // Save gong setting to cookie whenever it changes
@@ -136,6 +130,9 @@ export const Settings = ({
           Durée&nbsp;
         </div>
         <div style={{ width: "50%" }} className="horizontal settings-value">
+          <span style={{ fontSize: "1.5em" }}>
+            {formatSeconds(durationMinutes * 60)}&nbsp;
+          </span>
           <button
             aria-label="Augmenter la durée de la méditation"
             onClick={() => plusClicked()}
@@ -156,16 +153,23 @@ export const Settings = ({
           Gong&nbsp;
         </div>
         <div style={{ width: "50%" }} className="settings-value">
-          <button onClick={() => gongToggleClicked()}>
-            {isGongOn ? "on " : "off"}&nbsp;
-            <FontAwesomeIcon icon={isGongOn ? faVolumeHigh : faVolumeXmark} />
-          </button>
+          <div style={{ alignItems: "flex-start" }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={isGongOn}
+                onChange={e => setIsGongOn(e.target.checked)}
+              />
+              &nbsp;
+              <FontAwesomeIcon icon={isGongOn ? faVolumeHigh : faVolumeXmark} />
+            </label>
+          </div>
         </div>
       </div>
       {/* Display options */}
       <div className="horizontal">
         <div style={{ width: "50%" }} className="settings-key">
-          Affichage&nbsp;
+          Écran noir&nbsp;
         </div>
         <div style={{ width: "50%" }} className="settings-value">
           <div style={{ alignItems: "flex-start" }}>
@@ -173,9 +177,9 @@ export const Settings = ({
               <input
                 type="checkbox"
                 checked={showBlackScreen}
-                onChange={e => setShowBlackScreenFromStart(e.target.checked)}
+                onChange={e => setShowBlackScreen(e.target.checked)}
               />
-              &nbsp;Écran noir
+              &nbsp;{showBlackScreen ? "Activé" : "Désactivé"}
             </label>
           </div>
         </div>

@@ -9,7 +9,7 @@
 .settings-value label {
   font-size: 0.7em;
   display: flex;
-  align-items: end;
+  align-items: center;
 }
 @keyframes fillArc {
   from {

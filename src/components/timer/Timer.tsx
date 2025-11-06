@@ -211,19 +211,30 @@ export const Timer = () => {
             />
           </div>
 
-          <div className={`fadein ${!isReadyToStart ? "" : "hidden"}`}>
+          <div
+            className={`fadein ${!isReadyToStart ? "" : "hidden"}`}
+            style={{ position: "absolute" }}
+          >
             {/* Circular progress indicator - shown during meditation */}
             {canBeStopped && (
-              <ProgressIndicator durationMinutes={durationMinutes} />
+              <>
+                <ProgressIndicator durationMinutes={durationMinutes} />{" "}
+                {/* Remaining time display */}
+                <div
+                  style={{
+                    opacity: 0.4,
+                    position: "absolute",
+                    top: "94px%",
+                  }}
+                >
+                  {formatSeconds(remainingSeconds)}
+                </div>
+              </>
             )}
           </div>
         </div>
         {/* Timer display and start/stop controls */}
         <div style={{ fontSize: "3em" }}>
-          {/* Remaining time display */}
-          <div style={{ opacity: isRunning ? 0.5 : 1 }}>
-            {formatSeconds(remainingSeconds)}
-          </div>
           {/* Start button - shown when ready to begin */}
           {isReadyToStart && (
             <button
@@ -246,7 +257,17 @@ export const Timer = () => {
           )}
         </div>
         {isReadyToStart && (
-          <p style={{ fontSize: "0.8em", opacity: 0.4 }}>v0.2.0</p>
+          <p
+            style={{
+              fontSize: "0.8em",
+              opacity: 0.4,
+              position: "absolute",
+              bottom: "1em",
+              right: "1em",
+            }}
+          >
+            v0.2.0
+          </p>
         )}
       </div>
       {/* Black screen overlay during meditation */}
