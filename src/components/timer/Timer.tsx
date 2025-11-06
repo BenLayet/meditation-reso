@@ -1,11 +1,4 @@
-import {
-  faMinus,
-  faPlay,
-  faPlus,
-  faStop,
-  faVolumeHigh,
-  faVolumeXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import gongSound from "../../assets/gong.mp3";
@@ -15,75 +8,7 @@ import {
   formatSeconds,
 } from "../../util/duration.functions";
 import { ProgressIndicator } from "./ProgressIndicator";
-
-const DURATION_INCREMENT_MINUTES = 5;
-const DEFAULT_DURATION_MINUTES = 20;
-const DURATION_COOKIE_NAME = "reso_meditation_duration_minutes";
-const GONG_COOKIE_NAME = "reso_meditation_gong_enabled";
-const SHOW_TIME_COOKIE_NAME = "reso_meditation_show_time";
-const SHOW_PROGRESS_COOKIE_NAME = "reso_meditation_show_progress";
-const BLACK_SCREEN_COOKIE_NAME = "reso_meditation_black_screen";
-
-// Cookie helper functions
-const setCookie = (name: string, value: string, days: number = 365) => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
-};
-
-const getCookie = (name: string): string | null => {
-  const nameEQ = name + "=";
-  const ca = document.cookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === " ") c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-};
-
-const getSavedDuration = (): number => {
-  const saved = getCookie(DURATION_COOKIE_NAME);
-  if (saved) {
-    const parsed = parseInt(saved, 10);
-    if (!isNaN(parsed) && parsed > 0) {
-      return parsed;
-    }
-  }
-  return DEFAULT_DURATION_MINUTES;
-};
-
-const getSavedGongEnabled = (): boolean => {
-  const saved = getCookie(GONG_COOKIE_NAME);
-  if (saved !== null) {
-    return saved === "true";
-  }
-  return true; // Default to enabled
-};
-
-const getSavedShowTime = (): boolean => {
-  const saved = getCookie(SHOW_TIME_COOKIE_NAME);
-  if (saved !== null) {
-    return saved === "true";
-  }
-  return true; // Default to shown
-};
-
-const getSavedShowProgress = (): boolean => {
-  const saved = getCookie(SHOW_PROGRESS_COOKIE_NAME);
-  if (saved !== null) {
-    return saved === "true";
-  }
-  return true; // Default to shown
-};
-
-const getSavedBlackScreen = (): boolean => {
-  const saved = getCookie(BLACK_SCREEN_COOKIE_NAME);
-  if (saved !== null) {
-    return saved === "true";
-  }
-  return false; // Default to disabled
-};
+import { Settings } from "./Settings";
 
 // Fullscreen helper functions
 const enterFullscreen = () => {
@@ -129,24 +54,15 @@ const releaseWakeLock = async (wakeLock: WakeLockSentinel | null) => {
 };
 
 export const Timer = () => {
-  const [durationMinutes, setDurationMinutes] = useState(getSavedDuration());
-  const [remainingSeconds, setRemainingSeconds] = useState(
-    durationMinutes * 60,
-  );
-  const [isGongOn, setIsGongOn] = useState(getSavedGongEnabled());
+  const [isBlackScreenSelected, setIsBlackScreenSelected] = useState(false);
+  const [isGongOn, setIsGongOn] = useState(false);
+  const [durationMinutes, setDurationMinutes] = useState(0);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isReadyToStart, setIsReadyToStart] = useState(true);
-  const [showProgress, setShowProgress] = useState(getSavedShowProgress());
-  const [showTime, setShowTime] = useState(getSavedShowTime());
-  const [showBlackScreenFromStart, setShowBlackScreenFromStart] = useState(
-    getSavedBlackScreen(),
-  );
-  const [showBlackScreenNow, setShowBlackScreenNow] = useState(
-    showBlackScreenFromStart,
-  );
+  const [isBlackScreenVisible, setIsBlackScreenVisible] = useState(false);
   const canBeStopped = !isReadyToStart;
-  const timeString = formatSeconds(remainingSeconds);
-
+  formatSeconds(remainingSeconds);
   // Audio ref for the gong sound
   const startAudioRef = useRef<HTMLAudioElement | null>(null);
   const stopAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -169,19 +85,11 @@ export const Timer = () => {
     };
   }, []);
 
-  const plusClicked = () => {
-    setDurationMinutes(
-      calculateIncrementedDuration(durationMinutes, DURATION_INCREMENT_MINUTES),
-    );
-  };
-  const minusClicked = () => {
-    setDurationMinutes(
-      calculateDecrementedDuration(durationMinutes, DURATION_INCREMENT_MINUTES),
-    );
-  };
   const startClicked = async () => {
     setIsRunning(true);
     setIsReadyToStart(false);
+    setIsBlackScreenVisible(false);
+    setTimeout(() => setIsBlackScreenVisible(isBlackScreenSelected), 2500);
 
     // Enter fullscreen
     enterFullscreen();
@@ -206,6 +114,7 @@ export const Timer = () => {
     setIsRunning(false);
     setIsReadyToStart(true);
     setRemainingSeconds(durationMinutes * 60);
+    setIsBlackScreenVisible(false);
 
     // Exit fullscreen
     exitFullscreen();
@@ -221,14 +130,11 @@ export const Timer = () => {
       startAudioRef.current.pause();
     }
   };
-  const gongToggleClicked = () => {
-    setIsGongOn(prev => !prev);
-  };
 
   const reactivateScreenTemporarily = () => {
-    setShowBlackScreenNow(false);
+    setIsBlackScreenVisible(false);
     setTimeout(() => {
-      setShowBlackScreenNow(true);
+      setIsBlackScreenVisible(true);
     }, 5000);
   };
 
@@ -239,36 +145,16 @@ export const Timer = () => {
     if (startAudioRef.current) {
       startAudioRef.current.volume = isGongOn ? 1.0 : 0.0;
     }
-    // Save gong setting to cookie whenever it changes
-    setCookie(GONG_COOKIE_NAME, isGongOn.toString());
   }, [isGongOn]);
 
   useEffect(() => {
     setRemainingSeconds(durationMinutes * 60);
-    // Save duration to cookie whenever it changes
-    setCookie(DURATION_COOKIE_NAME, durationMinutes.toString());
   }, [durationMinutes]);
-
-  useEffect(() => {
-    // Save showTime setting to cookie whenever it changes
-    setCookie(SHOW_TIME_COOKIE_NAME, showTime.toString());
-  }, [showTime]);
-
-  useEffect(() => {
-    // Save showProgress setting to cookie whenever it changes
-    setCookie(SHOW_PROGRESS_COOKIE_NAME, showProgress.toString());
-  }, [showProgress]);
-
-  useEffect(() => {
-    // Save showBlackScreen setting to cookie whenever it changes
-    setCookie(BLACK_SCREEN_COOKIE_NAME, showBlackScreenFromStart.toString());
-    setShowBlackScreenNow(showBlackScreenFromStart);
-  }, [showBlackScreenFromStart]);
 
   useEffect(() => {
     if (remainingSeconds <= 0) {
       setIsRunning(false);
-      setShowBlackScreenNow(false); // Deactivate black screen when timer finishes
+      setIsBlackScreenVisible(false); // Deactivate black screen when timer finishes
 
       // Release wake lock when timer finishes
       releaseWakeLock(wakeLockRef.current);
@@ -318,84 +204,16 @@ export const Timer = () => {
         >
           {/* Settings panel - shown before meditation starts */}
           <div className={`settings fadein ${isReadyToStart ? "" : "hidden"}`}>
-            {/* Duration adjustment controls */}
-            <div className="horizontal">
-              <div style={{ width: "50%" }} className="settings-key">
-                Durée&nbsp;
-              </div>
-              <div
-                style={{ width: "50%" }}
-                className="horizontal settings-value"
-              >
-                <button
-                  aria-label="Augmenter la durée de la méditation"
-                  onClick={() => plusClicked()}
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-                <button
-                  aria-label="Diminuer la durée de la méditation"
-                  onClick={() => minusClicked()}
-                >
-                  <FontAwesomeIcon icon={faMinus} />
-                </button>
-              </div>
-            </div>
-            {/* Gong sound toggle */}
-            <div className="horizontal">
-              <div style={{ width: "50%" }} className="settings-key">
-                Gong&nbsp;
-              </div>
-              <div style={{ width: "50%" }} className="settings-value">
-                <button onClick={() => gongToggleClicked()}>
-                  {isGongOn ? "on " : "off"}&nbsp;
-                  <FontAwesomeIcon
-                    icon={isGongOn ? faVolumeHigh : faVolumeXmark}
-                  />
-                </button>
-              </div>
-            </div>
-            {/* Display options */}
-            <div className="horizontal">
-              <div style={{ width: "50%" }} className="settings-key">
-                Affichage&nbsp;
-              </div>
-              <div style={{ width: "50%" }} className="settings-value">
-                <div style={{ alignItems: "flex-start" }}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={showProgress}
-                      onChange={e => setShowProgress(e.target.checked)}
-                    />
-                    &nbsp;Progression
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={showTime}
-                      onChange={e => setShowTime(e.target.checked)}
-                    />
-                    &nbsp;Temps restant
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={showBlackScreenFromStart}
-                      onChange={e =>
-                        setShowBlackScreenFromStart(e.target.checked)
-                      }
-                    />
-                    &nbsp;Écran noir
-                  </label>
-                </div>
-              </div>
-            </div>
+            <Settings
+              onDurationChanged={setDurationMinutes}
+              onGongChanged={setIsGongOn}
+              onShowBlackScreenChanged={setIsBlackScreenSelected}
+            />
           </div>
 
           <div className={`fadein ${!isReadyToStart ? "" : "hidden"}`}>
             {/* Circular progress indicator - shown during meditation */}
-            {canBeStopped && showProgress && (
+            {canBeStopped && (
               <ProgressIndicator durationMinutes={durationMinutes} />
             )}
           </div>
@@ -403,7 +221,9 @@ export const Timer = () => {
         {/* Timer display and start/stop controls */}
         <div style={{ fontSize: "3em" }}>
           {/* Remaining time display */}
-          {(showTime || isReadyToStart) && <div>{timeString}</div>}
+          <div style={{ opacity: isRunning ? 0.5 : 1 }}>
+            {formatSeconds(remainingSeconds)}
+          </div>
           {/* Start button - shown when ready to begin */}
           {isReadyToStart && (
             <button
@@ -433,14 +253,13 @@ export const Timer = () => {
       <div
         className="black-screen-overlay"
         style={{
-          opacity: !isReadyToStart && showBlackScreenNow ? 1 : 0,
-          pointerEvents:
-            !isReadyToStart && showBlackScreenNow ? "auto" : "none",
+          opacity: canBeStopped && isBlackScreenVisible ? 1 : 0,
+          pointerEvents: canBeStopped && isBlackScreenVisible ? "auto" : "none",
         }}
         onClick={() => reactivateScreenTemporarily()}
       >
         <h1 style={{ opacity: 0.2, textAlign: "center" }}>
-          Cliquer pour voir quelques secondes
+          Cliquer pour désactiver l'écran noir quelques secondes
         </h1>
       </div>
     </>
