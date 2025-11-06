@@ -2,11 +2,11 @@
 
 * {
   /* Wireframe font */
-  font-family: "Courier New", "Courier", monospace !important;
+  font-family: "Courier New", "Courier", monospace;
 
   /* Light mode colors */
-  color: #333333 !important;
-  background-color: transparent !important;
+  color: #333333;
+  background-color: transparent;
 }
 
 body {

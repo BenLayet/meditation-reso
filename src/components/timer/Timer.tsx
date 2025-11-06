@@ -199,7 +199,7 @@ export const Timer = () => {
           }}
         >
           {/* Settings panel - shown before meditation starts */}
-          <div className={`settings fadein ${isReadyToStart ? "" : "hidden"}`}>
+          <div className={`fadein ${isReadyToStart ? "" : "hidden"}`}>
             <Settings
               onDurationChanged={setDurationMinutes}
               onGongChanged={setIsGongOn}
@@ -209,7 +209,13 @@ export const Timer = () => {
 
           <div
             className={`fadein ${!isReadyToStart ? "" : "hidden"}`}
-            style={{ position: "absolute" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
           >
             {/* Circular progress indicator - shown during meditation */}
             {canBeStopped && (
@@ -220,7 +226,7 @@ export const Timer = () => {
                   style={{
                     opacity: 0.4,
                     position: "absolute",
-                    top: "94px%",
+                    top: "47%",
                   }}
                 >
                   {formatSeconds(remainingSeconds)}
@@ -277,9 +283,9 @@ export const Timer = () => {
       >
         <h1
           style={{
-            opacity: 0.2,
+            opacity: 0.3,
             textAlign: "center",
-            color: "white !important",
+            color: "#fff",
           }}
         >
           Cliquer pour désactiver l'écran noir quelques secondes

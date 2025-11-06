@@ -1,10 +1,12 @@
 @import "./wireframe.css";
 
+.settings-row {
+  align-items: start;
+}
 .settings-key,
 .settings-value {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  align-items: start;
+  justify-content: start;
 }
 .settings-value label {
   font-size: 0.7em;

@@ -105,32 +105,34 @@ export const Settings = ({
   }, [showBlackScreen]);
 
   return (
-    <div>
+    <div className="settings">
       {/* Duration adjustment controls */}
-      <div className="horizontal">
+      <div className="horizontal settings-row">
         <div style={{ width: "50%" }} className="settings-key">
           Durée&nbsp;
         </div>
-        <div style={{ width: "50%" }} className="horizontal settings-value">
-          <span style={{ fontSize: "1.5em" }}>
+        <div style={{ width: "50%" }} className="settings-value">
+          <div style={{ fontSize: "1.5em" }}>
             {formatSeconds(durationMinutes * 60)}&nbsp;
-          </span>
-          <button
-            aria-label="Augmenter la durée de la méditation"
-            onClick={() => plusClicked()}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
-          <button
-            aria-label="Diminuer la durée de la méditation"
-            onClick={() => minusClicked()}
-          >
-            <FontAwesomeIcon icon={faMinus} />
-          </button>
+          </div>
+          <div className="horizontal ">
+            <button
+              aria-label="Augmenter la durée de la méditation"
+              onClick={() => plusClicked()}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+            <button
+              aria-label="Diminuer la durée de la méditation"
+              onClick={() => minusClicked()}
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
+          </div>
         </div>
       </div>
       {/* Gong sound toggle */}
-      <div className="horizontal">
+      <div className="horizontal settings-row">
         <div style={{ width: "50%" }} className="settings-key">
           Gong&nbsp;
         </div>
@@ -149,7 +151,7 @@ export const Settings = ({
         </div>
       </div>
       {/* Display options */}
-      <div className="horizontal">
+      <div className="horizontal settings-row">
         <div style={{ width: "50%" }} className="settings-key">
           Écran noir&nbsp;
         </div>
