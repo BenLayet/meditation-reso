@@ -279,7 +279,13 @@ export const Timer = () => {
         }}
         onClick={() => reactivateScreenTemporarily()}
       >
-        <h1 style={{ opacity: 0.2, textAlign: "center" }}>
+        <h1
+          style={{
+            opacity: 0.2,
+            textAlign: "center",
+            color: "white !important",
+          }}
+        >
           Cliquer pour désactiver l'écran noir quelques secondes
         </h1>
       </div>
