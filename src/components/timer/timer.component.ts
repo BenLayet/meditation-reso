@@ -1,4 +1,5 @@
 import {
+  ChildrenValues,
   ComponentDef,
   ComponentEventsContract,
   EffectsDef,
@@ -14,9 +15,8 @@ import {
 // Initial state definition
 const initialState = {
   startedTimeInSeconds: 0,
-  isRunning: false,
+  isReadyToStart: true,
   remainingTimeInSeconds: 0,
-  isBlackScreenVisible: false,
 };
 type State = typeof initialState;
 //children
@@ -25,21 +25,35 @@ type Children = {
 };
 
 //selectors
+const startedTimeInSeconds = (state: State) => state.startedTimeInSeconds;
+const isReadyToStart = (state: State) => state.isReadyToStart;
+const isRunning = (state: State) =>
+  !state.isReadyToStart && state.remainingTimeInSeconds > 0;
+const areSettingsVisible = isReadyToStart;
+const isProgressVisible = (state: State) => !state.isReadyToStart;
+const remainingTime = (state: State) =>
+  formatSeconds(state.remainingTimeInSeconds);
+const durationInSeconds = (_: State, children: ChildrenValues<Children>) =>
+  children.settings["0"].selectors.durationInMinutes() * 60;
+const isGongOn = (_: State, children: ChildrenValues<Children>) =>
+  children.settings["0"].selectors.isGongOn();
+const remainingTimeInSeconds = (state: State) => state.remainingTimeInSeconds;
+const isRemainingTimeZero = (state: State) => state.remainingTimeInSeconds <= 0;
+const canBeStopped = (state: State) => !state.isReadyToStart;
+
 const selectors = {
-  startedTimeInSeconds: (state: State) => state.startedTimeInSeconds,
-  isRunning: (state: State) => state.isRunning,
-  areSettingsVisible: (state: State) => !state.isRunning,
-  isProgressVisible: (state: State) => state.isRunning,
-  remainingTime: (state: State) => formatSeconds(state.remainingTimeInSeconds),
-  durationInSeconds: (_: State, children) =>
-    children.settings["0"].selectors.durationInMinutes() * 60,
-  isGongOn: (_: State, children) => children.settings["0"].selectors.isGongOn(),
-  remainingTimeInSeconds: (state: State) => state.remainingTimeInSeconds,
-  isRemainingTimeZero: (state: State) => state.remainingTimeInSeconds <= 0,
-  canBeStopped: (state: State) => state.isRunning,
-  isReadyToStart: (state: State) => !state.isRunning,
-  isBlackScreenVisible: (state: State) => state.isBlackScreenVisible,
-} satisfies Selectors<State, Children>;
+  startedTimeInSeconds,
+  isRunning,
+  areSettingsVisible,
+  isProgressVisible,
+  remainingTime,
+  durationInSeconds,
+  isGongOn,
+  remainingTimeInSeconds,
+  isRemainingTimeZero,
+  canBeStopped,
+  isReadyToStart,
+};
 
 const eventNames = [
   "startClicked",
@@ -98,18 +112,17 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
   uiEvents: ["startClicked", "stopClicked"],
   updaters: {
     started: ({ state, payload: { currentTimeInSeconds }, children }) => {
-      state.isRunning = true;
+      state.isReadyToStart = false;
       state.startedTimeInSeconds = currentTimeInSeconds;
       state.remainingTimeInSeconds =
         children.settings["0"].selectors.durationInMinutes() * 60;
     },
     completed: ({ state }) => {
-      state.isRunning = false;
       state.startedTimeInSeconds = 0;
       state.remainingTimeInSeconds = 0;
     },
-    setBlackScreenRequested: ({ state, payload: { shouldBeVisible } }) => {
-      state.isBlackScreenVisible = shouldBeVisible;
+    stopClicked: ({ state }) => {
+      state.isReadyToStart = true;
     },
     timerTicked: ({
       state,
@@ -119,11 +132,6 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
       const elapsedTimeInSeconds =
         currentTimeInSeconds - state.startedTimeInSeconds;
       state.remainingTimeInSeconds = durationInSeconds() - elapsedTimeInSeconds;
-    },
-    timeUp: ({ state }) => {
-      state.isRunning = false;
-      state.startedTimeInSeconds = 0;
-      state.remainingTimeInSeconds = 0;
     },
   },
   eventForwarders: [
@@ -165,7 +173,7 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
       to: "releaseWakeLockRequested",
     },
     {
-      from: "completed",
+      from: "stopClicked",
       to: "exitFullScreenRequested",
     },
     {
