@@ -44,8 +44,8 @@ const selectors = {
 const eventNames = [
   "startClicked",
   "stopClicked",
-  "startRequested",
-  "stopRequested",
+  "started",
+  "completed",
   "startTickingRequested",
   "stopTickingRequested",
   "timerTicked",
@@ -57,25 +57,29 @@ const eventNames = [
   "playBeginningGongRequested",
   "playEndGongRequested",
   "stopGongRequested",
+  "requestWakeLockRequested",
+  "releaseWakeLockRequested",
 ] as const;
 
 type Events = ComponentEventsContract<
   typeof eventNames,
   {
-    startRequested: { currentTimeInSeconds: number };
+    started: { currentTimeInSeconds: number };
     timerTicked: { currentTimeInSeconds: number };
     setBlackScreenRequested: { shouldBeVisible: boolean };
   }
 >;
 
 const effects = {
-  startClicked: ["startRequested"],
+  startClicked: ["started"],
   startTickingRequested: ["timerTicked"],
   stopTickingRequested: [],
   loadAudioRequested: [],
   playBeginningGongRequested: [],
   playEndGongRequested: [],
   stopGongRequested: [],
+  releaseWakeLockRequested: [],
+  requestWakeLockRequested: [],
 } satisfies EffectsDef<typeof eventNames>;
 
 export type TimerContract = {
@@ -91,17 +95,13 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
   selectors,
   uiEvents: ["startClicked", "stopClicked"],
   updaters: {
-    startRequested: ({
-      state,
-      payload: { currentTimeInSeconds },
-      children,
-    }) => {
+    started: ({ state, payload: { currentTimeInSeconds }, children }) => {
       state.isRunning = true;
       state.startedTimeInSeconds = currentTimeInSeconds;
       state.remainingTimeInSeconds =
         children.settings["0"].selectors.durationInMinutes() * 60;
     },
-    stopRequested: ({ state }) => {
+    completed: ({ state }) => {
       state.isRunning = false;
       state.startedTimeInSeconds = 0;
       state.remainingTimeInSeconds = 0;
@@ -126,29 +126,37 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
   },
   eventForwarders: [
     {
-      from: "startClicked",
+      from: "stopClicked",
+      to: "completed",
+    },
+    {
+      from: "timeUp",
+      to: "completed",
+    },
+    {
+      from: "started",
       to: "loadAudioRequested",
     },
     {
-      from: "stopClicked",
-      to: "stopRequested",
-    },
-    {
-      from: "startRequested",
+      from: "started",
       to: "startTickingRequested",
     },
     {
-      from: "startRequested",
+      from: "started",
+      to: "requestWakeLockRequested",
+    },
+    {
+      from: "started",
       to: "playBeginningGongRequested",
       onCondition: ({ selectors }) => selectors.isGongOn(),
     },
     {
-      from: "stopRequested",
+      from: "completed",
       to: "stopTickingRequested",
     },
     {
-      from: "timeUp",
-      to: "stopTickingRequested",
+      from: "completed",
+      to: "releaseWakeLockRequested",
     },
     {
       from: "timeUp",
@@ -156,7 +164,7 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
       onCondition: ({ selectors }) => selectors.isGongOn(),
     },
     {
-      from: "stopRequested",
+      from: "stopClicked",
       to: "stopGongRequested",
     },
     {

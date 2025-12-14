@@ -1,28 +1,18 @@
 export class WakeLockService {
-  // Wake lock ref to keep screen awake
-  private wakeLock: WakeLockSentinel | null = null;
+  requestWakeLock = () => this._requestWakeLock().then();
+  releaseWakeLock = () => this._releaseWakeLock().then();
+  wakeLockSentinelPromise: Promise<WakeLockSentinel> | null = null;
 
-  async requestWakeLock() {
-    try {
-      if ("wakeLock" in navigator) {
-        this.wakeLock = await navigator.wakeLock.request("screen");
-        console.log("Wake Lock activated");
-        return;
-      }
-    } catch (err) {
-      console.error("Wake Lock failed:", err);
-    }
-    return;
+  async _requestWakeLock() {
+    await this._releaseWakeLock();
+    this.wakeLockSentinelPromise = navigator.wakeLock?.request("screen");
   }
 
-  async releaseWakeLock() {
-    if (this.wakeLock) {
-      try {
-        await this.wakeLock.release();
-        console.log("Wake Lock released");
-      } catch (err) {
-        console.error("Wake Lock release failed:", err);
-      }
+  async _releaseWakeLock() {
+    if (this.wakeLockSentinelPromise) {
+      const sentinel = await this.wakeLockSentinelPromise;
+      await sentinel?.release();
+      this.wakeLockSentinelPromise = null;
     }
   }
 }
