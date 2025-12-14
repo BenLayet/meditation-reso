@@ -1,12 +1,10 @@
 interface ProgressIndicatorProps {
-  durationMinutes: number;
+  durationInSeconds: number;
 }
 
 export const ProgressIndicator = ({
-  durationMinutes,
+  durationInSeconds,
 }: ProgressIndicatorProps) => {
-  const durationSeconds = durationMinutes * 60;
-
   return (
     <div
       style={{
@@ -21,25 +19,25 @@ export const ProgressIndicator = ({
         <circle
           cx="100"
           cy="100"
-          r="90"
+          r="85"
+          strokeWidth="25"
           fill="#eee"
           stroke="#ccc"
-          strokeWidth="20"
         />
         {/* Animated arc using circular path */}
         <circle
           cx="100"
           cy="100"
-          r="90"
+          r="85"
+          strokeWidth="25"
           fill="transparent"
           stroke="#333"
-          strokeWidth="20"
           strokeDasharray="565.48"
           strokeDashoffset="565.48"
           strokeLinecap="round"
           transform="rotate(-90 100 100)"
           style={{
-            animation: `fillArc ${durationSeconds}s linear forwards`,
+            animation: `fillArc ${durationInSeconds}s linear forwards`,
           }}
         />
       </svg>

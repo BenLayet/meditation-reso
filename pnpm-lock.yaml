@@ -21,11 +21,8 @@ importers:
         specifier: ^2.6.1
         version: 2.9.1(react-redux@9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1))(react@19.2.0)
       '@softer-components/redux-adapter':
-        specifier: ^0.1.0
-        version: 0.1.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1)
-      '@softer-components/types':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.3.2
+        version: 0.3.2(@types/react@19.2.2)(redux@5.0.1)
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -42,6 +39,9 @@ importers:
       '@eslint/js':
         specifier: ^9.23.0
         version: 9.38.0
+      '@softer-components/types':
+        specifier: ^0.3.2
+        version: 0.3.2
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.1
@@ -617,11 +617,14 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@softer-components/redux-adapter@0.1.0':
-    resolution: {integrity: sha512-H73ZcmcxPlwlqmUn4WGZSfg2VR3lkb25Yy7aeDkAT9PCVbf6nV/vqRZj5W4XA2qB6c/HPsPpWvc3UpcocnwR/g==}
+  '@softer-components/redux-adapter@0.3.2':
+    resolution: {integrity: sha512-Noi2o7uZgF428VeaQyboNT5GRUi7DSiPllsdBiK4dluxP7x+ZS3pdh3DcG5nfqVlEEy2hQaS9HqJ05QEhVbWXw==}
 
-  '@softer-components/types@0.1.0':
-    resolution: {integrity: sha512-E3rRRl1XL6i2yccC9AKQDH0UDt8D+hiIaas5XV52tbgnuDPKOaEGyunGE0aq9UcFn9IKnVAXQnMZvnLMoNGPWw==}
+  '@softer-components/types@0.3.2':
+    resolution: {integrity: sha512-Fi0GuEZxmk84hdNwD2UOyRR1w4J5BMgKa3DrCP1Gn9bSE0IYIsHtYh10TlVMMXk9RJwaZhSKSsO96R5n4Cq5Dw==}
+
+  '@softer-components/utils@0.3.2':
+    resolution: {integrity: sha512-eZLK1DiyFhCnP3Uhm3rdqzec1cGlL2ErU3L0+KwUdefsuLZ6PJ+X9BfA6+NXWspdEloeg5ep+De0gasonb+3zg==}
 
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
@@ -1338,6 +1341,9 @@ packages:
 
   immer@10.1.3:
     resolution: {integrity: sha512-tmjF/k8QDKydUlm3mZU+tjM6zeq9/fFpPqH9SzWmBnVVKsPBg/V66qsMwb3/Bo90cgUN+ghdVBess+hPsxUyRw==}
+
+  immer@10.2.0:
+    resolution: {integrity: sha512-d/+XTN3zfODyjr89gM3mPq1WNX2B8pYsu7eORitdwyA2sBubnTl3laYlBk4sXY5FUa5qTZGBDPJICVbvqzjlbw==}
 
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
@@ -2569,18 +2575,26 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.52.5':
     optional: true
 
-  '@softer-components/redux-adapter@0.1.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1)':
+  '@softer-components/redux-adapter@0.3.2(@types/react@19.2.2)(redux@5.0.1)':
     dependencies:
       '@reduxjs/toolkit': 2.9.1(react-redux@9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1))(react@19.2.0)
-      '@softer-components/types': 0.1.0
+      '@softer-components/types': 0.3.2
+      '@softer-components/utils': 0.3.2
       lodash: 4.17.21
+      react: 19.2.0
       react-redux: 9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1)
+      reselect: 5.1.1
     transitivePeerDependencies:
       - '@types/react'
-      - react
       - redux
 
-  '@softer-components/types@0.1.0': {}
+  '@softer-components/types@0.3.2': {}
+
+  '@softer-components/utils@0.3.2':
+    dependencies:
+      '@softer-components/types': 0.3.2
+      immer: 10.2.0
+      lodash: 4.17.21
 
   '@standard-schema/spec@1.0.0': {}
 
@@ -3490,6 +3504,8 @@ snapshots:
   ignore@7.0.5: {}
 
   immer@10.1.3: {}
+
+  immer@10.2.0: {}
 
   import-fresh@3.3.1:
     dependencies:
