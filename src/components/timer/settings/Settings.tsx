@@ -14,8 +14,7 @@ export const Settings = ({ path = "" }) => {
   const [v, d] = useSofter<SettingsContract>(path);
   useSofterEffects<SettingsContract>(path, settingsEffects);
   useEffect(() => {
-    const ret = d.displayed();
-    console.log("Settings displayed:", ret);
+    d.displayed();
   }, []);
 
   return (

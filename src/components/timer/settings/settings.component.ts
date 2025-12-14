@@ -1,5 +1,7 @@
 import {
   ComponentDef,
+  ComponentEventsContract,
+  EffectsDef,
   ExtractComponentValuesContract,
 } from "@softer-components/types";
 import {
@@ -39,40 +41,51 @@ const selectors = {
   hasSaveError: (state: State) => !!state.errors["SAVE_FAILED"],
 };
 
-// Events type declaration
-type Events = {
-  plusClicked: { payload: undefined };
-  minusClicked: { payload: undefined };
-  settingsChanged: {
-    payload: Settings;
-  };
-  setDurationInMinutesRequested: { payload: number };
-  isGongOnChanged: { payload: boolean };
-  saveSettingsRequested: {
-    payload: Settings;
-    canTrigger: ["saveSettingsSucceeded", "saveSettingsFailed"];
-  };
-  saveSettingsFailed: { payload: ErrorMessage };
-  saveSettingsSucceeded: { payload: undefined };
-  loadSettingsRequested: {
-    payload: undefined;
-    canTrigger: [
-      "loadSettingsSucceeded",
-      "loadSettingsFailed",
-      "loadSettingsCompleted",
-    ];
-  };
-  loadSettingsFailed: { payload: ErrorMessage };
-  loadSettingsSucceeded: { payload: Settings };
-  loadSettingsCompleted: { payload: undefined };
-  displayed: { payload: undefined };
-};
+//Events
+const eventNames = [
+  "plusClicked",
+  "minusClicked",
+  "settingsChanged",
+  "setDurationInMinutesRequested",
+  "isGongOnChanged",
+  "saveSettingsRequested",
+  "saveSettingsFailed",
+  "saveSettingsSucceeded",
+  "loadSettingsRequested",
+  "loadSettingsFailed",
+  "loadSettingsSucceeded",
+  "loadSettingsCompleted",
+  "displayed",
+] as const;
+
+type Events = ComponentEventsContract<
+  typeof eventNames,
+  {
+    settingsChanged: Settings;
+    setDurationInMinutesRequested: number;
+    isGongOnChanged: boolean;
+    saveSettingsRequested: Settings;
+    saveSettingsFailed: ErrorMessage;
+    loadSettingsFailed: ErrorMessage;
+    loadSettingsSucceeded: Settings;
+  }
+>;
+
+const effects = {
+  loadSettingsRequested: [
+    "loadSettingsSucceeded",
+    "loadSettingsFailed",
+    "loadSettingsCompleted",
+  ],
+  saveSettingsRequested: ["saveSettingsSucceeded", "saveSettingsFailed"],
+} satisfies EffectsDef<typeof eventNames>;
 
 export type SettingsContract = {
   state: typeof initialState;
   events: Events;
   values: ExtractComponentValuesContract<typeof selectors>;
   children: {};
+  effects: typeof effects;
 };
 // Component definition
 export const settingsComponentDef: ComponentDef<SettingsContract> = {
@@ -147,12 +160,5 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
     },
     { from: "settingsChanged", to: "saveSettingsRequested" },
   ],
-  effects: {
-    loadSettingsRequested: [
-      "loadSettingsSucceeded",
-      "loadSettingsFailed",
-      "loadSettingsCompleted",
-    ],
-    saveSettingsRequested: ["saveSettingsSucceeded", "saveSettingsFailed"],
-  },
+  effects,
 };
