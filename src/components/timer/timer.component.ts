@@ -4,7 +4,6 @@ import {
   ComponentEventsContract,
   EffectsDef,
   ExtractComponentValuesContract,
-  Selectors,
 } from "@softer-components/types";
 import { formatSeconds } from "../../util/duration.functions";
 import {
