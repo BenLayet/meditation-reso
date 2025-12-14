@@ -80,6 +80,8 @@ const effects = {
   stopGongRequested: [],
   releaseWakeLockRequested: [],
   requestWakeLockRequested: [],
+  enterFullScreenRequested: [],
+  exitFullScreenRequested: [],
 } satisfies EffectsDef<typeof eventNames>;
 
 export type TimerContract = {
@@ -147,6 +149,10 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
     },
     {
       from: "started",
+      to: "enterFullScreenRequested",
+    },
+    {
+      from: "started",
       to: "playBeginningGongRequested",
       onCondition: ({ selectors }) => selectors.isGongOn(),
     },
@@ -157,6 +163,10 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
     {
       from: "completed",
       to: "releaseWakeLockRequested",
+    },
+    {
+      from: "completed",
+      to: "exitFullScreenRequested",
     },
     {
       from: "timeUp",

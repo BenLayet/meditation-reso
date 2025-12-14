@@ -3,6 +3,7 @@ import { TimerContract } from "./timer.component";
 import { gongService } from "../../services/gong.service";
 import { tickingSErvice as tickingService } from "../../services/ticking.service";
 import { wakeLockService } from "../../services/wake-lock.service";
+import { fullscreenService } from "../../services/full-screen.service";
 const TICK_INTERVAL_MS = 1000;
 export const timerEffects: Effects<TimerContract> = {
   startTickingRequested: ({ timerTicked }) =>
@@ -19,6 +20,8 @@ export const timerEffects: Effects<TimerContract> = {
   stopGongRequested: gongService.stopAllAudio,
   requestWakeLockRequested: wakeLockService.requestWakeLock,
   releaseWakeLockRequested: wakeLockService.releaseWakeLock,
+  enterFullScreenRequested: fullscreenService.enterFullscreen,
+  exitFullScreenRequested: fullscreenService.exitFullscreen,
 };
 
 function currentTimeInSeconds() {
