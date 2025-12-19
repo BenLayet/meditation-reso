@@ -4,49 +4,65 @@ import {
   EffectsDef,
   ExtractComponentValuesContract,
 } from "@softer-components/types";
+import { formatSeconds } from "../../../util/duration.functions";
 import {
-  calculateDecrementedDuration,
-  calculateIncrementedDuration,
-  formatSeconds,
-} from "../../../util/duration.functions";
-import { Settings } from "../../../domain/settings";
+  defaultSettings,
+  DURATION_INCREMENT_MINUTES,
+  PREPARATION_INCREMENT_SECONDS,
+  Settings,
+} from "../../../domain/settings";
+import { flow } from "lodash";
+import {
+  durationIncrementer,
+  preparationIncrementer,
+} from "../../../domain/incrementer";
 
 type Error = "LOAD_FAILED" | "SAVE_FAILED";
 type ErrorMessage = string;
-const DURATION_INCREMENT_MINUTES = 5;
-const DEFAULT_DURATION_MINUTES = 20;
 
 // Initial state definition
 const initialState = {
   isLoading: false,
   isSaving: false,
-  settings: {
-    durationInMinutes: DEFAULT_DURATION_MINUTES,
-    isGongOn: true,
-  } as Settings,
+  settings: defaultSettings,
   errors: {} as { [errorName in Error]: ErrorMessage },
 };
 type State = typeof initialState;
 
 //selectors
+const isLoadingNeeded = (state: State) => !state.isLoading;
+const settings = (state: State) => state.settings;
+const durationInMinutes = (state: State) => state.settings.durationInMinutes;
+const durationInSeconds = flow(durationInMinutes, minutes => minutes * 60);
+const preparationInSeconds = (state: State) =>
+  state.settings.preparationInSeconds;
+const duration = flow(durationInSeconds, formatSeconds);
+const preparation = flow(preparationInSeconds, formatSeconds);
+const isGongOn = (state: State) => state.settings.isGongOn;
+const hasLoadError = (state: State) => !!state.errors["LOAD_FAILED"];
+const hasSaveError = (state: State) => !!state.errors["SAVE_FAILED"];
 const selectors = {
-  isLoadingNeeded: (state: State) => !state.isLoading,
-  settings: (state: State) => state.settings,
-  durationInMinutes: (state: State) => state.settings.durationInMinutes,
-  duration: (state: State) =>
-    formatSeconds(state.settings.durationInMinutes * 60),
-  isGongOn: (state: State) => state.settings.isGongOn,
-  isBlackScreenOn: (state: State) => state.settings.isBlackScreenOn,
-  hasLoadError: (state: State) => !!state.errors["LOAD_FAILED"],
-  hasSaveError: (state: State) => !!state.errors["SAVE_FAILED"],
+  isLoadingNeeded,
+  settings,
+  durationInMinutes,
+  durationInSeconds,
+  preparationInSeconds,
+  duration,
+  preparation,
+  isGongOn,
+  hasLoadError,
+  hasSaveError,
 };
 
 //Events
 const eventNames = [
-  "plusClicked",
-  "minusClicked",
+  "incrementDurationClicked",
+  "decrementDurationClicked",
+  "incrementPreparationClicked",
+  "decrementPreparationClicked",
   "settingsChanged",
   "setDurationInMinutesRequested",
+  "setPreparationInSecondsRequested",
   "isGongOnChanged",
   "saveSettingsRequested",
   "saveSettingsFailed",
@@ -63,6 +79,7 @@ type Events = ComponentEventsContract<
   {
     settingsChanged: Settings;
     setDurationInMinutesRequested: number;
+    setPreparationInSecondsRequested: number;
     isGongOnChanged: boolean;
     saveSettingsRequested: Settings;
     saveSettingsFailed: ErrorMessage;
@@ -91,10 +108,26 @@ export type SettingsContract = {
 export const settingsComponentDef: ComponentDef<SettingsContract> = {
   initialState,
   selectors,
-  uiEvents: ["minusClicked", "plusClicked", "isGongOnChanged", "displayed"],
+  uiEvents: [
+    "incrementDurationClicked",
+    "decrementDurationClicked",
+    "incrementPreparationClicked",
+    "decrementPreparationClicked",
+    "isGongOnChanged",
+    "displayed",
+  ],
   updaters: {
     setDurationInMinutesRequested: ({ state, payload: durationInMinutes }) => {
       state.settings.durationInMinutes = durationInMinutes;
+    },
+    setPreparationInSecondsRequested: ({
+      state,
+      payload: preparationInSeconds,
+    }) => {
+      state.settings.preparationInSeconds = preparationInSeconds;
+    },
+    settingsChanged: ({ state, payload: settings }) => {
+      state.settings = settings;
     },
     isGongOnChanged: ({ state, payload: isGongOn }) => {
       state.settings.isGongOn = isGongOn;
@@ -114,7 +147,7 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
       state.isLoading = true;
     },
     loadSettingsSucceeded: ({ state, payload: settings }) => {
-      state.settings = settings;
+      state.settings = { ...defaultSettings, ...settings };
       state.errors["LOAD_FAILED"] = "";
     },
     loadSettingsFailed: ({ state, payload: errorMessage }) => {
@@ -131,22 +164,28 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
       onCondition: ({ selectors }) => selectors.isLoadingNeeded(),
     },
     {
-      from: "plusClicked",
+      from: "incrementDurationClicked",
       to: "setDurationInMinutesRequested",
       withPayload: ({ selectors }) =>
-        calculateIncrementedDuration(
-          selectors.durationInMinutes(),
-          DURATION_INCREMENT_MINUTES,
-        ),
+        durationIncrementer.incrementValue(selectors.durationInMinutes()),
     },
     {
-      from: "minusClicked",
+      from: "decrementDurationClicked",
       to: "setDurationInMinutesRequested",
       withPayload: ({ selectors }) =>
-        calculateDecrementedDuration(
-          selectors.durationInMinutes(),
-          DURATION_INCREMENT_MINUTES,
-        ),
+        durationIncrementer.decrementValue(selectors.durationInMinutes()),
+    },
+    {
+      from: "incrementPreparationClicked",
+      to: "setPreparationInSecondsRequested",
+      withPayload: ({ selectors }) =>
+        preparationIncrementer.incrementValue(selectors.preparationInSeconds()),
+    },
+    {
+      from: "decrementPreparationClicked",
+      to: "setPreparationInSecondsRequested",
+      withPayload: ({ selectors }) =>
+        preparationIncrementer.decrementValue(selectors.preparationInSeconds()),
     },
     {
       from: "isGongOnChanged",

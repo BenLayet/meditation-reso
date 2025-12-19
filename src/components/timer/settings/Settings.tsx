@@ -22,7 +22,7 @@ export const Settings = ({ path = "" }) => {
       {/* Duration adjustment controls */}
       <div className="horizontal settings-row">
         <div style={{ width: "50%" }} className="settings-key">
-          Durée&nbsp;
+          Durée
         </div>
         <div style={{ width: "50%" }} className="settings-value">
           <div style={{ maxWidth: "5em" }}>
@@ -30,13 +30,38 @@ export const Settings = ({ path = "" }) => {
             <div className="horizontal">
               <button
                 aria-label="Augmenter la durée de la méditation"
-                onClick={() => d.plusClicked()}
+                onClick={() => d.incrementDurationClicked()}
               >
                 <FontAwesomeIcon icon={faPlus} />
               </button>
               <button
                 aria-label="Diminuer la durée de la méditation"
-                onClick={() => d.minusClicked()}
+                onClick={() => d.decrementDurationClicked()}
+              >
+                <FontAwesomeIcon icon={faMinus} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Preparation adjustment controls */}
+      <div className="horizontal settings-row">
+        <div style={{ width: "50%" }} className="settings-key">
+          Préparation
+        </div>
+        <div style={{ width: "50%" }} className="settings-value">
+          <div style={{ maxWidth: "5em" }}>
+            <div style={{ fontSize: "1.5em" }}>{v.preparation}</div>
+            <div className="horizontal">
+              <button
+                aria-label="Augmenter la durée de la préparation"
+                onClick={() => d.incrementPreparationClicked()}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+              <button
+                aria-label="Diminuer la durée de la préparation"
+                onClick={() => d.decrementPreparationClicked()}
               >
                 <FontAwesomeIcon icon={faMinus} />
               </button>
@@ -47,7 +72,7 @@ export const Settings = ({ path = "" }) => {
       {/* Gong sound toggle */}
       <div className="horizontal settings-row">
         <div style={{ width: "50%" }} className="settings-key">
-          Gong&nbsp;
+          Gong
         </div>
         <div style={{ width: "50%" }} className="settings-value">
           <div style={{ alignItems: "flex-start" }}>
