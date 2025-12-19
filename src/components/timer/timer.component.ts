@@ -10,11 +10,13 @@ import {
   settingsComponentDef,
   SettingsContract,
 } from "./settings/settings.component";
+import { flow } from "lodash";
+
+type Phase = "SETTINGS" | "PREPARATION" | "MEDITATION" | "COMPLETED";
 
 // Initial state definition
 const initialState = {
-  startedTimeInSeconds: 0,
-  isReadyToStart: true,
+  phase: "SETTINGS" as Phase,
   remainingTimeInSeconds: 0,
 };
 type State = typeof initialState;
@@ -24,46 +26,58 @@ type Children = {
 };
 
 //selectors
-const startedTimeInSeconds = (state: State) => state.startedTimeInSeconds;
-const isReadyToStart = (state: State) => state.isReadyToStart;
-const isRunning = (state: State) =>
-  !state.isReadyToStart && state.remainingTimeInSeconds > 0;
-const areSettingsVisible = isReadyToStart;
-const isProgressVisible = (state: State) => !state.isReadyToStart;
+const phase = (state: State) => state.phase;
+const isSettingsPhase = flow(phase, p => p === "SETTINGS");
+const isMeditationPhase = flow(phase, p => p === "MEDITATION");
+const isPreparationPhase = flow(phase, p => p === "PREPARATION");
+const isCompletedPhase = flow(phase, p => p === "COMPLETED");
+const isNotCompletedPhase = flow(isCompletedPhase, b => !b);
+const isNotSettingsPhase = flow(isSettingsPhase, b => !b);
+const canBeStarted = isSettingsPhase;
+const canBeStopped = isNotSettingsPhase;
 const remainingTime = (state: State) =>
   formatSeconds(state.remainingTimeInSeconds);
 const durationInSeconds = (_: State, children: ChildrenValues<Children>) =>
-  children.settings["0"].selectors.durationInMinutes() * 60;
+  children.settings["0"].selectors.durationInSeconds();
+const preparationDurationInSeconds = (
+  _: State,
+  children: ChildrenValues<Children>,
+) => children.settings["0"].selectors.preparationDurationInSeconds();
+const isPreparationNeccessary = flow(preparationDurationInSeconds, t => t > 0);
 const isGongOn = (_: State, children: ChildrenValues<Children>) =>
   children.settings["0"].selectors.isGongOn();
 const remainingTimeInSeconds = (state: State) => state.remainingTimeInSeconds;
 const isRemainingTimeZero = (state: State) => state.remainingTimeInSeconds <= 0;
-const canBeStopped = (state: State) => !state.isReadyToStart;
 
 const selectors = {
-  startedTimeInSeconds,
-  isRunning,
-  areSettingsVisible,
-  isProgressVisible,
+  isSettingsPhase,
+  isNotSettingsPhase,
+  isMeditationPhase,
+  isPreparationPhase,
   remainingTime,
   durationInSeconds,
   isGongOn,
   remainingTimeInSeconds,
   isRemainingTimeZero,
+  canBeStarted,
   canBeStopped,
-  isReadyToStart,
+  preparationDurationInSeconds,
+  isPreparationNeccessary,
+  isNotCompletedPhase,
+  isCompletedPhase,
 };
 
 const eventNames = [
   "startClicked",
   "stopClicked",
+  "sessionInterrupted",
+  "preparationStarted",
+  "preparationCompleted",
   "started",
-  "completed",
   "startTickingRequested",
   "stopTickingRequested",
   "timerTicked",
-  "timeUp",
-  "setBlackScreenRequested",
+  "completed",
   "enterFullScreenRequested",
   "exitFullScreenRequested",
   "loadAudioRequested",
@@ -74,17 +88,9 @@ const eventNames = [
   "releaseWakeLockRequested",
 ] as const;
 
-type Events = ComponentEventsContract<
-  typeof eventNames,
-  {
-    started: { currentTimeInSeconds: number };
-    timerTicked: { currentTimeInSeconds: number };
-    setBlackScreenRequested: { shouldBeVisible: boolean };
-  }
->;
+type Events = ComponentEventsContract<typeof eventNames, {}>;
 
 const effects = {
-  startClicked: ["started"],
   startTickingRequested: ["timerTicked"],
   stopTickingRequested: [],
   loadAudioRequested: [],
@@ -110,37 +116,52 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
   selectors,
   uiEvents: ["startClicked", "stopClicked"],
   updaters: {
-    started: ({ state, payload: { currentTimeInSeconds }, children }) => {
-      state.isReadyToStart = false;
-      state.startedTimeInSeconds = currentTimeInSeconds;
-      state.remainingTimeInSeconds =
-        children.settings["0"].selectors.durationInMinutes() * 60;
+    preparationStarted: ({
+      state,
+      selectors: { preparationDurationInSeconds },
+    }) => {
+      state.phase = "PREPARATION";
+      state.remainingTimeInSeconds = preparationDurationInSeconds();
+    },
+    started: ({ state, selectors: { durationInSeconds } }) => {
+      state.phase = "MEDITATION";
+      state.remainingTimeInSeconds = durationInSeconds();
     },
     completed: ({ state }) => {
-      state.startedTimeInSeconds = 0;
+      state.phase = "COMPLETED";
       state.remainingTimeInSeconds = 0;
     },
     stopClicked: ({ state }) => {
-      state.isReadyToStart = true;
+      state.phase = "SETTINGS";
     },
-    timerTicked: ({
-      state,
-      payload: { currentTimeInSeconds },
-      selectors: { durationInSeconds },
-    }) => {
-      const elapsedTimeInSeconds =
-        currentTimeInSeconds - state.startedTimeInSeconds;
-      state.remainingTimeInSeconds = durationInSeconds() - elapsedTimeInSeconds;
+    timerTicked: ({ state }) => {
+      state.remainingTimeInSeconds--;
     },
   },
   eventForwarders: [
     {
-      from: "stopClicked",
-      to: "completed",
+      from: "startClicked",
+      to: "startTickingRequested",
     },
     {
-      from: "timeUp",
-      to: "completed",
+      from: "startClicked",
+      to: "preparationStarted",
+      onCondition: ({ selectors }) => selectors.isPreparationNeccessary(),
+    },
+    {
+      from: "startClicked",
+      to: "started",
+      onCondition: ({ selectors }) => !selectors.isPreparationNeccessary(),
+    },
+    {
+      from: "timerTicked",
+      to: "preparationCompleted",
+      onCondition: ({ selectors }) =>
+        selectors.isPreparationPhase() && selectors.isRemainingTimeZero(),
+    },
+    {
+      from: "preparationCompleted",
+      to: "started",
     },
     {
       from: "started",
@@ -164,6 +185,17 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
       onCondition: ({ selectors }) => selectors.isGongOn(),
     },
     {
+      from: "timerTicked",
+      to: "completed",
+      onCondition: ({ selectors }) =>
+        selectors.isMeditationPhase() && selectors.isRemainingTimeZero(),
+    },
+    {
+      from: "stopClicked",
+      to: "sessionInterrupted",
+      onCondition: ({ selectors }) => selectors.isNotCompletedPhase(),
+    },
+    {
       from: "completed",
       to: "stopTickingRequested",
     },
@@ -172,22 +204,25 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
       to: "releaseWakeLockRequested",
     },
     {
-      from: "stopClicked",
-      to: "exitFullScreenRequested",
-    },
-    {
-      from: "timeUp",
+      from: "completed",
       to: "playEndGongRequested",
       onCondition: ({ selectors }) => selectors.isGongOn(),
     },
     {
-      from: "stopClicked",
-      to: "stopGongRequested",
+      from: "sessionInterrupted",
+      to: "releaseWakeLockRequested",
     },
     {
-      from: "timerTicked",
-      to: "timeUp",
-      onCondition: ({ selectors }) => selectors.isRemainingTimeZero(),
+      from: "sessionInterrupted",
+      to: "stopTickingRequested",
+    },
+    {
+      from: "stopClicked",
+      to: "exitFullScreenRequested",
+    },
+    {
+      from: "stopClicked",
+      to: "stopGongRequested",
     },
   ],
   childrenComponents: {

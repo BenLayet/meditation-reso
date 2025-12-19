@@ -7,13 +7,8 @@ import { fullscreenService } from "../../services/full-screen.service";
 const TICK_INTERVAL_MS = 1000;
 export const timerEffects: Effects<TimerContract> = {
   startTickingRequested: ({ timerTicked }) =>
-    tickingService.startTicking(
-      () => timerTicked({ currentTimeInSeconds: currentTimeInSeconds() }),
-      TICK_INTERVAL_MS,
-    ),
+    tickingService.startTicking(timerTicked, TICK_INTERVAL_MS),
   stopTickingRequested: tickingService.stopTicking,
-  startClicked: ({ started }) =>
-    started({ currentTimeInSeconds: currentTimeInSeconds() }),
   loadAudioRequested: gongService.load,
   playBeginningGongRequested: gongService.playBeginningAudio,
   playEndGongRequested: gongService.playEndAudio,
@@ -23,7 +18,3 @@ export const timerEffects: Effects<TimerContract> = {
   enterFullScreenRequested: fullscreenService.enterFullscreen,
   exitFullScreenRequested: fullscreenService.exitFullscreen,
 };
-
-function currentTimeInSeconds() {
-  return Math.floor(Date.now() / 1000);
-}

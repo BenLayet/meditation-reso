@@ -21,12 +21,30 @@ export const Timer = ({ path } = { path: "/" }) => {
           }}
         >
           {/* Settings panel - shown before meditation starts */}
-          <div className={`fadein ${v.areSettingsVisible ? "" : "hidden"}`}>
+          <div className={`fadein ${v.isSettingsPhase ? "" : "hidden"}`}>
             <Settings path={c.settings} />
           </div>
 
           <div
-            className={`fadein ${v.isProgressVisible ? "" : "hidden"}`}
+            className={`fadein ${v.isPreparationPhase ? "" : "hidden"}`}
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
+          >
+            {/* Preparation time */}
+            {v.isPreparationPhase && (
+              <div>
+                <p>Préparation</p>
+                {v.remainingTime}
+              </div>
+            )}
+          </div>
+          <div
+            className={`fadein ${v.isMeditationPhase ? "" : "hidden"}`}
             style={{
               position: "absolute",
               top: 0,
@@ -36,7 +54,7 @@ export const Timer = ({ path } = { path: "/" }) => {
             }}
           >
             {/* Circular progress indicator - shown during meditation */}
-            {v.isProgressVisible && (
+            {v.isMeditationPhase && (
               <>
                 <ProgressIndicator durationInSeconds={v.durationInSeconds} />{" "}
                 {/* Remaining time display */}
@@ -52,11 +70,23 @@ export const Timer = ({ path } = { path: "/" }) => {
               </>
             )}
           </div>
+          <div
+            className={`fadein ${v.isCompletedPhase ? "" : "hidden"}`}
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
+          >
+            {v.isCompletedPhase && <p>Session terminée</p>}
+          </div>
         </div>
         {/* Timer display and start/stop controls */}
         <div style={{ fontSize: "3em" }}>
           {/* Start button - shown when ready to begin */}
-          {v.isReadyToStart && (
+          {v.canBeStarted && (
             <button
               style={{ fontSize: "0.7em" }}
               aria-label="Commencer la méditation"
@@ -76,7 +106,7 @@ export const Timer = ({ path } = { path: "/" }) => {
             </button>
           )}
         </div>
-        {v.isReadyToStart && (
+        {v.isSettingsPhase && (
           <p
             style={{
               fontSize: "0.8em",
@@ -86,7 +116,7 @@ export const Timer = ({ path } = { path: "/" }) => {
               right: "1em",
             }}
           >
-            v0.4.0
+            v0.5.0
           </p>
         )}
       </div>
