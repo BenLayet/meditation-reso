@@ -18,8 +18,9 @@ export class Incrementer {
   decrementValue(value: number): number {
     const min = Math.min(...this.firstSteps);
     const max = Math.max(...this.firstSteps);
-    if (value >= max) {
-      return value - this.increment >= min ? value - this.increment : min;
+    const decremented = value - this.increment;
+    if (decremented >= max) {
+      return decremented;
     }
     const previousStep = this.firstSteps
       .slice()
@@ -28,7 +29,7 @@ export class Incrementer {
     if (previousStep) {
       return previousStep;
     }
-    return this.firstSteps[0];
+    return min;
   }
 }
 export const durationIncrementer = new Incrementer(
