@@ -5,13 +5,13 @@
   font-family: "Courier New", "Courier", monospace;
 
   /* Light mode colors */
-  color: #333333;
+  color: #bbbbbb;
   background-color: transparent;
 }
 
 body {
   height: 100vh;
-  background-color: #e0e0e0 !important;
+  background-color: #000000;
   position: relative;
 }
 /* Body and containers */
@@ -23,7 +23,7 @@ aside,
 header,
 footer,
 main {
-  margin: 0 !important;
+  margin: 0 ;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,51 +45,50 @@ h3,
 h4,
 h5,
 h6 {
-  border-bottom: 3px double #333 !important;
-  padding-bottom: 5px !important;
-  text-transform: uppercase !important;
-  letter-spacing: 2px !important;
+  border-bottom: 3px double #bbb ;
+  padding-bottom: 5px ;
+  text-transform: uppercase ;
+  letter-spacing: 2px ;
 }
 
-/* Buttons - light mode style */
+/* Buttons  */
 button,
 input[type="button"],
 input[type="submit"],
 .btn {
-  background-color: #f5f5f5 !important;
-  border: 2px solid #333 !important;
-  padding: 8px 16px !important;
-  cursor: pointer !important;
-  text-transform: uppercase !important;
-  font-weight: bold !important;
-  box-shadow: 3px 3px 0 #ddd !important;
+  background-color: #222 ;
+  border: 2px solid #bbb ;
+  padding: 8px 16px ;
+  cursor: pointer ;
+  text-transform: uppercase ;
+  font-weight: bold ;
   margin: 0.5em;
-}
+  box-shadow: 3px 3px 0 #333;}
 
 button:hover,
 input[type="button"]:hover,
 input[type="submit"]:hover {
-  background-color: #e5e5e5 !important;
-  transform: translate(1px, 1px) !important;
-  box-shadow: 2px 2px 0 #ddd !important;
+  background-color: #333 ;
+  transform: translate(1px, 1px) ;
+  box-shadow: 2px 2px 0 #111 ;
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: #999 !important;
-  font-style: italic !important;
+  color: #999 ;
+  font-style: italic ;
 }
 
 /* Links - underlined and simple (light mode) */
 a {
-  color: #0066cc !important;
-  text-decoration: underline !important;
-  text-decoration-style: dashed !important;
+  color: #0066cc ;
+  text-decoration: underline ;
+  text-decoration-style: dashed ;
 }
 
 a:hover {
-  text-decoration-style: solid !important;
-  color: #004499 !important;
+  text-decoration-style: solid ;
+  color: #004499 ;
 }
 
 /* Checkbox and Radio */
@@ -97,42 +96,36 @@ input[type="checkbox"],
 input[type="radio"] {
   width: 2em;
   height: 2em;
-  border: 1px solid #333 !important;
-  appearance: none !important;
-  -webkit-appearance: none !important;
+  border: 1px solid #ddd ;
+  appearance: none ;
+  -webkit-appearance: none ;
   position: relative;
-  background-color: white;
+  background-color: #000;
+  cursor: pointer;
 }
 
 input[type="checkbox"]:checked::before {
   content: "✓";
-  color: #333;
+  color: #ddd;
   font-size: 4em;
   position: absolute;
   top: -0.5em;
 }
 
 input[type="radio"] {
-  border-radius: 50% !important;
-}
-
-input[type="radio"]:checked::before {
-  content: "●" !important;
-  display: block !important;
-  text-align: center !important;
-  color: #333 !important;
+  border-radius: 50% ;
 }
 
 /* Exception for buttons - keep minimal shadow */
 button,
 input[type="button"],
 input[type="submit"] {
-  box-shadow: 3px 3px 0 #ddd !important;
+  box-shadow: 3px 3px 0 #222 ;
 }
 
 /* basic animation */
 .fadein {
-  transition: opacity 1s ease-in-out !important;
+  transition: opacity 1s ease-in-out ;
 }
 .hidden {
   opacity: 0;

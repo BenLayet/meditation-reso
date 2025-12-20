@@ -62,7 +62,7 @@ export const Timer = ({ path } = { path: "/" }) => {
                   style={{
                     opacity: 0.4,
                     position: "absolute",
-                    top: "47%",
+                    top: "42%",
                   }}
                 >
                   {v.remainingTime}

@@ -12,7 +12,7 @@ export const App = () => (
         right: "1em",
       }}
     >
-      v0.6.0
+      v0.7.0
     </p>
   </div>
 );
