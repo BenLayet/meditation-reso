@@ -1,20 +1,13 @@
+import NoSleep from 'nosleep.js';
+
 export class WakeLockService {
-  requestWakeLock = () => this._requestWakeLock().then();
-  releaseWakeLock = () => this._releaseWakeLock().then();
-  wakeLockSentinelPromise: Promise<WakeLockSentinel> | null = null;
-
-  async _requestWakeLock() {
-    await this._releaseWakeLock();
-    this.wakeLockSentinelPromise = navigator.wakeLock.request("screen");
-  }
-
-  async _releaseWakeLock() {
-    if (this.wakeLockSentinelPromise) {
-      const sentinel = await this.wakeLockSentinelPromise;
-      await sentinel.release();
-      this.wakeLockSentinelPromise = null;
-    }
-  }
+  private readonly noSleep = new NoSleep();
+  requestWakeLock = async () => {
+    await this.noSleep.enable();
+  };
+  releaseWakeLock = () => {
+    this.noSleep.disable();
+  };
 }
 
 export const wakeLockService = new WakeLockService();

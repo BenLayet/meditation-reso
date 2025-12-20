@@ -1,8 +1,8 @@
 <div class="richedit_wrap" style="">
-  <div class="richedit_wrap" style="background-color: rgb(0, 0, 0)" id="iframe-container">
-    <iframe
+  <div class="richedit_wrap" style="background-color: rgb(0, 0, 0)" >
+    <iframe id="meditation-reso-iframe"
       src="https://benlayet.github.io/meditation-reso/?v=3"
-      allow="fullscreen; screen-wake-lock"
+      allow="fullscreen; screen-wake-lock; "
       allowfullscreen="allowfullscreen"
       style="
       width: 100%;
@@ -13,44 +13,18 @@
     "
     ></iframe>
     <script prevent-tag-removal="">
-      let wakeLock = null;
-
-      async function requestWakeLock() {
-        try {
-          if ("wakeLock" in navigator) {
-            wakeLock = await navigator.wakeLock.request("screen");
-            console.log("Wake Lock activated");
-            return wakeLock;
-          }
-        } catch (err) {
-          console.error("Wake Lock failed:", err);
-        }
+    window.addEventListener('message', (e) => {
+      console.log(`message received`, e);
+      if (!e.origin.startsWith('https://benlayet.github.io')) return; // validate
+      const { id, type, key, value } = e.data || {};
+      if (type === 'get') {
+        const val = localStorage.getItem(key); // or read cookie
+        e.source.postMessage({ id, type: 'response', value: val }, e.origin);
+      } else if (type === 'set') {
+        localStorage.setItem(key, value);
+        e.source.postMessage({ id, type: 'response', value: "ok" }, e.origin);
       }
-
-      async function releaseWakeLock() {
-        if (wakeLock) {
-          try {
-            await wakeLock.release();
-            wakeLock = null;
-            console.log("Wake Lock released");
-          } catch (err) {
-            console.error("Wake Lock release failed:", err);
-          }
-        }
-      }
-      const iFrameContainer = document.getElementById('iframe-container');
-      if(iFrameContainer){
-        // Release wake lock when iFrameContainer is hidden/unloaded
-        iFrameContainer.addEventListener("visibilitychange", () => {
-          if (document.visibilityState === "hidden") {
-            releaseWakeLock();
-          }else {
-            requestWakeLock();
-          }
-        });
-      }else{
-        console.error("iFrameContainer not found");
-      }
+    });
     </script>
   </div>
 </div>
