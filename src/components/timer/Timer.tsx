@@ -56,18 +56,17 @@ export const Timer = ({ path } = { path: "/" }) => {
             {/* Circular progress indicator - shown during meditation */}
             {v.isMeditationPhase && (
               <>
-                <ProgressIndicator durationInSeconds={v.durationInSeconds} />{" "}
-                {/* Remaining time display */}
-                <span
+                {v.shouldDisplayProgress && <ProgressIndicator durationInSeconds={v.durationInSeconds} />}
+                {v.shouldDisplayRemainingTime &&  <span
                   style={{
                     position: "absolute",
-                    top: "35%",
-                    fontSize:"2em",
-                    background:"#0002"
+                    top: "45%",
+                    fontSize:"1.5em",
+                    background:"#0006"
                   }}
                 >
                   {v.remainingTime}
-                </span>
+                </span>}
               </>
             )}
           </div>
@@ -119,7 +118,7 @@ export const Timer = ({ path } = { path: "/" }) => {
             right: "1em",
           }}
         >
-          v0.7.0
+          v0.3.0
         </p>
         }
       </div>

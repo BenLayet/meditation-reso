@@ -100,6 +100,36 @@ export const Settings = ({ path = "" }) => {
           </div>
         </div>
       </div>
+      {/* Should display xxx toggles */}
+      <div className="horizontal settings-row">
+        <div style={{ width: "50%" }} className="settings-key">
+          Afficher
+        </div>
+        <div style={{ width: "50%" }} className="settings-value">
+          <div style={{ alignItems: "flex-start" }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={v.shouldDisplayProgress}
+                onChange={e => {
+                  d.shouldDisplayProgressChanged(e.target.checked);
+                }}
+              />&nbsp;progression
+            </label>
+          </div>
+          <div style={{ alignItems: "flex-start" }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={v.shouldDisplayRemainingTime}
+                onChange={e => {
+                  d.shouldDisplayRemainingTimeChanged(e.target.checked);
+                }}
+              />&nbsp;temps restant
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

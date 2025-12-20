@@ -35,6 +35,8 @@ const preparationDurationInSeconds = (state: State) =>
 const duration = flow(durationInSeconds, formatSeconds);
 const preparation = flow(preparationDurationInSeconds, formatSeconds);
 const isGongOn = (state: State) => state.settings.isGongOn;
+const shouldDisplayProgress = (state:State) => state.settings.shouldDisplayProgress;
+const shouldDisplayRemainingTime = (state:State) => state.settings.shouldDisplayRemainingTime;
 const hasLoadError = (state: State) => state.errors.LOAD_FAILED;
 const hasSaveError = (state: State) => state.errors.SAVE_FAILED;
 const selectors = {
@@ -46,6 +48,8 @@ const selectors = {
   duration,
   preparation,
   isGongOn,
+  shouldDisplayProgress,
+  shouldDisplayRemainingTime,
   hasLoadError,
   hasSaveError,
 };
@@ -60,6 +64,8 @@ type eventNames =
   "setDurationInMinutesRequested"|
   "setPreparationInSecondsRequested"|
   "isGongOnChanged"|
+  "shouldDisplayProgressChanged"|
+  "shouldDisplayRemainingTimeChanged"|
   "saveSettingsRequested"|
   "saveSettingsFailed"|
   "saveSettingsSucceeded"|
@@ -76,6 +82,8 @@ type Events = ComponentEventsContract<
     setDurationInMinutesRequested: number;
     setPreparationInSecondsRequested: number;
     isGongOnChanged: boolean;
+    shouldDisplayProgressChanged: boolean;
+    shouldDisplayRemainingTimeChanged: boolean;
     saveSettingsRequested: Settings;
     loadSettingsSucceeded: Settings;
   }
@@ -108,6 +116,8 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
     "decrementPreparationClicked",
     "isGongOnChanged",
     "displayed",
+    "shouldDisplayRemainingTimeChanged",
+    "shouldDisplayProgressChanged",
   ],
   updaters: {
     setDurationInMinutesRequested: ({ state, payload: durationInMinutes }) => {
@@ -124,6 +134,12 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
     },
     isGongOnChanged: ({ state, payload: isGongOn }) => {
       state.settings.isGongOn = isGongOn;
+    },
+    shouldDisplayProgressChanged: ({ state, payload: shouldDisplayProgress }) => {
+      state.settings.shouldDisplayProgress = shouldDisplayProgress;
+    },
+    shouldDisplayRemainingTimeChanged: ({ state, payload: shouldDisplayRemainingTime }) => {
+      state.settings.shouldDisplayRemainingTime = shouldDisplayRemainingTime;
     },
     saveSettingsRequested: ({ state }) => {
       delete state.errors.SAVE_FAILED;
@@ -186,6 +202,16 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
     },
     {
       from: "isGongOnChanged",
+      to: "settingsChanged",
+      withPayload: ({ selectors }) => selectors.settings(),
+    },
+    {
+      from: "shouldDisplayRemainingTimeChanged",
+      to: "settingsChanged",
+      withPayload: ({ selectors }) => selectors.settings(),
+    },
+    {
+      from: "shouldDisplayProgressChanged",
       to: "settingsChanged",
       withPayload: ({ selectors }) => selectors.settings(),
     },

@@ -35,15 +35,14 @@ const canBeStarted = isSettingsPhase;
 const canBeStopped = isNotSettingsPhase;
 const remainingTime = (state: State) =>
   formatSeconds(state.remainingTimeInSeconds);
-const durationInSeconds = (_: State, children: ChildrenValues<Children>) =>
-  children.settings["0"].selectors.durationInSeconds();
-const preparationDurationInSeconds = (
-  _: State,
-  children: ChildrenValues<Children>,
-) => children.settings["0"].selectors.preparationDurationInSeconds();
-const isPreparationNeccessary = flow(preparationDurationInSeconds, t => t > 0);
-const isGongOn = (_: State, children: ChildrenValues<Children>) =>
-  children.settings["0"].selectors.isGongOn();
+const settingsSelectors = (_: State, children: ChildrenValues<Children>) =>
+  children.settings["0"].selectors;
+const durationInSeconds = flow(settingsSelectors, selectors => selectors.durationInSeconds());
+const preparationDurationInSeconds =  flow(settingsSelectors, selectors => selectors.preparationDurationInSeconds());
+const isPreparationNecessary = flow(preparationDurationInSeconds, t => t > 0);
+const isGongOn =  flow(settingsSelectors, selectors => selectors.isGongOn());
+const shouldDisplayRemainingTime = flow(settingsSelectors, selectors => selectors.shouldDisplayRemainingTime());
+const shouldDisplayProgress = flow(settingsSelectors, selectors => selectors.shouldDisplayProgress());
 const remainingTimeInSeconds = (state: State) => state.remainingTimeInSeconds;
 const isRemainingTimeZero = (state: State) => state.remainingTimeInSeconds <= 0;
 
@@ -55,12 +54,14 @@ const selectors = {
   remainingTime,
   durationInSeconds,
   isGongOn,
+  shouldDisplayProgress,
+  shouldDisplayRemainingTime,
   remainingTimeInSeconds,
   isRemainingTimeZero,
   canBeStarted,
   canBeStopped,
   preparationDurationInSeconds,
-  isPreparationNeccessary,
+  isPreparationNecessary,
   isNotCompletedPhase,
   isCompletedPhase,
 };
@@ -138,17 +139,21 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
   eventForwarders: [
     {
       from: "startClicked",
+      to: "enterFullScreenRequested",
+    },
+    {
+      from: "startClicked",
       to: "startTickingRequested",
     },
     {
       from: "startClicked",
       to: "preparationStarted",
-      onCondition: ({ selectors }) => selectors.isPreparationNeccessary(),
+      onCondition: ({ selectors }) => selectors.isPreparationNecessary(),
     },
     {
       from: "startClicked",
       to: "started",
-      onCondition: ({ selectors }) => !selectors.isPreparationNeccessary(),
+      onCondition: ({ selectors }) => !selectors.isPreparationNecessary(),
     },
     {
       from: "timerTicked",
@@ -171,10 +176,6 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
     {
       from: "started",
       to: "requestWakeLockRequested",
-    },
-    {
-      from: "started",
-      to: "enterFullScreenRequested",
     },
     {
       from: "started",
