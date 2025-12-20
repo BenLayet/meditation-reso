@@ -1,15 +1,15 @@
-import {
+import type {
+  ComponentContract,
   ComponentDef,
   ComponentEventsContract,
   EffectsDef,
   ExtractComponentValuesContract,
 } from "@softer-components/types";
 import { formatSeconds } from "../../../util/duration.functions";
+import type {
+  Settings} from "../../../domain/settings";
 import {
-  defaultSettings,
-  DURATION_INCREMENT_MINUTES,
-  PREPARATION_INCREMENT_SECONDS,
-  Settings,
+  defaultSettings
 } from "../../../domain/settings";
 import { flow } from "lodash";
 import {
@@ -25,7 +25,7 @@ const initialState = {
   isLoading: false,
   isSaving: false,
   settings: defaultSettings,
-  errors: {} as { [errorName in Error]: ErrorMessage },
+  errors: {} as Record<Error, ErrorMessage>,
 };
 type State = typeof initialState;
 
@@ -39,8 +39,8 @@ const preparationDurationInSeconds = (state: State) =>
 const duration = flow(durationInSeconds, formatSeconds);
 const preparation = flow(preparationDurationInSeconds, formatSeconds);
 const isGongOn = (state: State) => state.settings.isGongOn;
-const hasLoadError = (state: State) => !!state.errors["LOAD_FAILED"];
-const hasSaveError = (state: State) => !!state.errors["SAVE_FAILED"];
+const hasLoadError = (state: State) => !!state.errors.LOAD_FAILED;
+const hasSaveError = (state: State) => !!state.errors.SAVE_FAILED;
 const selectors = {
   isLoadingNeeded,
   settings,
@@ -55,7 +55,7 @@ const selectors = {
 };
 
 //Events
-const eventNames = [
+type eventNames = [
   "incrementDurationClicked",
   "decrementDurationClicked",
   "incrementPreparationClicked",
@@ -72,10 +72,10 @@ const eventNames = [
   "loadSettingsSucceeded",
   "loadSettingsCompleted",
   "displayed",
-] as const;
+];
 
 type Events = ComponentEventsContract<
-  typeof eventNames,
+  eventNames,
   {
     settingsChanged: Settings;
     setDurationInMinutesRequested: number;
@@ -95,13 +95,13 @@ const effects = {
     "loadSettingsCompleted",
   ],
   saveSettingsRequested: ["saveSettingsSucceeded", "saveSettingsFailed"],
-} satisfies EffectsDef<typeof eventNames>;
+} satisfies EffectsDef<eventNames>;
 
 export type SettingsContract = {
   state: typeof initialState;
   events: Events;
   values: ExtractComponentValuesContract<typeof selectors>;
-  children: {};
+  children: Record<string, ComponentContract>;
   effects: typeof effects;
 };
 // Component definition
@@ -136,11 +136,11 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
       state.isSaving = true;
     },
     saveSettingsSucceeded: ({ state }) => {
-      state.errors["SAVE_FAILED"] = "";
+      state.errors.SAVE_FAILED = "";
       state.isSaving = false;
     },
     saveSettingsFailed: ({ state, payload: errorMessage }) => {
-      state.errors["SAVE_FAILED"] = errorMessage;
+      state.errors.SAVE_FAILED = errorMessage;
       state.isSaving = false;
     },
     loadSettingsRequested: ({ state }) => {
@@ -148,10 +148,10 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
     },
     loadSettingsSucceeded: ({ state, payload: settings }) => {
       state.settings = { ...defaultSettings, ...settings };
-      state.errors["LOAD_FAILED"] = "";
+      state.errors.LOAD_FAILED = "";
     },
     loadSettingsFailed: ({ state, payload: errorMessage }) => {
-      state.errors["LOAD_FAILED"] = errorMessage;
+      state.errors.LOAD_FAILED = errorMessage;
     },
     loadSettingsCompleted: ({ state }) => {
       state.isLoading = false;
@@ -194,6 +194,7 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
     {
       from: "isGongOnChanged",
       to: "settingsChanged",
+      // eslint-disable-next-line
       withPayload: ({ selectors }: { selectors: any }) => selectors.settings(), // TODO
     },
     {
