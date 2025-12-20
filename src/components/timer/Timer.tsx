@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { Settings } from "./settings/Settings";
 
-import { TimerContract } from "./timer.component";
+import type { TimerContract } from "./timer.component";
 import { useSofter, useSofterEffects } from "@softer-components/redux-adapter";
 import { timerEffects } from "./timer.effects";
 export const Timer = ({ path } = { path: "/" }) => {
@@ -90,7 +90,9 @@ export const Timer = ({ path } = { path: "/" }) => {
             <button
               style={{ fontSize: "0.7em" }}
               aria-label="Commencer la méditation"
-              onClick={() => d.startClicked()}
+              onClick={() => {
+                d.startClicked();
+              }}
             >
               <FontAwesomeIcon icon={faPlay} />
             </button>
@@ -100,7 +102,9 @@ export const Timer = ({ path } = { path: "/" }) => {
             <button
               style={{ fontSize: "0.7em" }}
               aria-label="Arrêter la méditation"
-              onClick={() => d.stopClicked()}
+              onClick={() => {
+                d.stopClicked();
+              }}
             >
               <FontAwesomeIcon icon={faStop} />
             </button>

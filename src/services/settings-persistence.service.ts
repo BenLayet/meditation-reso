@@ -1,5 +1,6 @@
-import { Settings } from "../domain/settings";
-import { cookieService, CookieService } from "./cookie.service";
+import type { Settings } from "../domain/settings";
+import type { CookieService } from "./cookie.service";
+import { cookieService } from "./cookie.service";
 
 export class SettingsPersistenceService {
   constructor(private readonly cookieService: CookieService) {}

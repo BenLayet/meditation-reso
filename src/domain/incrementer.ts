@@ -1,8 +1,6 @@
-import { assertIsNotUndefined } from "../util/assert.functions";
-
 export class Incrementer {
-  private firstSteps: number[];
-  private increment: number;
+  private readonly firstSteps: number[];
+  private readonly increment: number;
 
   constructor(increment: number, firstSteps: number[] = []) {
     this.increment = increment;
@@ -27,8 +25,10 @@ export class Incrementer {
       .slice()
       .reverse()
       .find(step => step < value);
-    assertIsNotUndefined(previousStep);
-    return previousStep;
+    if (previousStep) {
+      return previousStep;
+    }
+    return this.firstSteps[0];
   }
 }
 export const durationIncrementer = new Incrementer(

@@ -6,11 +6,8 @@ import type {
   ExtractComponentValuesContract,
 } from "@softer-components/types";
 import { formatSeconds } from "../../../util/duration.functions";
-import type {
-  Settings} from "../../../domain/settings";
-import {
-  defaultSettings
-} from "../../../domain/settings";
+import type { Settings } from "../../../domain/settings";
+import { defaultSettings } from "../../../domain/settings";
 import { flow } from "lodash";
 import {
   durationIncrementer,
@@ -18,14 +15,13 @@ import {
 } from "../../../domain/incrementer";
 
 type Error = "LOAD_FAILED" | "SAVE_FAILED";
-type ErrorMessage = string;
 
 // Initial state definition
 const initialState = {
   isLoading: false,
   isSaving: false,
   settings: defaultSettings,
-  errors: {} as Record<Error, ErrorMessage>,
+  errors: {} as Partial<Record<Error, true>>,
 };
 type State = typeof initialState;
 
@@ -39,8 +35,8 @@ const preparationDurationInSeconds = (state: State) =>
 const duration = flow(durationInSeconds, formatSeconds);
 const preparation = flow(preparationDurationInSeconds, formatSeconds);
 const isGongOn = (state: State) => state.settings.isGongOn;
-const hasLoadError = (state: State) => !!state.errors.LOAD_FAILED;
-const hasSaveError = (state: State) => !!state.errors.SAVE_FAILED;
+const hasLoadError = (state: State) => state.errors.LOAD_FAILED;
+const hasSaveError = (state: State) => state.errors.SAVE_FAILED;
 const selectors = {
   isLoadingNeeded,
   settings,
@@ -82,8 +78,6 @@ type Events = ComponentEventsContract<
     setPreparationInSecondsRequested: number;
     isGongOnChanged: boolean;
     saveSettingsRequested: Settings;
-    saveSettingsFailed: ErrorMessage;
-    loadSettingsFailed: ErrorMessage;
     loadSettingsSucceeded: Settings;
   }
 >;
@@ -133,25 +127,25 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
       state.settings.isGongOn = isGongOn;
     },
     saveSettingsRequested: ({ state }) => {
+      delete state.errors.SAVE_FAILED;
       state.isSaving = true;
     },
     saveSettingsSucceeded: ({ state }) => {
-      state.errors.SAVE_FAILED = "";
       state.isSaving = false;
     },
-    saveSettingsFailed: ({ state, payload: errorMessage }) => {
-      state.errors.SAVE_FAILED = errorMessage;
+    saveSettingsFailed: ({ state }) => {
+      state.errors.SAVE_FAILED = true;
       state.isSaving = false;
     },
     loadSettingsRequested: ({ state }) => {
+      delete state.errors.LOAD_FAILED;
       state.isLoading = true;
     },
     loadSettingsSucceeded: ({ state, payload: settings }) => {
       state.settings = { ...defaultSettings, ...settings };
-      state.errors.LOAD_FAILED = "";
     },
-    loadSettingsFailed: ({ state, payload: errorMessage }) => {
-      state.errors.LOAD_FAILED = errorMessage;
+    loadSettingsFailed: ({ state }) => {
+      state.errors.LOAD_FAILED = true;
     },
     loadSettingsCompleted: ({ state }) => {
       state.isLoading = false;

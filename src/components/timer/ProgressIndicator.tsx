@@ -1,6 +1,6 @@
-interface ProgressIndicatorProps {
+type ProgressIndicatorProps = {
   durationInSeconds: number;
-}
+};
 
 export const ProgressIndicator = ({
   durationInSeconds,
@@ -37,7 +37,7 @@ export const ProgressIndicator = ({
           strokeLinecap="round"
           transform="rotate(-90 100 100)"
           style={{
-            animation: `fillArc ${durationInSeconds}s linear forwards`,
+            animation: `fillArc ${durationInSeconds.toString()}s linear forwards`,
           }}
         />
       </svg>

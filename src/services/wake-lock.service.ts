@@ -5,13 +5,13 @@ export class WakeLockService {
 
   async _requestWakeLock() {
     await this._releaseWakeLock();
-    this.wakeLockSentinelPromise = navigator.wakeLock?.request("screen");
+    this.wakeLockSentinelPromise = navigator.wakeLock.request("screen");
   }
 
   async _releaseWakeLock() {
     if (this.wakeLockSentinelPromise) {
       const sentinel = await this.wakeLockSentinelPromise;
-      await sentinel?.release();
+      await sentinel.release();
       this.wakeLockSentinelPromise = null;
     }
   }

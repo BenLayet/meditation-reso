@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSofter, useSofterEffects } from "@softer-components/redux-adapter";
-import { SettingsContract } from "./settings.component";
+import type { SettingsContract } from "./settings.component";
 import { settingsEffects } from "./settings.effects";
 import { useEffect } from "react";
 
@@ -15,7 +15,7 @@ export const Settings = ({ path = "" }) => {
   useSofterEffects<SettingsContract>(path, settingsEffects);
   useEffect(() => {
     d.displayed();
-  }, []);
+  }, [d]);
 
   return (
     <div className="settings">
@@ -30,13 +30,17 @@ export const Settings = ({ path = "" }) => {
             <div className="horizontal">
               <button
                 aria-label="Augmenter la durée de la méditation"
-                onClick={() => d.incrementDurationClicked()}
+                onClick={() => {
+                  d.incrementDurationClicked();
+                }}
               >
                 <FontAwesomeIcon icon={faPlus} />
               </button>
               <button
                 aria-label="Diminuer la durée de la méditation"
-                onClick={() => d.decrementDurationClicked()}
+                onClick={() => {
+                  d.decrementDurationClicked();
+                }}
               >
                 <FontAwesomeIcon icon={faMinus} />
               </button>
@@ -55,13 +59,17 @@ export const Settings = ({ path = "" }) => {
             <div className="horizontal">
               <button
                 aria-label="Augmenter la durée de la préparation"
-                onClick={() => d.incrementPreparationClicked()}
+                onClick={() => {
+                  d.incrementPreparationClicked();
+                }}
               >
                 <FontAwesomeIcon icon={faPlus} />
               </button>
               <button
                 aria-label="Diminuer la durée de la préparation"
-                onClick={() => d.decrementPreparationClicked()}
+                onClick={() => {
+                  d.decrementPreparationClicked();
+                }}
               >
                 <FontAwesomeIcon icon={faMinus} />
               </button>
@@ -80,7 +88,9 @@ export const Settings = ({ path = "" }) => {
               <input
                 type="checkbox"
                 checked={v.isGongOn}
-                onChange={e => d.isGongOnChanged(e.target.checked)}
+                onChange={e => {
+                  d.isGongOnChanged(e.target.checked);
+                }}
               />
               &nbsp;
               <FontAwesomeIcon

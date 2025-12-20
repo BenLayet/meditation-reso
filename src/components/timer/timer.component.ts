@@ -1,4 +1,4 @@
-import {
+import type {
   ChildrenValues,
   ComponentDef,
   ComponentEventsContract,
@@ -6,10 +6,8 @@ import {
   ExtractComponentValuesContract,
 } from "@softer-components/types";
 import { formatSeconds } from "../../util/duration.functions";
-import {
-  settingsComponentDef,
-  SettingsContract,
-} from "./settings/settings.component";
+import { settingsComponentDef } from "./settings/settings.component";
+import type { SettingsContract } from "./settings/settings.component";
 import { flow } from "lodash";
 
 type Phase = "SETTINGS" | "PREPARATION" | "MEDITATION" | "COMPLETED";
@@ -67,7 +65,7 @@ const selectors = {
   isCompletedPhase,
 };
 
-const eventNames = [
+type eventNames = [
   "startClicked",
   "stopClicked",
   "sessionInterrupted",
@@ -86,9 +84,10 @@ const eventNames = [
   "stopGongRequested",
   "requestWakeLockRequested",
   "releaseWakeLockRequested",
-] as const;
+];
 
-type Events = ComponentEventsContract<typeof eventNames, {}>;
+// eslint-disable-next-line
+type Events = ComponentEventsContract<eventNames, {}>; //TODO should work with empty payloads
 
 const effects = {
   startTickingRequested: ["timerTicked"],
@@ -101,7 +100,7 @@ const effects = {
   requestWakeLockRequested: [],
   enterFullScreenRequested: [],
   exitFullScreenRequested: [],
-} satisfies EffectsDef<typeof eventNames>;
+} satisfies EffectsDef<eventNames>;
 
 export type TimerContract = {
   state: State;

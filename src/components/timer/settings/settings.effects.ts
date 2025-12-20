@@ -1,9 +1,9 @@
-import { Effects } from "@softer-components/types";
-import { SettingsContract } from "./settings.component";
+import type { Effects } from "@softer-components/types";
+import type { SettingsContract } from "./settings.component";
 import { settingsPersistenceService } from "../../../services/settings-persistence.service";
 
 export const settingsEffects: Effects<SettingsContract> = {
-  loadSettingsRequested: async ({
+  loadSettingsRequested: ({
     loadSettingsFailed,
     loadSettingsSucceeded,
     loadSettingsCompleted,
@@ -13,24 +13,22 @@ export const settingsEffects: Effects<SettingsContract> = {
       if (settings) {
         loadSettingsSucceeded(settings);
       }
-    } catch (error: any) {
-      loadSettingsFailed(
-        error.message || "Failed to load settings from cookies.",
-      );
+    } catch (error: unknown) {
+      loadSettingsFailed();
+      console.error(error);
     }
     loadSettingsCompleted();
   },
-  saveSettingsRequested: async (
+  saveSettingsRequested: (
     { saveSettingsFailed, saveSettingsSucceeded },
     { payload: settings },
   ) => {
     try {
       settingsPersistenceService.saveSettings(settings);
       saveSettingsSucceeded();
-    } catch (error: any) {
-      saveSettingsFailed(
-        error.message || "Failed to save settings to cookies.",
-      );
+    } catch (error: unknown) {
+      saveSettingsFailed();
+      console.error(error);
     }
   },
 };
