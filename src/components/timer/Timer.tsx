@@ -58,14 +58,16 @@ export const Timer = ({ path } = { path: "/" }) => {
               <>
                 <ProgressIndicator durationInSeconds={v.durationInSeconds} />{" "}
                 {/* Remaining time display */}
-                <div
+                <span
                   style={{
                     position: "absolute",
-                    top: "42%",
+                    top: "35%",
+                    fontSize:"2em",
+                    background:"#0002"
                   }}
                 >
                   {v.remainingTime}
-                </div>
+                </span>
               </>
             )}
           </div>
