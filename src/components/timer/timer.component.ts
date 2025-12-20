@@ -143,6 +143,10 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
     },
     {
       from: "startClicked",
+      to: "loadAudioRequested",
+    },
+    {
+      from: "startClicked",
       to: "startTickingRequested",
     },
     {
@@ -164,10 +168,6 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
     {
       from: "preparationCompleted",
       to: "started",
-    },
-    {
-      from: "started",
-      to: "loadAudioRequested",
     },
     {
       from: "started",

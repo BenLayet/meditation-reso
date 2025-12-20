@@ -20,11 +20,9 @@ export const Settings = ({ path = "" }) => {
   return (
     <div className="settings">
       {/* Duration adjustment controls */}
-      <div className="horizontal settings-row">
-        <div style={{ width: "50%" }} className="settings-key">
-          Durée
-        </div>
-        <div style={{ width: "50%" }} className="settings-value">
+      <div className="settings-row">
+        <div className="settings-key">Durée</div>
+        <div className="settings-value">
           <div style={{ maxWidth: "5em" }}>
             <div style={{ fontSize: "1.5em" }}>{v.duration}</div>
             <div className="horizontal">
@@ -49,11 +47,9 @@ export const Settings = ({ path = "" }) => {
         </div>
       </div>
       {/* Preparation adjustment controls */}
-      <div className="horizontal settings-row">
-        <div style={{ width: "50%" }} className="settings-key">
-          Préparation
-        </div>
-        <div style={{ width: "50%" }} className="settings-value">
+      <div className="settings-row">
+        <div className="settings-key">Préparation</div>
+        <div className="settings-value">
           <div style={{ maxWidth: "5em" }}>
             <div style={{ fontSize: "1.5em" }}>{v.preparation}</div>
             <div className="horizontal">
@@ -78,56 +74,45 @@ export const Settings = ({ path = "" }) => {
         </div>
       </div>
       {/* Gong sound toggle */}
-      <div className="horizontal settings-row">
-        <div style={{ width: "50%" }} className="settings-key">
-          Gong
-        </div>
-        <div style={{ width: "50%" }} className="settings-value">
-          <div style={{ alignItems: "flex-start" }}>
-            <label>
-              <input
-                type="checkbox"
-                checked={v.isGongOn}
-                onChange={e => {
-                  d.isGongOnChanged(e.target.checked);
-                }}
-              />
-              &nbsp;
-              <FontAwesomeIcon
-                icon={v.isGongOn ? faVolumeHigh : faVolumeXmark}
-              />
-            </label>
-          </div>
+      <div className="settings-row">
+        <div className="settings-key">Gong</div>
+        <div className="settings-value">
+          <label>
+            <input
+              type="checkbox"
+              checked={v.isGongOn}
+              onChange={e => {
+                d.isGongOnChanged(e.target.checked);
+              }}
+            />
+            &nbsp;
+            <FontAwesomeIcon icon={v.isGongOn ? faVolumeHigh : faVolumeXmark} />
+          </label>
         </div>
       </div>
-      {/* Should display xxx toggles */}
-      <div className="horizontal settings-row">
-        <div style={{ width: "50%" }} className="settings-key">
-          Afficher
-        </div>
-        <div style={{ width: "50%" }} className="settings-value">
-          <div style={{ alignItems: "flex-start" }}>
-            <label>
-              <input
-                type="checkbox"
-                checked={v.shouldDisplayProgress}
-                onChange={e => {
-                  d.shouldDisplayProgressChanged(e.target.checked);
-                }}
-              />&nbsp;progression
-            </label>
-          </div>
-          <div style={{ alignItems: "flex-start" }}>
-            <label>
-              <input
-                type="checkbox"
-                checked={v.shouldDisplayRemainingTime}
-                onChange={e => {
-                  d.shouldDisplayRemainingTimeChanged(e.target.checked);
-                }}
-              />&nbsp;temps restant
-            </label>
-          </div>
+      <div className="settings-row">
+        <div className="settings-key">Afficher</div>
+        <div className="settings-value">
+          <label>
+            <input
+              type="checkbox"
+              checked={v.shouldDisplayProgress}
+              onChange={e => {
+                d.shouldDisplayProgressChanged(e.target.checked);
+              }}
+            />
+            &nbsp;progression
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={v.shouldDisplayRemainingTime}
+              onChange={e => {
+                d.shouldDisplayRemainingTimeChanged(e.target.checked);
+              }}
+            />
+            &nbsp;temps restant
+          </label>
         </div>
       </div>
     </div>
