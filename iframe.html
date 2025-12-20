@@ -1,5 +1,5 @@
 <div class="richedit_wrap" style="">
-  <div class="richedit_wrap" style="background-color: rgb(0, 0, 0)">
+  <div class="richedit_wrap" style="background-color: rgb(0, 0, 0)" id="iframe-container">
     <iframe
       src="https://benlayet.github.io/meditation-reso/?v=3"
       allow="fullscreen; screen-wake-lock"
@@ -14,10 +14,6 @@
     ></iframe>
     <script prevent-tag-removal="">
       let wakeLock = null;
-
-      window.addEventListener("load", () => {
-        requestWakeLock();
-      });
 
       async function requestWakeLock() {
         try {
@@ -42,19 +38,19 @@
           }
         }
       }
-
-      // Release wake lock when page is hidden/unloaded
-      document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "hidden") {
-          releaseWakeLock();
-        }else {
-          requestWakeLock();
-        }
-      });
-
-      window.addEventListener("beforeunload", () => {
-        releaseWakeLock();
-      });
+      const iFrameContainer = document.getElementById('iframe-container');
+      if(iFrameContainer){
+        // Release wake lock when iFrameContainer is hidden/unloaded
+        iFrameContainer.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "hidden") {
+            releaseWakeLock();
+          }else {
+            requestWakeLock();
+          }
+        });
+      }else{
+        console.error("iFrameContainer not found");
+      }
     </script>
   </div>
 </div>
