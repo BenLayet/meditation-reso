@@ -60,7 +60,7 @@ export const Timer = ({ path } = { path: "/" }) => {
                 {v.shouldDisplayRemainingTime &&  <span
                   style={{
                     position: "absolute",
-                    top: "45%",
+                    top: "47%",
                     fontSize:"1.5em",
                     background:"#0006"
                   }}

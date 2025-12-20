@@ -1,56 +1,60 @@
-<div class="richedit_wrap" style="background-color: rgb(0, 0, 0)">
-  <iframe
-    src="https://benlayet.github.io/meditation-reso/?v=3"
-    allow="fullscreen; screen-wake-lock"
-    allowfullscreen="allowfullscreen"
-    style="
+<div class="richedit_wrap" style="">
+  <div class="richedit_wrap" style="background-color: rgb(0, 0, 0)">
+    <iframe
+      src="https://benlayet.github.io/meditation-reso/?v=3"
+      allow="fullscreen; screen-wake-lock"
+      allowfullscreen="allowfullscreen"
+      style="
       width: 100%;
       border: none;
       border-radius: 3px;
-      min-height: 500px;
+      min-height: 700px;
       background-color: rgb(0, 0, 0);
     "
-  ></iframe>
-  <script prevent-tag-removal="">
-    let wakeLock = null;
+    ></iframe>
+    <script prevent-tag-removal="">
+      let wakeLock = null;
 
-    window.addEventListener("load", () => {
-      requestWakeLock();
-    });
+      window.addEventListener("load", () => {
+        requestWakeLock();
+      });
 
-    async function requestWakeLock() {
-      try {
-        if ("wakeLock" in navigator) {
-          wakeLock = await navigator.wakeLock.request("screen");
-          console.log("Wake Lock activated");
-          return wakeLock;
-        }
-      } catch (err) {
-        console.error("Wake Lock failed:", err);
-      }
-    }
-
-    async function releaseWakeLock() {
-      if (wakeLock) {
+      async function requestWakeLock() {
         try {
-          await wakeLock.release();
-          wakeLock = null;
-          console.log("Wake Lock released");
+          if ("wakeLock" in navigator) {
+            wakeLock = await navigator.wakeLock.request("screen");
+            console.log("Wake Lock activated");
+            return wakeLock;
+          }
         } catch (err) {
-          console.error("Wake Lock release failed:", err);
+          console.error("Wake Lock failed:", err);
         }
       }
-    }
 
-    // Release wake lock when page is hidden/unloaded
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") {
-        releaseWakeLock();
+      async function releaseWakeLock() {
+        if (wakeLock) {
+          try {
+            await wakeLock.release();
+            wakeLock = null;
+            console.log("Wake Lock released");
+          } catch (err) {
+            console.error("Wake Lock release failed:", err);
+          }
+        }
       }
-    });
 
-    window.addEventListener("beforeunload", () => {
-      releaseWakeLock();
-    });
-  </script>
+      // Release wake lock when page is hidden/unloaded
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") {
+          releaseWakeLock();
+        }else {
+          requestWakeLock();
+        }
+      });
+
+      window.addEventListener("beforeunload", () => {
+        releaseWakeLock();
+      });
+    </script>
+  </div>
 </div>
