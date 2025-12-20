@@ -1,4 +1,4 @@
-import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { Settings } from "./settings/Settings";
@@ -60,7 +60,6 @@ export const Timer = ({ path } = { path: "/" }) => {
                 {/* Remaining time display */}
                 <div
                   style={{
-                    opacity: 0.4,
                     position: "absolute",
                     top: "42%",
                   }}
@@ -100,16 +99,27 @@ export const Timer = ({ path } = { path: "/" }) => {
           {/* Stop button - shown during meditation */}
           {v.canBeStopped && (
             <button
-              style={{ fontSize: "0.7em" }}
+              style={{ fontSize: "0.7em", opacity: v.isCompletedPhase?"0.9": "0.4" }}
               aria-label="Arrêter la méditation"
               onClick={() => {
                 d.stopClicked();
               }}
-            >
-              <FontAwesomeIcon icon={faStop} />
+            > Arrêter
             </button>
           )}
         </div>
+        {v.isSettingsPhase &&  <p
+          style={{
+            fontSize: "0.8em",
+            opacity: 0.4,
+            position: "absolute",
+            bottom: "1em",
+            right: "1em",
+          }}
+        >
+          v0.7.0
+        </p>
+        }
       </div>
     </>
   );

@@ -1,18 +1,7 @@
 import { Timer } from "../timer/Timer.tsx";
 
 export const App = () => (
-  <div style={{ padding: "1em", position:"relative" }}>
+  <div style={{ padding: "1em"}}>
     <Timer path="/" />
-    <p
-      style={{
-        fontSize: "0.8em",
-        opacity: 0.4,
-        position: "absolute",
-        bottom: "1em",
-        right: "1em",
-      }}
-    >
-      v0.7.0
-    </p>
   </div>
 );
