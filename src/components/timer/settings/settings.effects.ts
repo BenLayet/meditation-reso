@@ -3,13 +3,13 @@ import type { SettingsContract } from "./settings.component";
 import { settingsPersistenceService } from "../../../services/settings-persistence.service";
 
 export const settingsEffects: Effects<SettingsContract> = {
-  loadSettingsRequested: ({
+  loadSettingsRequested: async ({
     loadSettingsFailed,
     loadSettingsSucceeded,
     loadSettingsCompleted,
   }) => {
     try {
-      const settings = settingsPersistenceService.loadSettings();
+      const settings = await settingsPersistenceService.loadSettings();
       if (settings) {
         loadSettingsSucceeded(settings);
       }
@@ -19,12 +19,12 @@ export const settingsEffects: Effects<SettingsContract> = {
     }
     loadSettingsCompleted();
   },
-  saveSettingsRequested: (
+  saveSettingsRequested: async (
     { saveSettingsFailed, saveSettingsSucceeded },
     { payload: settings },
   ) => {
     try {
-      settingsPersistenceService.saveSettings(settings);
+      await settingsPersistenceService.saveSettings(settings);
       saveSettingsSucceeded();
     } catch (error: unknown) {
       saveSettingsFailed();
