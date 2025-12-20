@@ -110,19 +110,6 @@ export const Timer = ({ path } = { path: "/" }) => {
             </button>
           )}
         </div>
-        {v.isSettingsPhase && (
-          <p
-            style={{
-              fontSize: "0.8em",
-              opacity: 0.4,
-              position: "absolute",
-              bottom: "1em",
-              right: "1em",
-            }}
-          >
-            v0.5.0
-          </p>
-        )}
       </div>
     </>
   );
