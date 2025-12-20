@@ -51,24 +51,23 @@ const selectors = {
 };
 
 //Events
-type eventNames = [
-  "incrementDurationClicked",
-  "decrementDurationClicked",
-  "incrementPreparationClicked",
-  "decrementPreparationClicked",
-  "settingsChanged",
-  "setDurationInMinutesRequested",
-  "setPreparationInSecondsRequested",
-  "isGongOnChanged",
-  "saveSettingsRequested",
-  "saveSettingsFailed",
-  "saveSettingsSucceeded",
-  "loadSettingsRequested",
-  "loadSettingsFailed",
-  "loadSettingsSucceeded",
-  "loadSettingsCompleted",
-  "displayed",
-];
+type eventNames =
+  "incrementDurationClicked"|
+  "decrementDurationClicked"|
+  "incrementPreparationClicked"|
+  "decrementPreparationClicked"|
+  "settingsChanged"|
+  "setDurationInMinutesRequested"|
+  "setPreparationInSecondsRequested"|
+  "isGongOnChanged"|
+  "saveSettingsRequested"|
+  "saveSettingsFailed"|
+  "saveSettingsSucceeded"|
+  "loadSettingsRequested"|
+  "loadSettingsFailed"|
+  "loadSettingsSucceeded"|
+  "loadSettingsCompleted"|
+  "displayed";
 
 type Events = ComponentEventsContract<
   eventNames,
@@ -188,8 +187,7 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
     {
       from: "isGongOnChanged",
       to: "settingsChanged",
-      // eslint-disable-next-line
-      withPayload: ({ selectors }: { selectors: any }) => selectors.settings(), // TODO
+      withPayload: ({ selectors }) => selectors.settings(),
     },
     {
       from: "setDurationInMinutesRequested",

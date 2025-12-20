@@ -65,29 +65,27 @@ const selectors = {
   isCompletedPhase,
 };
 
-type eventNames = [
-  "startClicked",
-  "stopClicked",
-  "sessionInterrupted",
-  "preparationStarted",
-  "preparationCompleted",
-  "started",
-  "startTickingRequested",
-  "stopTickingRequested",
-  "timerTicked",
-  "completed",
-  "enterFullScreenRequested",
-  "exitFullScreenRequested",
-  "loadAudioRequested",
-  "playBeginningGongRequested",
-  "playEndGongRequested",
-  "stopGongRequested",
-  "requestWakeLockRequested",
-  "releaseWakeLockRequested",
-];
+type eventNames =
+  "startClicked"|
+  "stopClicked"|
+  "sessionInterrupted"|
+  "preparationStarted"|
+  "preparationCompleted"|
+  "started"|
+  "startTickingRequested"|
+  "stopTickingRequested"|
+  "timerTicked"|
+  "completed"|
+  "enterFullScreenRequested"|
+  "exitFullScreenRequested"|
+  "loadAudioRequested"|
+  "playBeginningGongRequested"|
+  "playEndGongRequested"|
+  "stopGongRequested"|
+  "requestWakeLockRequested"|
+  "releaseWakeLockRequested";
 
-// eslint-disable-next-line
-type Events = ComponentEventsContract<eventNames, {}>; //TODO should work with empty payloads
+type Events = ComponentEventsContract<eventNames>;
 
 const effects = {
   startTickingRequested: ["timerTicked"],

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc -b && vite build",
-    "dev": "vite",
+    "dev": "vite --host",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "lint:fix": "eslint --fix .",
@@ -20,7 +20,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",
     "@reduxjs/toolkit": "^2.6.1",
-    "@softer-components/redux-adapter": "^0.3.2",
+    "@softer-components/redux-adapter": "^0.3.3",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "react": "^19.1.0",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.23.0",
-    "@softer-components/types": "^0.3.2",
+    "@softer-components/types": "^0.3.3",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
