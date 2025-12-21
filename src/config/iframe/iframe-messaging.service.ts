@@ -10,7 +10,7 @@ export function postRequest<Response>(message: Message): Promise<Response> {
   return new Promise(resolve => {
     const id = Math.random().toString(36).slice(2);
     function onMessage(response: { origin: string; data?: MessageData }) {
-      console.debug(`${prefix} message received inside iframe`, message);
+      console.debug(`${prefix} message received inside iframe`, response);
       if (response.origin !== parentOrigin) return;
       if (response.data?.id === id) {
         window.removeEventListener("message", onMessage);
