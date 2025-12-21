@@ -147,11 +147,15 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
   eventForwarders: [
     {
       from: "startClicked",
-      to: "enterFullScreenRequested",
+      to: "loadAudioRequested",
     },
     {
       from: "startClicked",
-      to: "loadAudioRequested",
+      to: "requestWakeLockRequested",
+    },
+    {
+      from: "startClicked",
+      to: "enterFullScreenRequested",
     },
     {
       from: "startClicked",
@@ -176,14 +180,6 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
     {
       from: "preparationCompleted",
       to: "started",
-    },
-    {
-      from: "started",
-      to: "startTickingRequested",
-    },
-    {
-      from: "started",
-      to: "requestWakeLockRequested",
     },
     {
       from: "started",
