@@ -19,7 +19,7 @@
 
       window.addEventListener("message", async message => {
         if (!message.origin.startsWith(origin)) return;
-        console.debug(`${prefix} message received`, message);
+        console.debug(`${prefix} message received in parent `, message);
         const { id, type, key, value } = message.data || {};
         let responseValue = "";
         switch (type) {
@@ -39,9 +39,9 @@
             console.error(`${prefix} unsupported message type=${type}`);
             return;
         }
-        console.debug(`${prefix} response:`, responseValue);
+        console.debug(`${prefix} response from parent:`, responseValue);
         message.source.postMessage(
-          { id, type: "response", value: get(key) },
+          { id, type: "response", value: responseValue },
           { targetOrigin: message.origin },
         );
       });
