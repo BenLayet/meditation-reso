@@ -13,4 +13,3 @@ export class TickingService {
   };
 }
 
-export const tickingSErvice = new TickingService();

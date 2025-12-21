@@ -7,12 +7,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSofter, useSofterEffects } from "@softer-components/redux-adapter";
 import type { SettingsContract } from "./settings.component";
-import { settingsEffects } from "./settings.effects";
 import { useEffect } from "react";
+import { configuration } from "../../../config/configuration.ts";
 
 export const Settings = ({ path = "" }) => {
   const [v, d] = useSofter<SettingsContract>(path);
-  useSofterEffects<SettingsContract>(path, settingsEffects);
+  useSofterEffects<SettingsContract>(path, configuration().settingsEffects);
   useEffect(() => {
     d.displayed();
   }, [d]);

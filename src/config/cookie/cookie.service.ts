@@ -19,4 +19,3 @@ export class CookieService {
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
   }
 }
-export const cookieService = new CookieService();

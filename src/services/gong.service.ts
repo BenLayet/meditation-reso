@@ -1,6 +1,6 @@
 import gongSound from "../assets/gong.mp3";
 
-class GongService {
+export class GongService {
   private beginningAudio = new Audio(gongSound);
   private endAudio = new Audio(gongSound);
 
@@ -28,5 +28,3 @@ class GongService {
     this.endAudio.pause();
   };
 }
-
-export const gongService = new GongService();

@@ -15,4 +15,3 @@ export class FullscreenService {
   };
 }
 
-export const fullscreenService = new FullscreenService();

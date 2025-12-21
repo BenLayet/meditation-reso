@@ -1,8 +1,8 @@
 import type { Effects } from "@softer-components/types";
 import type { SettingsContract } from "./settings.component";
-import { settingsPersistenceService } from "../../../services/settings-persistence.service";
+import type { SettingsPersistenceService } from "../../../services/settings-persistence.service.ts";
 
-export const settingsEffects: Effects<SettingsContract> = {
+export const settingsEffectsProvider = (settingsPersistenceService:SettingsPersistenceService): Effects<SettingsContract> =>  ({
   loadSettingsRequested: async ({
     loadSettingsFailed,
     loadSettingsSucceeded,
@@ -31,4 +31,4 @@ export const settingsEffects: Effects<SettingsContract> = {
       console.error(error);
     }
   },
-};
+});

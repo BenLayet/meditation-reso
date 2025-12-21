@@ -13,16 +13,18 @@
     "
     ></iframe>
     <script prevent-tag-removal="">
-    window.addEventListener('message', (e) => {
-      console.log(`message received`, e);
-      if (!e.origin.startsWith('https://benlayet.github.io')) return; // validate
-      const { id, type, key, value } = e.data || {};
+      const prefix = 'MEDITATION_TIMER_RESO_';
+    window.addEventListener('message', (message) => {
+      if (!message.origin.startsWith('https://benlayet.github.io')) return; // validate
+      console.debug(message);
+      const { id, type, key, value } = message.data || {};
       if (type === 'get') {
-        const val = localStorage.getItem(key); // or read cookie
-        e.source.postMessage({ id, type: 'response', value: val }, e.origin);
+        const val = localStorage.getItem(prefix + key);
+
+        message.source.postMessage({ id, type: 'response', value: val }, {targetOrigin: message.origin });
       } else if (type === 'set') {
-        localStorage.setItem(key, value);
-        e.source.postMessage({ id, type: 'response', value: "ok" }, e.origin);
+        localStorage.setItem(prefix + key, value);
+        message.source.postMessage({ id, type: 'response', value: "ok" }, {targetOrigin: message.origin });
       }
     });
     </script>

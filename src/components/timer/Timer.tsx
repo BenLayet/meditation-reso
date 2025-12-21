@@ -5,10 +5,10 @@ import { Settings } from "./settings/Settings";
 
 import type { TimerContract } from "./timer.component";
 import { useSofter, useSofterEffects } from "@softer-components/redux-adapter";
-import { timerEffects } from "./timer.effects";
+import { configuration } from "../../config/configuration.ts";
 export const Timer = ({ path } = { path: "/" }) => {
   const [v, d, c] = useSofter<TimerContract>(path);
-  useSofterEffects<TimerContract>(path, timerEffects);
+  useSofterEffects<TimerContract>(path, configuration().timerEffects);
   return (
     <>
       <div style={{ maxWidth: "25em" }}>

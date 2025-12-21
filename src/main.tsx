@@ -5,6 +5,10 @@ import { Provider } from "react-redux";
 import { App } from "./components/app/App.tsx";
 import { timerComponentDef } from "./components/timer/timer.component.ts";
 import "./index.css";
+import { configuration } from "./config/configuration.ts";
+import { mainConfiguration } from "./main-configuration.ts";
+
+configuration(mainConfiguration);
 
 export const store = configureSofterStore(timerComponentDef);
 const container = document.getElementById("root");
