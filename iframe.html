@@ -1,32 +1,81 @@
 <div class="richedit_wrap" style="">
-  <div class="richedit_wrap" style="background-color: rgb(0, 0, 0)" >
-    <iframe id="meditation-reso-iframe"
+  <div class="richedit_wrap" style="background-color: rgb(0, 0, 0)">
+    <iframe
+      id="meditation-reso-iframe"
       src="https://benlayet.github.io/meditation-reso/?v=3"
       allow="fullscreen; screen-wake-lock; "
       allowfullscreen="allowfullscreen"
       style="
-      width: 100%;
-      border: none;
-      border-radius: 3px;
-      min-height: 700px;
-      background-color: rgb(0, 0, 0);
-    "
+        width: 100%;
+        border: none;
+        border-radius: 3px;
+        min-height: 700px;
+        background-color: rgb(0, 0, 0);
+      "
     ></iframe>
     <script prevent-tag-removal="">
-      const prefix = 'MEDITATION_TIMER_RESO_';
-    window.addEventListener('message', (message) => {
-      if (!message.origin.startsWith('https://benlayet.github.io')) return; // validate
-      console.debug(message);
-      const { id, type, key, value } = message.data || {};
-      if (type === 'get') {
-        const val = localStorage.getItem(prefix + key);
+      const prefix = "MEDITATION_TIMER_RESO_";
+      const origin = "https://benlayet.github.io";
 
-        message.source.postMessage({ id, type: 'response', value: val }, {targetOrigin: message.origin });
-      } else if (type === 'set') {
-        localStorage.setItem(prefix + key, value);
-        message.source.postMessage({ id, type: 'response', value: "ok" }, {targetOrigin: message.origin });
+      window.addEventListener("message", async message => {
+        if (!message.origin.startsWith(origin)) return;
+        console.debug(`${prefix} message received`, message);
+        const { id, type, key, value } = message.data || {};
+        let responseValue = "";
+        switch (type) {
+          case "get":
+            responseValue = get(key);
+            break;
+          case "set":
+            set(key, value);
+            break;
+          case "requestWakeLock":
+            await requestWakeLock();
+            break;
+          case "releaseWakeLock":
+            await releaseWakeLock();
+            break;
+          default:
+            console.error(`${prefix} unsupported message type=${type}`);
+            return;
+        }
+        console.debug(`${prefix} response:`, responseValue);
+        message.source.postMessage(
+          { id, type: "response", value: get(key) },
+          { targetOrigin: message.origin },
+        );
+      });
+      function get(key) {
+        return localStorage.getItem(prefix + key);
       }
-    });
+      function set(key, value) {
+        localStorage.setItem(prefix + key, value);
+      }
+
+      let wakeLock = null;
+      async function requestWakeLock() {
+        try {
+          if ("wakeLock" in navigator) {
+            wakeLock = await navigator.wakeLock.request("screen");
+            console.log(`${prefix} Wake Lock activated`);
+            return wakeLock;
+          }
+        } catch (err) {
+          console.error(`${prefix} Wake Lock failed:`, err);
+        }
+      }
+
+      async function releaseWakeLock() {
+        if (wakeLock) {
+          try {
+            await wakeLock.release();
+            wakeLock = null;
+            console.log(`${prefix} Wake Lock released`);
+          } catch (err) {
+            console.error(`${prefix} Wake Lock release failed:`, err);
+          }
+        }
+      }
     </script>
   </div>
 </div>

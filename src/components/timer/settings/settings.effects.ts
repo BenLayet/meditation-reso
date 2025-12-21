@@ -2,7 +2,9 @@ import type { Effects } from "@softer-components/types";
 import type { SettingsContract } from "./settings.component";
 import type { SettingsPersistenceService } from "../../../services/settings-persistence.service.ts";
 
-export const settingsEffectsProvider = (settingsPersistenceService:SettingsPersistenceService): Effects<SettingsContract> =>  ({
+export const settingsEffectsProvider = (
+  settingsPersistenceService: SettingsPersistenceService,
+): Effects<SettingsContract> => ({
   loadSettingsRequested: async ({
     loadSettingsFailed,
     loadSettingsSucceeded,

@@ -23,7 +23,7 @@ aside,
 header,
 footer,
 main {
-  margin: 0 ;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,10 +45,10 @@ h3,
 h4,
 h5,
 h6 {
-  border-bottom: 3px double #bbb ;
-  padding-bottom: 5px ;
-  text-transform: uppercase ;
-  letter-spacing: 2px ;
+  border-bottom: 3px double #bbb;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 /* Buttons  */
@@ -56,39 +56,40 @@ button,
 input[type="button"],
 input[type="submit"],
 .btn {
-  background-color: #222 ;
-  border: 2px solid #bbb ;
-  padding: 8px 16px ;
-  cursor: pointer ;
-  text-transform: uppercase ;
-  font-weight: bold ;
+  background-color: #222;
+  border: 2px solid #bbb;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
   margin: 0.5em;
-  box-shadow: 3px 3px 0 #333;}
+  box-shadow: 3px 3px 0 #333;
+}
 
 button:hover,
 input[type="button"]:hover,
 input[type="submit"]:hover {
-  background-color: #333 ;
-  transform: translate(1px, 1px) ;
-  box-shadow: 2px 2px 0 #111 ;
+  background-color: #333;
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #111;
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: #999 ;
-  font-style: italic ;
+  color: #999;
+  font-style: italic;
 }
 
 /* Links - underlined and simple (light mode) */
 a {
-  color: #0066cc ;
-  text-decoration: underline ;
-  text-decoration-style: dashed ;
+  color: #0066cc;
+  text-decoration: underline;
+  text-decoration-style: dashed;
 }
 
 a:hover {
-  text-decoration-style: solid ;
-  color: #004499 ;
+  text-decoration-style: solid;
+  color: #004499;
 }
 
 /* Checkbox and Radio */
@@ -96,13 +97,13 @@ input[type="checkbox"],
 input[type="radio"] {
   width: 2em;
   height: 2em;
-  border: 1px solid #ddd ;
-  appearance: none ;
-  -webkit-appearance: none ;
+  border: 1px solid #ddd;
+  appearance: none;
+  -webkit-appearance: none;
   position: relative;
   background-color: #000;
   cursor: pointer;
-  margin:1em  0 ;
+  margin: 1em 0;
 }
 
 input[type="checkbox"]:checked::before {
@@ -112,24 +113,24 @@ input[type="checkbox"]:checked::before {
   position: absolute;
   top: -0.5em;
 }
-label{
+label {
   cursor: pointer;
 }
 
 input[type="radio"] {
-  border-radius: 50% ;
+  border-radius: 50%;
 }
 
 /* Exception for buttons - keep minimal shadow */
 button,
 input[type="button"],
 input[type="submit"] {
-  box-shadow: 3px 3px 0 #222 ;
+  box-shadow: 3px 3px 0 #222;
 }
 
 /* basic animation */
 .fadein {
-  transition: opacity 1s ease-in-out ;
+  transition: opacity 1s ease-in-out;
 }
 .hidden {
   opacity: 0;

@@ -37,12 +37,20 @@ const remainingTime = (state: State) =>
   formatSeconds(state.remainingTimeInSeconds);
 const settingsSelectors = (_: State, children: ChildrenValues<Children>) =>
   children.settings["0"].selectors;
-const durationInSeconds = flow(settingsSelectors, selectors => selectors.durationInSeconds());
-const preparationDurationInSeconds =  flow(settingsSelectors, selectors => selectors.preparationDurationInSeconds());
+const durationInSeconds = flow(settingsSelectors, selectors =>
+  selectors.durationInSeconds(),
+);
+const preparationDurationInSeconds = flow(settingsSelectors, selectors =>
+  selectors.preparationDurationInSeconds(),
+);
 const isPreparationNecessary = flow(preparationDurationInSeconds, t => t > 0);
-const isGongOn =  flow(settingsSelectors, selectors => selectors.isGongOn());
-const shouldDisplayRemainingTime = flow(settingsSelectors, selectors => selectors.shouldDisplayRemainingTime());
-const shouldDisplayProgress = flow(settingsSelectors, selectors => selectors.shouldDisplayProgress());
+const isGongOn = flow(settingsSelectors, selectors => selectors.isGongOn());
+const shouldDisplayRemainingTime = flow(settingsSelectors, selectors =>
+  selectors.shouldDisplayRemainingTime(),
+);
+const shouldDisplayProgress = flow(settingsSelectors, selectors =>
+  selectors.shouldDisplayProgress(),
+);
 const remainingTimeInSeconds = (state: State) => state.remainingTimeInSeconds;
 const isRemainingTimeZero = (state: State) => state.remainingTimeInSeconds <= 0;
 
@@ -67,24 +75,24 @@ const selectors = {
 };
 
 type eventNames =
-  "startClicked"|
-  "stopClicked"|
-  "sessionInterrupted"|
-  "preparationStarted"|
-  "preparationCompleted"|
-  "started"|
-  "startTickingRequested"|
-  "stopTickingRequested"|
-  "timerTicked"|
-  "completed"|
-  "enterFullScreenRequested"|
-  "exitFullScreenRequested"|
-  "loadAudioRequested"|
-  "playBeginningGongRequested"|
-  "playEndGongRequested"|
-  "stopGongRequested"|
-  "requestWakeLockRequested"|
-  "releaseWakeLockRequested";
+  | "startClicked"
+  | "stopClicked"
+  | "sessionInterrupted"
+  | "preparationStarted"
+  | "preparationCompleted"
+  | "started"
+  | "startTickingRequested"
+  | "stopTickingRequested"
+  | "timerTicked"
+  | "completed"
+  | "enterFullScreenRequested"
+  | "exitFullScreenRequested"
+  | "loadAudioRequested"
+  | "playBeginningGongRequested"
+  | "playEndGongRequested"
+  | "stopGongRequested"
+  | "requestWakeLockRequested"
+  | "releaseWakeLockRequested";
 
 type Events = ComponentEventsContract<eventNames>;
 

@@ -56,17 +56,21 @@ export const Timer = ({ path } = { path: "/" }) => {
             {/* Circular progress indicator - shown during meditation */}
             {v.isMeditationPhase && (
               <>
-                {v.shouldDisplayProgress && <ProgressIndicator durationInSeconds={v.durationInSeconds} />}
-                {v.shouldDisplayRemainingTime &&  <span
-                  style={{
-                    position: "absolute",
-                    top: "47%",
-                    fontSize:"1.5em",
-                    background:"#0006"
-                  }}
-                >
-                  {v.remainingTime}
-                </span>}
+                {v.shouldDisplayProgress && (
+                  <ProgressIndicator durationInSeconds={v.durationInSeconds} />
+                )}
+                {v.shouldDisplayRemainingTime && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "47%",
+                      fontSize: "1.5em",
+                      background: "#0006",
+                    }}
+                  >
+                    {v.remainingTime}
+                  </span>
+                )}
               </>
             )}
           </div>
@@ -100,27 +104,33 @@ export const Timer = ({ path } = { path: "/" }) => {
           {/* Stop button - shown during meditation */}
           {v.canBeStopped && (
             <button
-              style={{ fontSize: "0.7em", opacity: v.isCompletedPhase?"0.9": "0.4" }}
+              style={{
+                fontSize: "0.7em",
+                opacity: v.isCompletedPhase ? "0.9" : "0.4",
+              }}
               aria-label="Arrêter la méditation"
               onClick={() => {
                 d.stopClicked();
               }}
-            > Arrêter
+            >
+              {" "}
+              Arrêter
             </button>
           )}
         </div>
-        {v.isSettingsPhase &&  <p
-          style={{
-            fontSize: "0.8em",
-            opacity: 0.4,
-            position: "absolute",
-            bottom: "1em",
-            right: "1em",
-          }}
-        >
-          v0.3.1
-        </p>
-        }
+        {v.isSettingsPhase && (
+          <p
+            style={{
+              fontSize: "0.8em",
+              opacity: 0.4,
+              position: "absolute",
+              bottom: "1em",
+              right: "1em",
+            }}
+          >
+            v0.3.1
+          </p>
+        )}
       </div>
     </>
   );

@@ -1,13 +1,13 @@
 @import "./wireframe.css";
 
-.settings{
-  gap:1em;
+.settings {
+  gap: 1em;
   width: fit-content;
 }
 .settings-row {
   align-items: start;
 }
-.settings-key{
+.settings-key {
   align-items: start;
   justify-content: start;
 }

@@ -27,7 +27,8 @@ const timerEffects = timerEffectsProvider(
   tickingService,
   gongService,
   fullscreenService,
-  wakeLockService,);
+  wakeLockService,
+);
 export const mainConfiguration: Configuration = {
   settingsEffects,
   timerEffects,

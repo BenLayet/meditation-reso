@@ -1,4 +1,4 @@
-export const navigatorWakeLockService = () =>  ({
+export const navigatorWakeLockService = () => ({
   requestWakeLock: _requestWakeLock,
   releaseWakeLock: _releaseWakeLock,
 });
