@@ -1,4 +1,4 @@
-const parentOrigin = "https://www.reso.co/";
+const parentOrigin = "https://www.reso.co";
 const prefix = "MEDITATION_TIMER_RESO_";
 export type Message = {
   type: "get" | "set" | "requestWakeLock" | "releaseWakeLock";
