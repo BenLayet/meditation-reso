@@ -128,7 +128,7 @@ export const Timer = ({ path } = { path: "/" }) => {
               right: "1em",
             }}
           >
-            v0.3.2
+            v0.3.3
           </p>
         )}
       </div>

@@ -3,7 +3,7 @@
     <iframe
       id="meditation-reso-iframe"
       src="https://benlayet.github.io/meditation-reso/?v=3"
-      allow="fullscreen; screen-wake-lock; "
+      allow="fullscreen; screen-wake-lock; autoplay;"
       allowfullscreen="allowfullscreen"
       style="
         width: 100%;
@@ -13,6 +13,8 @@
         background-color: rgb(0, 0, 0);
       "
     ></iframe>
+    v0.3.3
+    <script src="https://unpkg.com/nosleep.js/dist/NoSleep.min.js"></script>
     <script prevent-tag-removal="">
       const prefix = "MEDITATION_TIMER_RESO_";
       const origin = "https://benlayet.github.io";
@@ -53,7 +55,16 @@
       }
 
       let wakeLock = null;
+      const noSleep = new NoSleep();
       async function requestWakeLock() {
+        try {
+        // NoSleep.enable() will create/play a small muted inline video
+        // Must be a user gesture — click/tap
+        noSleep.enable();
+        console.log('NoSleep enabled');
+      } catch (err) {
+        console.error('NoSleep enable failed', err);
+      }
         try {
           if ("wakeLock" in navigator) {
             wakeLock = await navigator.wakeLock.request("screen");
@@ -66,6 +77,14 @@
       }
 
       async function releaseWakeLock() {
+        try {
+          // NoSleep.enable() will create/play a small muted inline video
+          // Must be a user gesture — click/tap
+          noSleep.disable();
+          console.log('NoSleep disabled');
+        } catch (err) {
+          console.error('NoSleep disable failed', err);
+        }
         if (wakeLock) {
           try {
             await wakeLock.release();
