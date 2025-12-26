@@ -7,6 +7,11 @@ import { useTranslation } from "react-i18next";
 import type { TimerContract } from "./timer.component";
 import { useSofter, useSofterEffects } from "@softer-components/redux-adapter";
 import { configuration } from "../../config/configuration.ts";
+import packageJson from "../../../package.json";
+
+const envBuild = (import.meta as any).env?.VITE_BUILD as string | undefined;
+const build =
+  envBuild && envBuild.length ? envBuild : (packageJson?.version ?? "");
 export const Timer = ({ path } = { path: "/" }) => {
   const [v, d, c] = useSofter<TimerContract>(path);
   useSofterEffects<TimerContract>(path, configuration().timerEffects);
@@ -130,7 +135,7 @@ export const Timer = ({ path } = { path: "/" }) => {
               right: "1em",
             }}
           >
-            v0.3.3
+            v{build}
           </p>
         )}
       </div>
