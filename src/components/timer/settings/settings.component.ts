@@ -57,7 +57,7 @@ const selectors = {
 };
 
 //Events
-type eventNames =
+type EventNames =
   | "incrementDurationClicked"
   | "decrementDurationClicked"
   | "incrementPreparationClicked"
@@ -78,7 +78,7 @@ type eventNames =
   | "displayed";
 
 type Events = ComponentEventsContract<
-  eventNames,
+  EventNames,
   {
     settingsChanged: Settings;
     setDurationInMinutesRequested: number;
@@ -98,7 +98,7 @@ const effects = {
     "loadSettingsCompleted",
   ],
   saveSettingsRequested: ["saveSettingsSucceeded", "saveSettingsFailed"],
-} satisfies EffectsDef<eventNames>;
+} satisfies EffectsDef<EventNames>;
 
 export type SettingsContract = {
   state: typeof initialState;

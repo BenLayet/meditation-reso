@@ -1,4 +1,5 @@
 import { configureSofterStore } from "@softer-components/redux-adapter";
+import "./util/i18n";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";

@@ -6,9 +6,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSofter, useSofterEffects } from "@softer-components/redux-adapter";
-import type { SettingsContract } from "./settings.component";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { configuration } from "../../../config/configuration.ts";
+import type { SettingsContract } from "./settings.component";
 
 export const Settings = ({ path = "" }) => {
   const [v, d] = useSofter<SettingsContract>(path);
@@ -16,18 +17,19 @@ export const Settings = ({ path = "" }) => {
   useEffect(() => {
     d.displayed();
   }, [d]);
+  const { t } = useTranslation();
 
   return (
     <div className="settings">
       {/* Duration adjustment controls */}
       <div className="settings-row">
-        <div className="settings-key">Durée</div>
+        <div className="settings-key">{t("duration")}</div>
         <div className="settings-value">
           <div style={{ maxWidth: "5em" }}>
             <div style={{ fontSize: "1.5em" }}>{v.duration}</div>
             <div className="horizontal">
               <button
-                aria-label="Augmenter la durée de la méditation"
+                aria-label={t("increaseDuration")}
                 onClick={() => {
                   d.incrementDurationClicked();
                 }}
@@ -35,7 +37,7 @@ export const Settings = ({ path = "" }) => {
                 <FontAwesomeIcon icon={faPlus} />
               </button>
               <button
-                aria-label="Diminuer la durée de la méditation"
+                aria-label={t("decreaseDuration")}
                 onClick={() => {
                   d.decrementDurationClicked();
                 }}
@@ -48,13 +50,13 @@ export const Settings = ({ path = "" }) => {
       </div>
       {/* Preparation adjustment controls */}
       <div className="settings-row">
-        <div className="settings-key">Préparation</div>
+        <div className="settings-key">{t("preparation")}</div>
         <div className="settings-value">
           <div style={{ maxWidth: "5em" }}>
             <div style={{ fontSize: "1.5em" }}>{v.preparation}</div>
             <div className="horizontal">
               <button
-                aria-label="Augmenter la durée de la préparation"
+                aria-label={t("increasePreparation")}
                 onClick={() => {
                   d.incrementPreparationClicked();
                 }}
@@ -62,7 +64,7 @@ export const Settings = ({ path = "" }) => {
                 <FontAwesomeIcon icon={faPlus} />
               </button>
               <button
-                aria-label="Diminuer la durée de la préparation"
+                aria-label={t("decreasePreparation")}
                 onClick={() => {
                   d.decrementPreparationClicked();
                 }}
@@ -75,7 +77,7 @@ export const Settings = ({ path = "" }) => {
       </div>
       {/* Gong sound toggle */}
       <div className="settings-row">
-        <div className="settings-key">Gong</div>
+        <div className="settings-key">{t("gong")}</div>
         <div className="settings-value">
           <label>
             <input
@@ -101,7 +103,7 @@ export const Settings = ({ path = "" }) => {
                 d.shouldDisplayProgressChanged(e.target.checked);
               }}
             />
-            &nbsp;progression
+            &nbsp;{t("progression")}
           </label>
           <label>
             <input
@@ -111,7 +113,7 @@ export const Settings = ({ path = "" }) => {
                 d.shouldDisplayRemainingTimeChanged(e.target.checked);
               }}
             />
-            &nbsp;temps restant
+            &nbsp;{t("remainingTime")}
           </label>
         </div>
       </div>

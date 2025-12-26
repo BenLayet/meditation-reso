@@ -1,0 +1,19 @@
+{
+  "preparation": "Préparation",
+  "startMeditation": "Commencer la méditation",
+  "stopMeditation": "Arrêter la méditation",
+  "back": "Retour",
+  "sessionCompleted": "Session terminée",
+  "duration": "Durée",
+  "gong": "Gong",
+  "show": "Afficher",
+  "progression": "progression",
+  "remainingTime": "temps restant",
+  "increaseDuration": "Augmenter la durée de la méditation",
+  "decreaseDuration": "Diminuer la durée de la méditation",
+  "increasePreparation": "Augmenter la durée de la préparation",
+  "decreasePreparation": "Diminuer la durée de la préparation",
+  "languageLabel": "Langue",
+  "english": "English",
+  "french": "Français"
+}

@@ -2,6 +2,7 @@ import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { Settings } from "./settings/Settings";
+import { useTranslation } from "react-i18next";
 
 import type { TimerContract } from "./timer.component";
 import { useSofter, useSofterEffects } from "@softer-components/redux-adapter";
@@ -9,6 +10,7 @@ import { configuration } from "../../config/configuration.ts";
 export const Timer = ({ path } = { path: "/" }) => {
   const [v, d, c] = useSofter<TimerContract>(path);
   useSofterEffects<TimerContract>(path, configuration().timerEffects);
+  const { t } = useTranslation();
   return (
     <>
       <div style={{ maxWidth: "25em" }}>
@@ -38,7 +40,7 @@ export const Timer = ({ path } = { path: "/" }) => {
             {/* Preparation time */}
             {v.isPreparationPhase && (
               <div>
-                <p>Préparation</p>
+                <p>{t("preparation")}</p>
                 {v.remainingTime}
               </div>
             )}
@@ -84,7 +86,7 @@ export const Timer = ({ path } = { path: "/" }) => {
               right: 0,
             }}
           >
-            {v.isCompletedPhase && <p>Session terminée</p>}
+            {v.isCompletedPhase && <p>{t("sessionCompleted")}</p>}
           </div>
         </div>
         {/* Timer display and start/stop controls */}
@@ -93,7 +95,7 @@ export const Timer = ({ path } = { path: "/" }) => {
           {v.canBeStarted && (
             <button
               style={{ fontSize: "0.7em" }}
-              aria-label="Commencer la méditation"
+              aria-label={t("startMeditation")}
               onClick={() => {
                 d.startClicked();
               }}
@@ -108,13 +110,13 @@ export const Timer = ({ path } = { path: "/" }) => {
                 fontSize: "0.7em",
                 opacity: v.isCompletedPhase ? "0.9" : "0.4",
               }}
-              aria-label="Arrêter la méditation"
+              aria-label={t("stopMeditation")}
               onClick={() => {
                 d.stopClicked();
               }}
             >
               {" "}
-              Arrêter
+              {t("back")}
             </button>
           )}
         </div>

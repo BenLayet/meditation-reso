@@ -5,6 +5,8 @@ type ProgressIndicatorProps = {
 export const ProgressIndicator = ({
   durationInSeconds,
 }: ProgressIndicatorProps) => {
+  const r = 85;
+  const circumference = 2 * Math.PI * r; // ≈ 534.07
   return (
     <div
       style={{
@@ -21,7 +23,7 @@ export const ProgressIndicator = ({
         <circle
           cx="100"
           cy="100"
-          r="85"
+          r={r}
           strokeWidth="25"
           fill="#000"
           stroke="#333"
@@ -30,12 +32,12 @@ export const ProgressIndicator = ({
         <circle
           cx="100"
           cy="100"
-          r="85"
+          r={r}
           strokeWidth="25"
           fill="transparent"
-          stroke="#ddd"
-          strokeDasharray="565.48"
-          strokeDashoffset="565.48"
+          stroke="#ffffffff"
+          strokeDasharray={circumference}
+          strokeDashoffset={circumference}
           strokeLinecap="round"
           transform="rotate(-90 100 100)"
           style={{
@@ -47,7 +49,7 @@ export const ProgressIndicator = ({
         {`
           @keyframes fillArc {
             from {
-              stroke-dashoffset: 565.48;
+              stroke-dashoffset: ${circumference};
             }
             to {
               stroke-dashoffset: 0;

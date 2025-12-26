@@ -74,7 +74,7 @@ const selectors = {
   isCompletedPhase,
 };
 
-type eventNames =
+type EventNames =
   | "startClicked"
   | "stopClicked"
   | "sessionInterrupted"
@@ -94,7 +94,7 @@ type eventNames =
   | "requestWakeLockRequested"
   | "releaseWakeLockRequested";
 
-type Events = ComponentEventsContract<eventNames>;
+type Events = ComponentEventsContract<EventNames>;
 
 const effects = {
   startTickingRequested: ["timerTicked"],
@@ -107,7 +107,7 @@ const effects = {
   requestWakeLockRequested: [],
   enterFullScreenRequested: [],
   exitFullScreenRequested: [],
-} satisfies EffectsDef<eventNames>;
+} satisfies EffectsDef<EventNames>;
 
 export type TimerContract = {
   state: State;
