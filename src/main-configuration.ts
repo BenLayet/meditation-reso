@@ -1,6 +1,5 @@
 import { isInIframe } from "./util/iframe.functions.ts";
 import type { Configuration } from "./config/configuration.ts";
-import { iframeSettingsPersistenceService } from "./config/iframe/iframe-settings-persistence.service.ts";
 import { iframeWakeLockService } from "./config/iframe/iframe-wake-lock.service.ts";
 import { cookieSettingsPersistenceService } from "./config/cookie/cookie-settings-persistence.service.ts";
 import { CookieService } from "./config/cookie/cookie.service.ts";
@@ -13,9 +12,9 @@ import { settingsEffectsProvider } from "./components/timer/settings/settings.ef
 
 const _isInIframe = isInIframe();
 
-const settingsPersistenceService = _isInIframe
-  ? iframeSettingsPersistenceService()
-  : cookieSettingsPersistenceService(new CookieService());
+const settingsPersistenceService = cookieSettingsPersistenceService(
+  new CookieService(),
+);
 const wakeLockService = _isInIframe
   ? iframeWakeLockService()
   : navigatorWakeLockService();
