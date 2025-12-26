@@ -228,6 +228,11 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
       to: "settingsChanged",
       withPayload: ({ selectors }) => selectors.settings(),
     },
+    {
+      from: "setPreparationInSecondsRequested",
+      to: "settingsChanged",
+      withPayload: ({ selectors }) => selectors.settings(),
+    },
     { from: "settingsChanged", to: "saveSettingsRequested" },
   ],
   effects,
