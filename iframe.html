@@ -47,34 +47,32 @@
         );
       });
       function get(key) {
-        return getCookie(prefix + key);
+        return getFromLocalStorage(prefix + key);
       }
       function set(key, value) {
-        setCookie(prefix + key, value);
+        setToLocalStorage(prefix + key, value);
       }
 
-      function getCookie(name) {
-        const nameEQ = name + "=";
-        const ca = document.cookie.split(";");
-        for (let c of ca) {
-          while (c.startsWith(" ")) c = c.substring(1, c.length);
-          if (c.startsWith(nameEQ))
-            return decodeURIComponent(c.substring(nameEQ.length, c.length));
+      // Use localStorage in the parent frame instead of cookies.
+      // Keep the same function names so message handlers do not need to change.
+      function getFromLocalStorage(name) {
+        try {
+          const v = localStorage.getItem(name);
+          return v === null ? null : v;
+        } catch (err) {
+          console.error(`${prefix} localStorage.getItem failed`, err);
+          return null;
         }
-        return null;
       }
 
-      function setCookie(name, value) {
-        const seconds = 365 * 24 * 60 * 60; // 1 year
-        const maxAgePart = `; max-age=${seconds}`;
-        const expires = `; expires=${new Date(Date.now() + seconds * 1000).toUTCString()}`;
-        document.cookie =
-          name +
-          "=" +
-          encodeURIComponent(value || "") +
-          maxAgePart +
-          expires +
-          "; domain=.reso.co; path=/; SameSite=None; Secure";
+      function setToLocalStorage(name, value) {
+        try {
+          localStorage.setItem(name, value == null ? "" : String(value));
+          return true;
+        } catch (err) {
+          console.error(`${prefix} localStorage.setItem failed`, err);
+          return false;
+        }
       }
 
       let wakeLock = null;

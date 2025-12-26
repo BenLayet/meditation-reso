@@ -9,12 +9,14 @@ import { GongService } from "./services/gong.service.ts";
 import { TickingService } from "./services/ticking.service.ts";
 import { timerEffectsProvider } from "./components/timer/timer.effects.ts";
 import { settingsEffectsProvider } from "./components/timer/settings/settings.effects.ts";
+import { iframeSettingsPersistenceService } from "./config/iframe/iframe-settings-persistence.service.ts";
 
 const _isInIframe = isInIframe();
 
-const settingsPersistenceService = cookieSettingsPersistenceService(
-  new CookieService(),
-);
+const settingsPersistenceService = _isInIframe
+  ? iframeSettingsPersistenceService()
+  : cookieSettingsPersistenceService(new CookieService());
+
 const wakeLockService = _isInIframe
   ? iframeWakeLockService()
   : navigatorWakeLockService();
