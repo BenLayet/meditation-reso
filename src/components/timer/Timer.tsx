@@ -138,6 +138,11 @@ export const Timer = ({ path } = { path: "/" }) => {
           </p>
         )}
       </div>
+      <textarea
+        style={{ width: "100%", height: "8em", marginTop: "1em" }}
+        readOnly
+        value={v.debugInfo}
+      />
     </>
   );
 };

@@ -4,7 +4,7 @@ export class GongService {
   private beginningAudio = new Audio(gongSound);
   private endAudio = new Audio(gongSound);
 
-  load = () => {
+  loadAudio = () => {
     this.beginningAudio.load();
     this.endAudio.load();
   };

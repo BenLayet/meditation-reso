@@ -15,7 +15,7 @@ export const timerEffectsProvider = (
     tickingService.startTicking(timerTicked, TICK_INTERVAL_MS);
   },
   stopTickingRequested: tickingService.stopTicking,
-  loadAudioRequested: gongService.load,
+  loadAudioRequested: gongService.loadAudio,
   playBeginningGongRequested: gongService.playBeginningAudio,
   playEndGongRequested: gongService.playEndAudio,
   stopGongRequested: gongService.stopAllAudio,
