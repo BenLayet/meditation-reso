@@ -10,8 +10,7 @@ import { configuration } from "../../config/configuration.ts";
 import packageJson from "../../../package.json";
 
 const envBuild = (import.meta as any).env?.VITE_BUILD as string | undefined;
-const build =
-  envBuild && envBuild.length ? envBuild : (packageJson?.version ?? "");
+const build = `${packageJson?.version}-${envBuild ?? "dev"}`;
 export const Timer = ({ path } = { path: "/" }) => {
   const [v, d, c] = useSofter<TimerContract>(path);
   useSofterEffects<TimerContract>(path, configuration().timerEffects);
