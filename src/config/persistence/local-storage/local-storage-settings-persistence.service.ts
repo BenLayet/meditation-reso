@@ -1,7 +1,7 @@
-import type { Settings } from "../../domain/settings.ts";
-import type { SettingsPersistenceService } from "../../services/settings-persistence.service.ts";
+import type { Settings } from "../../../domain/settings.ts";
+import type { SettingsPersistenceService } from "../../../services/settings-persistence.service.ts";
 
-export const localstorageSettingsPersistenceService =
+export const localStorageSettingsPersistenceService =
   (): SettingsPersistenceService => ({
     saveSettings: (settings: Settings) => {
       try {
@@ -10,7 +10,7 @@ export const localstorageSettingsPersistenceService =
         }
       } catch (err) {
         // ignore storage errors (private mode, quota, etc.)
-        console.debug("localstorage.saveSettings failed", err);
+        console.debug("localStorage.saveSettings failed", err);
       }
       return Promise.resolve();
     },
