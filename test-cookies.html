@@ -1,0 +1,42 @@
+<div id="ben-test"></div>
+<div id="ben-test-cookie"></div>
+
+<script>
+  document.getElementById("ben-test").innerText = "Hello 2";
+
+  // Set a new cookie
+  document.cookie =
+    "testCookie=myValue; path=/; max-age=31536000; SameSite=Lax";
+
+  // Get a specific cookie by name
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+    return null;
+  }
+
+  // Set a cookie with options
+  function setCookie(name, value, options = {}) {
+    const {
+      path = "/",
+      maxAge = 31536000, // 1 year in seconds
+      sameSite = "Lax",
+      secure = false,
+      domain = null,
+    } = options;
+
+    let cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+    cookie += `; path=${path}`;
+    cookie += `; max-age=${maxAge}`;
+    cookie += `; SameSite=${sameSite}`;
+    if (secure) cookie += "; Secure";
+    if (domain) cookie += `; domain=${domain}`;
+
+    document.cookie = cookie;
+  }
+  const testCookieValue = getCookie("testCookie");
+
+  document.getElementById("ben-test-cookie").innerText =
+    `TestCookie value: ${testCookieValue}`;
+</script>

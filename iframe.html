@@ -1,121 +1,121 @@
 <div class="richedit_wrap" style="">
-  <div class="richedit_wrap" style="background-color: rgb(0, 0, 0)">
-    <iframe
-      id="meditation-reso-iframe"
-      src="https://benlayet.github.io/meditation-reso/?v=3"
-      allow="fullscreen; screen-wake-lock; autoplay;"
-      allowfullscreen="allowfullscreen"
-      style="
+    <div class="richedit_wrap" style="background-color: rgb(0, 0, 0)">
+        <iframe
+                id="meditation-reso-iframe"
+                src="https://benlayet.github.io/meditation-reso/?v=3"
+                allow="fullscreen; screen-wake-lock; autoplay;"
+                allowfullscreen="allowfullscreen"
+                style="
         width: 100%;
         border: none;
         border-radius: 3px;
         min-height: 700px;
         background-color: rgb(0, 0, 0);
       "
-    ></iframe>
-    <script src="https://unpkg.com/nosleep.js/dist/NoSleep.min.js"></script>
-    <script prevent-tag-removal="">
-      const prefix = "MEDITATION_TIMER_RESO_";
-      const origin = "https://benlayet.github.io";
+        ></iframe>
+        <script src="https://unpkg.com/nosleep.js/dist/NoSleep.min.js"></script>
+        <script prevent-tag-removal="">
+            const prefix = "MEDITATION_TIMER_RESO_";
+            const origin = "https://benlayet.github.io";
 
-      window.addEventListener("message", async message => {
-        if (!message.origin.startsWith(origin)) return;
-        console.debug(`${prefix} message received in parent `, message);
-        const { id, type, key, value } = message.data || {};
-        let responseValue = "";
-        switch (type) {
-          case "get":
-            responseValue = get(key);
-            break;
-          case "set":
-            set(key, value);
-            break;
-          case "requestWakeLock":
-            await requestWakeLock();
-            break;
-          case "releaseWakeLock":
-            await releaseWakeLock();
-            break;
-          default:
-            console.error(`${prefix} unsupported message type=${type}`);
-            return;
-        }
-        console.debug(`${prefix} response from parent:`, responseValue);
-        message.source.postMessage(
-          { id, type: "response", value: responseValue },
-          { targetOrigin: message.origin },
-        );
-      });
-      function get(key) {
-        return getFromLocalStorage(prefix + key);
-      }
-      function set(key, value) {
-        setToLocalStorage(prefix + key, value);
-      }
+            window.addEventListener("message", async message => {
+                if (!message.origin.startsWith(origin)) return;
+                console.debug(`${prefix} message received in parent `, message);
+                const { id, type, key, value } = message.data || {};
+                let responseValue = "";
+                switch (type) {
+                    case "get":
+                        responseValue = get(key);
+                        break;
+                    case "set":
+                        set(key, value);
+                        break;
+                    case "requestWakeLock":
+                        await requestWakeLock();
+                        break;
+                    case "releaseWakeLock":
+                        await releaseWakeLock();
+                        break;
+                    default:
+                        console.error(`${prefix} unsupported message type=${type}`);
+                        return;
+                }
+                console.debug(`${prefix} response from parent:`, responseValue);
+                message.source.postMessage(
+                    { id, type: "response", value: responseValue },
+                    { targetOrigin: message.origin },
+                );
+            });
+            function get(key) {
+                return getFromLocalStorage(prefix + key);
+            }
+            function set(key, value) {
+                setToLocalStorage(prefix + key, value);
+            }
 
-      // Use localStorage in the parent frame instead of cookies.
-      // Keep the same function names so message handlers do not need to change.
-      function getFromLocalStorage(name) {
-        try {
-          const v = localStorage.getItem(name);
-          return v === null ? null : v;
-        } catch (err) {
-          console.error(`${prefix} localStorage.getItem failed`, err);
-          return null;
-        }
-      }
+            // Use localStorage in the parent frame instead of cookies.
+            // Keep the same function names so message handlers do not need to change.
+            function getFromLocalStorage(name) {
+                try {
+                    const v = localStorage.getItem(name);
+                    return v === null ? null : v;
+                } catch (err) {
+                    console.error(`${prefix} localStorage.getItem failed`, err);
+                    return null;
+                }
+            }
 
-      function setToLocalStorage(name, value) {
-        try {
-          localStorage.setItem(name, value == null ? "" : String(value));
-          return true;
-        } catch (err) {
-          console.error(`${prefix} localStorage.setItem failed`, err);
-          return false;
-        }
-      }
+            function setToLocalStorage(name, value) {
+                try {
+                    localStorage.setItem(name, value == null ? "" : String(value));
+                    return true;
+                } catch (err) {
+                    console.error(`${prefix} localStorage.setItem failed`, err);
+                    return false;
+                }
+            }
 
-      let wakeLock = null;
-      const noSleep = new NoSleep();
-      async function requestWakeLock() {
-        try {
-          // NoSleep.enable() will create/play a small muted inline video
-          // Must be a user gesture — click/tap
-          noSleep.enable();
-          console.log(`${prefix} NoSleep enabled`);
-        } catch (err) {
-          console.error(`${prefix} NoSleep enable failed`, err);
-        }
-        try {
-          if ("wakeLock" in navigator) {
-            wakeLock = await navigator.wakeLock.request("screen");
-            console.log(`${prefix} Wake Lock activated`);
-            return wakeLock;
-          }
-        } catch (err) {
-          console.error(`${prefix} Wake Lock failed:`, err);
-        }
-      }
+            let wakeLock = null;
+            const noSleep = new NoSleep();
+            async function requestWakeLock() {
+                try {
+                    // NoSleep.enable() will create/play a small muted inline video
+                    // Must be a user gesture — click/tap
+                    noSleep.enable();
+                    console.log(`${prefix} NoSleep enabled`);
+                } catch (err) {
+                    console.error(`${prefix} NoSleep enable failed`, err);
+                }
+                try {
+                    if ("wakeLock" in navigator) {
+                        wakeLock = await navigator.wakeLock.request("screen");
+                        console.log(`${prefix} Wake Lock activated`);
+                        return wakeLock;
+                    }
+                } catch (err) {
+                    console.error(`${prefix} Wake Lock failed:`, err);
+                }
+            }
 
-      async function releaseWakeLock() {
-        try {
-          // NoSleep.enable() will create/play a small muted inline video
-          // Must be a user gesture — click/tap
-          noSleep.disable();
-          console.log(`${prefix} NoSleep disabled`);
-        } catch (err) {
-          console.error(`${prefix} NoSleep disable failed`, err);
-        }
-        if (wakeLock) {
-          try {
-            await wakeLock.release();
-            wakeLock = null;
-            console.log(`${prefix} Wake Lock released`);
-          } catch (err) {
-            console.error(`${prefix} Wake Lock release failed:`, err);
-          }
-        }
-      }
-    </script>
-  </div>
+            async function releaseWakeLock() {
+                try {
+                    // NoSleep.enable() will create/play a small muted inline video
+                    // Must be a user gesture — click/tap
+                    noSleep.disable();
+                    console.log(`${prefix} NoSleep disabled`);
+                } catch (err) {
+                    console.error(`${prefix} NoSleep disable failed`, err);
+                }
+                if (wakeLock) {
+                    try {
+                        await wakeLock.release();
+                        wakeLock = null;
+                        console.log(`${prefix} Wake Lock released`);
+                    } catch (err) {
+                        console.error(`${prefix} Wake Lock release failed:`, err);
+                    }
+                }
+            }
+        </script>
+    </div>
 </div>
