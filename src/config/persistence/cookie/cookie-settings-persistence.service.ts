@@ -1,6 +1,6 @@
-import type { Settings } from "../../domain/settings.ts";
+import type { Settings } from "../../../domain/settings.ts";
 import type { CookieService } from "./cookie.service.ts";
-import type { SettingsPersistenceService } from "../../services/settings-persistence.service.ts";
+import type { SettingsPersistenceService } from "../../../services/settings-persistence.service.ts";
 
 export const cookieSettingsPersistenceService = (
   cookieService: CookieService,
