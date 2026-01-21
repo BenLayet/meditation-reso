@@ -35,21 +35,21 @@ const canBeStarted = isSettingsPhase;
 const canBeStopped = isNotSettingsPhase;
 const remainingTime = (state: State) =>
   formatSeconds(state.remainingTimeInSeconds);
-const settingsSelectors = (_: State, children: ChildrenValues<Children>) =>
-  children.settings["0"].selectors;
-const durationInSeconds = flow(settingsSelectors, selectors =>
-  selectors.durationInSeconds(),
+const settingsValues = (_: State, childrenValues: ChildrenValues<Children>) =>
+  childrenValues.settings.values;
+const durationInSeconds = flow(settingsValues, values =>
+  values.durationInSeconds(),
 );
-const preparationDurationInSeconds = flow(settingsSelectors, selectors =>
-  selectors.preparationDurationInSeconds(),
+const preparationDurationInSeconds = flow(settingsValues, values =>
+  values.preparationDurationInSeconds(),
 );
 const isPreparationNecessary = flow(preparationDurationInSeconds, t => t > 0);
-const isGongOn = flow(settingsSelectors, selectors => selectors.isGongOn());
-const shouldDisplayRemainingTime = flow(settingsSelectors, selectors =>
-  selectors.shouldDisplayRemainingTime(),
+const isGongOn = flow(settingsValues, values => values.isGongOn());
+const shouldDisplayRemainingTime = flow(settingsValues, values =>
+  values.shouldDisplayRemainingTime(),
 );
-const shouldDisplayProgress = flow(settingsSelectors, selectors =>
-  selectors.shouldDisplayProgress(),
+const shouldDisplayProgress = flow(settingsValues, values =>
+  values.shouldDisplayProgress(),
 );
 const remainingTimeInSeconds = (state: State) => state.remainingTimeInSeconds;
 const isRemainingTimeZero = (state: State) => state.remainingTimeInSeconds <= 0;
@@ -124,12 +124,12 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
   updaters: {
     preparationStarted: ({
       state,
-      selectors: { preparationDurationInSeconds },
+      values: { preparationDurationInSeconds },
     }) => {
       state.phase = "PREPARATION";
       state.remainingTimeInSeconds = preparationDurationInSeconds();
     },
-    started: ({ state, selectors: { durationInSeconds } }) => {
+    started: ({ state, values: { durationInSeconds } }) => {
       state.phase = "MEDITATION";
       state.remainingTimeInSeconds = durationInSeconds();
     },
@@ -164,18 +164,18 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
     {
       from: "startClicked",
       to: "preparationStarted",
-      onCondition: ({ selectors }) => selectors.isPreparationNecessary(),
+      onCondition: ({ values }) => values.isPreparationNecessary(),
     },
     {
       from: "startClicked",
       to: "started",
-      onCondition: ({ selectors }) => !selectors.isPreparationNecessary(),
+      onCondition: ({ values }) => !values.isPreparationNecessary(),
     },
     {
       from: "timerTicked",
       to: "preparationCompleted",
-      onCondition: ({ selectors }) =>
-        selectors.isPreparationPhase() && selectors.isRemainingTimeZero(),
+      onCondition: ({ values }) =>
+        values.isPreparationPhase() && values.isRemainingTimeZero(),
     },
     {
       from: "preparationCompleted",
@@ -184,18 +184,18 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
     {
       from: "started",
       to: "playBeginningGongRequested",
-      onCondition: ({ selectors }) => selectors.isGongOn(),
+      onCondition: ({ values }) => values.isGongOn(),
     },
     {
       from: "timerTicked",
       to: "completed",
-      onCondition: ({ selectors }) =>
-        selectors.isMeditationPhase() && selectors.isRemainingTimeZero(),
+      onCondition: ({ values }) =>
+        values.isMeditationPhase() && values.isRemainingTimeZero(),
     },
     {
       from: "stopClicked",
       to: "sessionInterrupted",
-      onCondition: ({ selectors }) => selectors.isNotCompletedPhase(),
+      onCondition: ({ values }) => values.isNotCompletedPhase(),
     },
     {
       from: "completed",
@@ -208,7 +208,7 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
     {
       from: "completed",
       to: "playEndGongRequested",
-      onCondition: ({ selectors }) => selectors.isGongOn(),
+      onCondition: ({ values }) => values.isGongOn(),
     },
     {
       from: "sessionInterrupted",
@@ -227,7 +227,7 @@ export const timerComponentDef: ComponentDef<TimerContract> = {
       to: "stopGongRequested",
     },
   ],
-  childrenComponents: {
+  childrenComponentDefs: {
     settings: settingsComponentDef,
   },
   effects,

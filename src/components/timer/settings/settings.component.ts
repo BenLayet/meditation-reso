@@ -178,60 +178,60 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
     {
       from: "displayed",
       to: "loadSettingsRequested",
-      onCondition: ({ selectors }) => selectors.isLoadingNeeded(),
+      onCondition: ({ values }) => values.isLoadingNeeded(),
     },
     {
       from: "incrementDurationClicked",
       to: "setDurationInMinutesRequested",
-      withPayload: ({ selectors }) =>
-        durationIncrementer.incrementValue(selectors.durationInMinutes()),
+      withPayload: ({ values }) =>
+        durationIncrementer.incrementValue(values.durationInMinutes()),
     },
     {
       from: "decrementDurationClicked",
       to: "setDurationInMinutesRequested",
-      withPayload: ({ selectors }) =>
-        durationIncrementer.decrementValue(selectors.durationInMinutes()),
+      withPayload: ({ values }) =>
+        durationIncrementer.decrementValue(values.durationInMinutes()),
     },
     {
       from: "incrementPreparationClicked",
       to: "setPreparationInSecondsRequested",
-      withPayload: ({ selectors }) =>
+      withPayload: ({ values }) =>
         preparationIncrementer.incrementValue(
-          selectors.preparationDurationInSeconds(),
+          values.preparationDurationInSeconds(),
         ),
     },
     {
       from: "decrementPreparationClicked",
       to: "setPreparationInSecondsRequested",
-      withPayload: ({ selectors }) =>
+      withPayload: ({ values }) =>
         preparationIncrementer.decrementValue(
-          selectors.preparationDurationInSeconds(),
+          values.preparationDurationInSeconds(),
         ),
     },
     {
       from: "isGongOnChanged",
       to: "settingsChanged",
-      withPayload: ({ selectors }) => selectors.settings(),
+      withPayload: ({ values }) => values.settings(),
     },
     {
       from: "shouldDisplayRemainingTimeChanged",
       to: "settingsChanged",
-      withPayload: ({ selectors }) => selectors.settings(),
+      withPayload: ({ values }) => values.settings(),
     },
     {
       from: "shouldDisplayProgressChanged",
       to: "settingsChanged",
-      withPayload: ({ selectors }) => selectors.settings(),
+      withPayload: ({ values }) => values.settings(),
     },
     {
       from: "setDurationInMinutesRequested",
       to: "settingsChanged",
-      withPayload: ({ selectors }) => selectors.settings(),
+      withPayload: ({ values }) => values.settings(),
     },
     {
       from: "setPreparationInSecondsRequested",
       to: "settingsChanged",
-      withPayload: ({ selectors }) => selectors.settings(),
+      withPayload: ({ values }) => values.settings(),
     },
     { from: "settingsChanged", to: "saveSettingsRequested" },
   ],
