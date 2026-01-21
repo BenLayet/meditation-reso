@@ -21,8 +21,8 @@ importers:
         specifier: ^2.6.1
         version: 2.9.1(react-redux@9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1))(react@19.2.0)
       '@softer-components/redux-adapter':
-        specifier: ^0.4.0
-        version: 0.4.0(@types/react@19.2.2)(redux@5.0.1)
+        specifier: ^0.4.2
+        version: 0.4.2(@types/react@19.2.2)(redux@5.0.1)
       i18next:
         specifier: ^23.0.0
         version: 23.16.8
@@ -58,8 +58,8 @@ importers:
         specifier: ^9.23.0
         version: 9.38.0
       '@softer-components/types':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.4.2
+        version: 0.4.2
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.1
@@ -641,14 +641,14 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@softer-components/redux-adapter@0.4.0':
-    resolution: {integrity: sha512-aXXTRtmDi91l+27jNQiJNudsUBr3VtfOBCIP0cyXiKZ9SGC85xMsGubOWUhzW7jE8lfGCe5NXulhFZ1rb9hx9g==}
+  '@softer-components/redux-adapter@0.4.2':
+    resolution: {integrity: sha512-FrrtTXh9nGLx4NC9Ue0mNGp+qy4ksV7hlpuyqdsQfUwJRcxr/h4uerDy331cHOR6uvtP9hR4rGgNhKRYdEjIVw==}
 
-  '@softer-components/types@0.4.0':
-    resolution: {integrity: sha512-V9CyPwLriwrM1Qw9DF7c83KGHyBx74257YmB7eZI7RcVs4IXuc0SZf1GradjVk2iD7kTt5GVMStaWFgibqnxYQ==}
+  '@softer-components/types@0.4.2':
+    resolution: {integrity: sha512-aAdT+EJsD8bJ58va0O0YHFIKtTmhfcFR8i99NX71wtmc6+sgWFkjBIiIqVfQ8irG++noWBu3o2ZB6TLYY3rb9g==}
 
-  '@softer-components/utils@0.4.0':
-    resolution: {integrity: sha512-9sxvHfzg9doxyNWhdMnyeeUErDBBuUbWEDecgdsV+NRQRfqx9qRL3fYFmgw5EdPFHvsVAiSKC72qvhzLLnq2DA==}
+  '@softer-components/utils@0.4.2':
+    resolution: {integrity: sha512-529rDsOY5cxDkE8cuMfXQV2AAj5SfjzIcEUD0TzTSq0WE6ZA2/MbNTzPqvBxTKfSmJjS82pCTR6bi0LglIx+FQ==}
 
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
@@ -2782,11 +2782,11 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.52.5':
     optional: true
 
-  '@softer-components/redux-adapter@0.4.0(@types/react@19.2.2)(redux@5.0.1)':
+  '@softer-components/redux-adapter@0.4.2(@types/react@19.2.2)(redux@5.0.1)':
     dependencies:
       '@reduxjs/toolkit': 2.9.1(react-redux@9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1))(react@19.2.0)
-      '@softer-components/types': 0.4.0
-      '@softer-components/utils': 0.4.0
+      '@softer-components/types': 0.4.2
+      '@softer-components/utils': 0.4.2
       lodash: 4.17.21
       react: 19.2.0
       react-redux: 9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1)
@@ -2795,11 +2795,11 @@ snapshots:
       - '@types/react'
       - redux
 
-  '@softer-components/types@0.4.0': {}
+  '@softer-components/types@0.4.2': {}
 
-  '@softer-components/utils@0.4.0':
+  '@softer-components/utils@0.4.2':
     dependencies:
-      '@softer-components/types': 0.4.0
+      '@softer-components/types': 0.4.2
       immer: 10.2.0
       lodash: 4.17.21
 
