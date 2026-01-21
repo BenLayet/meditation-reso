@@ -22,11 +22,5 @@ export const timerEffectsProvider = (
   requestWakeLockRequested: wakeLockService.requestWakeLock,
   releaseWakeLockRequested: wakeLockService.releaseWakeLock,
   enterFullScreenRequested: fullscreenService.enterFullscreen,
-  exitFullScreenRequested: () => {
-    if (navigator.userAgent.toLowerCase().includes("android")) {
-      location.reload();
-    } else {
-      fullscreenService.exitFullscreen();
-    }
-  },
+  exitFullScreenRequested: fullscreenService.exitFullscreen,
 });
