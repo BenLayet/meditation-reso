@@ -1,0 +1,28 @@
+/* Checkbox and Radio */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 2em;
+  height: 2em;
+  border: 1px solid var(--text-color);
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  background-color: var(--input-background-color);
+  cursor: pointer;
+  margin: 1em 0;
+}
+
+input[type="checkbox"]:checked::before {
+  content: "✓";
+  color: var(--text-color);
+  font-size: 4em;
+  position: absolute;
+  top: -0.5em;
+}
+label {
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  border-radius: 50%;
+}

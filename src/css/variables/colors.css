@@ -1,0 +1,13 @@
+:root {
+  --background-color: rgb(250, 249, 234);
+  --input-background-color: #ffffff;
+  --text-color: #000000;
+
+  --button-background-color: #049c7c;
+  --button-color: #ffffff;
+}
+[data-theme="dark"] {
+  --background-color: #000000;
+  --input-background-color: #000000;
+  --text-color: rgb(250, 249, 234);
+}

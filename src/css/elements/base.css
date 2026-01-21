@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: var(--body-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  position: relative;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+/* Body and containers */
+body,
+div,
+section,
+article,
+aside,
+header,
+footer,
+main {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}

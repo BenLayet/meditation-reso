@@ -1,11 +1,12 @@
-import { configureSofterStore } from "@softer-components/redux-adapter";
+import "./css/main.css";
 import "./util/i18n";
+
+import { configureSofterStore } from "@softer-components/redux-adapter";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { App } from "./components/app/App.tsx";
 import { timerComponentDef } from "./components/timer/timer.component.ts";
-import "./index.css";
 import { configuration } from "./config/configuration.ts";
 import { mainConfiguration } from "./main-configuration.ts";
 

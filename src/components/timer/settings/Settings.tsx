@@ -29,6 +29,7 @@ export const Settings = ({ path = "" }) => {
             <div style={{ fontSize: "1.5em" }}>{v.duration}</div>
             <div className="horizontal">
               <button
+                className="round-btn"
                 aria-label={t("increaseDuration")}
                 onClick={() => {
                   d.incrementDurationClicked();
@@ -37,6 +38,7 @@ export const Settings = ({ path = "" }) => {
                 <FontAwesomeIcon icon={faPlus} />
               </button>
               <button
+                className="round-btn"
                 aria-label={t("decreaseDuration")}
                 onClick={() => {
                   d.decrementDurationClicked();
@@ -56,6 +58,7 @@ export const Settings = ({ path = "" }) => {
             <div style={{ fontSize: "1.5em" }}>{v.preparation}</div>
             <div className="horizontal">
               <button
+                className="round-btn"
                 aria-label={t("increasePreparation")}
                 onClick={() => {
                   d.incrementPreparationClicked();
@@ -64,6 +67,7 @@ export const Settings = ({ path = "" }) => {
                 <FontAwesomeIcon icon={faPlus} />
               </button>
               <button
+                className="round-btn"
                 aria-label={t("decreasePreparation")}
                 onClick={() => {
                   d.decrementPreparationClicked();

@@ -1,0 +1,9 @@
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* basic animation */
+.fadein {
+  transition: opacity 1s ease-in-out;
+}
