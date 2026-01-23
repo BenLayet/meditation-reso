@@ -3,7 +3,7 @@ import type { FullscreenService } from "../../services/full-screen.service.ts";
 import type { GongService } from "../../services/gong.service.ts";
 import type { TickingService } from "../../services/ticking.service.ts";
 import type { WakeLockService } from "../../services/wake-lock.service.ts";
-import { MeditationSessionContract } from "./meditation-session.component.ts";
+import type { MeditationSessionContract } from "./meditation-session.component.ts";
 const TICK_INTERVAL_MS = 1000;
 export const meditationSessionEffectsProvider = (
   tickingService: TickingService,

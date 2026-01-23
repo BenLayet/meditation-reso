@@ -20,7 +20,7 @@ const detectLocale = () => {
   return "fr";
 };
 
-i18n.use(initReactI18next).init({
+await i18n.use(initReactI18next).init({
   resources,
   lng: detectLocale(),
   fallbackLng: "fr",
@@ -29,8 +29,8 @@ i18n.use(initReactI18next).init({
   },
 });
 
-export const setLocale = (lng: string) => {
-  i18n.changeLanguage(lng);
+export const setLocale = async (lng: string) => {
+  await i18n.changeLanguage(lng);
   if (typeof window !== "undefined") window.localStorage.setItem("locale", lng);
 };
 

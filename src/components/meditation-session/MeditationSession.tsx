@@ -3,10 +3,10 @@ import { ProgressIndicator } from "./ProgressIndicator.tsx";
 
 import { useSofter, useSofterEffects } from "@softer-components/redux-adapter";
 import { configuration } from "../../config/configuration.ts";
-import { MeditationSessionContract } from "./meditation-session.component.ts";
+import type { MeditationSessionContract } from "./meditation-session.component.ts";
 
 export const MeditationSession = ({ path } = { path: "/" }) => {
-  const [v, d, c] = useSofter<MeditationSessionContract>(path);
+  const [v, d] = useSofter<MeditationSessionContract>(path);
   useSofterEffects<MeditationSessionContract>(
     path,
     configuration().meditationSessionEffects,

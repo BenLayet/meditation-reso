@@ -5,7 +5,7 @@ import type {
 } from "@softer-components/types";
 import type { SettingsContract } from "./settings/settings.component";
 import { settingsComponentDef } from "./settings/settings.component";
-import { Settings } from "../../domain/settings";
+import type { Settings } from "../../domain/settings";
 
 // Initial state definition
 const initialState = {};

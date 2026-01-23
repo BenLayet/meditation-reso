@@ -6,7 +6,7 @@ import type {
 } from "@softer-components/types";
 import { formatSeconds } from "../../util/duration.functions";
 import { flow } from "lodash";
-import { Settings } from "../../domain/settings";
+import type { Settings } from "../../domain/settings";
 
 type Phase = "INITIALIZING" | "PREPARATION" | "MEDITATION" | "COMPLETED";
 
@@ -21,8 +21,6 @@ const initialState = {
 
 // Initial state definition
 type State = typeof initialState;
-//children
-type Children = {};
 //selectors
 const durationInSeconds = (state: State) => state.durationInSeconds;
 const phase = (state: State) => state.phase;
@@ -99,7 +97,8 @@ export type MeditationSessionContract = {
   state: State;
   events: Events;
   values: ExtractComponentValuesContract<typeof selectors>;
-  children: Children;
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  children: {};
   effects: typeof effects;
 };
 // Component definition
@@ -128,7 +127,6 @@ export const meditationSessionComponentDef: ComponentDef<MeditationSessionContra
         state.remainingTimeInSeconds = 0;
       },
       timerTicked: ({ state }) => {
-        if (!state) return initialState;
         state.remainingTimeInSeconds--;
       },
     },

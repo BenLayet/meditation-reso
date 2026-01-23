@@ -4,8 +4,8 @@ import {
   assertIsUndefined,
 } from "../util/assert.functions.ts";
 import type { Effects } from "@softer-components/types";
-import { MeditationSessionContract } from "../components/meditation-session/meditation-session.component.ts";
-import { SettingsContract } from "../components/new-meditation/settings/settings.component.ts";
+import type { MeditationSessionContract } from "../components/meditation-session/meditation-session.component.ts";
+import type { SettingsContract } from "../components/new-meditation/settings/settings.component.ts";
 export type Configuration = {
   settingsEffects: Effects<SettingsContract>;
   meditationSessionEffects: Effects<MeditationSessionContract>;

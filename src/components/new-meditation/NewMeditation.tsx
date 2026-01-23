@@ -7,10 +7,10 @@ import { useSofter } from "@softer-components/redux-adapter";
 import packageJson from "../../../package.json";
 import type { NewMeditationContract } from "./new-meditation.component.ts";
 
-const envBuild = (import.meta as any).env?.VITE_BUILD as string | undefined;
-const build = `${packageJson?.version}-${envBuild ?? "dev"}`;
+const envBuild = import.meta.env.VITE_BUILD as string | undefined;
+const build = `${packageJson.version}-${envBuild ?? "dev"}`;
 export const NewMeditation = ({ path } = { path: "/" }) => {
-  const [_, d, c] = useSofter<NewMeditationContract>(path);
+  const [, d, c] = useSofter<NewMeditationContract>(path);
   const { t } = useTranslation();
   return (
     <div className="card" style={{ maxWidth: "25em" }}>

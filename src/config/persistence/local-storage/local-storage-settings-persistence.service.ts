@@ -5,7 +5,7 @@ export const localStorageSettingsPersistenceService =
   (): SettingsPersistenceService => ({
     saveSettings: (settings: Settings) => {
       try {
-        if (typeof window !== "undefined" && window.localStorage) {
+        if (typeof window !== "undefined") {
           window.localStorage.setItem("settings", JSON.stringify(settings));
         }
       } catch (err) {
@@ -17,7 +17,7 @@ export const localStorageSettingsPersistenceService =
 
     loadSettings: (): Promise<Settings | null> => {
       try {
-        if (typeof window !== "undefined" && window.localStorage) {
+        if (typeof window !== "undefined") {
           const v = window.localStorage.getItem("settings");
           if (v) {
             try {

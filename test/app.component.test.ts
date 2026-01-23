@@ -5,7 +5,6 @@ import { appComponentDef } from "../src/components/app/app.component";
 import {
   BACK_CLICKED,
   MEDITATION_SESSION_PATH,
-  NEW_MEDITATION_PATH,
   SETTINGS_PATH,
   START_CLICKED,
   TIMER_TICKED,

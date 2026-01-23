@@ -7,9 +7,9 @@ export const nosleepWakeLockService = () => ({
 const noSleep = new NoSleep();
 
 async function _requestWakeLock() {
-  noSleep.enable();
+  await noSleep.enable();
 }
 
-async function _releaseWakeLock() {
+function _releaseWakeLock() {
   noSleep.disable();
 }

@@ -19,6 +19,8 @@ const eslintConfig = config(
       "**/.tmp/",
       "**/.yarn/",
       "**/coverage/",
+      "test/**",
+      "eslint.config.js",
     ],
   },
   {

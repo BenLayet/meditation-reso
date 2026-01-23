@@ -3,14 +3,16 @@ import type {
   ComponentEventsContract,
   ExtractComponentValuesContract,
 } from "@softer-components/types";
-import { Settings } from "../../domain/settings";
+import type { Settings } from "../../domain/settings";
+import type {
+  NewMeditationContract} from "../new-meditation/new-meditation.component";
 import {
-  newMeditationComponentDef,
-  NewMeditationContract,
+  newMeditationComponentDef
 } from "../new-meditation/new-meditation.component";
+import type {
+  MeditationSessionContract} from "../meditation-session/meditation-session.component";
 import {
-  meditationSessionComponentDef,
-  MeditationSessionContract,
+  meditationSessionComponentDef
 } from "../meditation-session/meditation-session.component";
 
 // Initial state definition

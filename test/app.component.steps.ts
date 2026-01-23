@@ -1,4 +1,5 @@
-import { GlobalEvent, stringToComponentPath } from "@softer-components/utils";
+import type { GlobalEvent} from "@softer-components/utils";
+import { stringToComponentPath } from "@softer-components/utils";
 
 export const NEW_MEDITATION_PATH = stringToComponentPath("/newMeditation:0/");
 export const SETTINGS_PATH = stringToComponentPath(

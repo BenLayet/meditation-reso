@@ -49,7 +49,7 @@ export const ProgressIndicator = ({
         {`
           @keyframes fillArc {
             from {
-              stroke-dashoffset: ${circumference};
+              stroke-dashoffset: ${circumference.toString()};
             }
             to {
               stroke-dashoffset: 0;

@@ -1,8 +1,9 @@
 import type { Settings } from "../../../domain/settings.ts";
 import type { SettingsPersistenceService } from "../../../services/settings-persistence.service.ts";
-import { IDBPDatabase, openDB } from "idb";
+import type { IDBPDatabase } from "idb";
+import { openDB } from "idb";
 import { assertIsNotUndefined } from "../../../util/assert.functions.ts";
-let db: IDBPDatabase<unknown> | undefined;
+let db: IDBPDatabase | undefined;
 const init = async () => {
   db = await openDB("app-db", 1, {
     upgrade(db) {
@@ -25,6 +26,9 @@ export const idbSettingsPersistenceService =
         await init();
       }
       assertIsNotUndefined(db);
-      return db.get("settings", "meditation-settings");
+      const settings = (await db.get("settings", "meditation-settings")) as
+        | Settings
+        | undefined;
+      return settings ?? null;
     },
   });
