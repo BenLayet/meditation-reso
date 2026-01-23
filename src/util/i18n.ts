@@ -20,14 +20,19 @@ const detectLocale = () => {
   return "fr";
 };
 
-await i18n.use(initReactI18next).init({
-  resources,
-  lng: detectLocale(),
-  fallbackLng: "fr",
-  interpolation: {
-    escapeValue: false,
-  },
-});
+i18n
+  .use(initReactI18next)
+  .init({
+    resources,
+    lng: detectLocale(),
+    fallbackLng: "fr",
+    interpolation: {
+      escapeValue: false,
+    },
+  })
+  .catch((err: unknown) => {
+    console.error("i18n initialization failed", err);
+  });
 
 export const setLocale = async (lng: string) => {
   await i18n.changeLanguage(lng);

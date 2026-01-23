@@ -4,16 +4,10 @@ import type {
   ExtractComponentValuesContract,
 } from "@softer-components/types";
 import type { Settings } from "../../domain/settings";
-import type {
-  NewMeditationContract} from "../new-meditation/new-meditation.component";
-import {
-  newMeditationComponentDef
-} from "../new-meditation/new-meditation.component";
-import type {
-  MeditationSessionContract} from "../meditation-session/meditation-session.component";
-import {
-  meditationSessionComponentDef
-} from "../meditation-session/meditation-session.component";
+import type { NewMeditationContract } from "../new-meditation/new-meditation.component";
+import { newMeditationComponentDef } from "../new-meditation/new-meditation.component";
+import type { MeditationSessionContract } from "../meditation-session/meditation-session.component";
+import { meditationSessionComponentDef } from "../meditation-session/meditation-session.component";
 
 // Initial state definition
 const initialState = {
