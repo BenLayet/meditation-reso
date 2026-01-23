@@ -1,5 +1,5 @@
-import { settingsEffectsProvider } from "./components/timer/settings/settings.effects.ts";
-import { timerEffectsProvider } from "./components/timer/timer.effects.ts";
+import { meditationSessionEffectsProvider } from "./components/meditation-session/meditation-session.effects.ts";
+import { settingsEffectsProvider } from "./components/new-meditation/settings/settings.effects.ts";
 import type { Configuration } from "./config/configuration.ts";
 import { idbSettingsPersistenceService } from "./config/persistence/idb/idb-settings-persistence.service.ts";
 import { nosleepWakeLockService } from "./config/wake-lock/nosleep-wake-lock.service.ts";
@@ -13,7 +13,7 @@ const fullscreenService = new FullscreenService();
 const tickingService = new TickingService();
 const gongService = new GongService();
 const settingsEffects = settingsEffectsProvider(settingsPersistenceService);
-const timerEffects = timerEffectsProvider(
+const meditationSessionEffects = meditationSessionEffectsProvider(
   tickingService,
   gongService,
   fullscreenService,
@@ -21,5 +21,5 @@ const timerEffects = timerEffectsProvider(
 );
 export const mainConfiguration: Configuration = {
   settingsEffects,
-  timerEffects,
+  meditationSessionEffects,
 };

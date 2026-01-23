@@ -25,3 +25,7 @@ main {
   width: 100%;
   box-sizing: border-box;
 }
+div[data-theme="dark"] {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}

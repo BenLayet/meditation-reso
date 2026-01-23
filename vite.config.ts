@@ -10,6 +10,23 @@ export default defineConfig({
   // Set base path for GitHub Pages
   base: "/meditation-reso/",
 
+  resolve: {
+    alias: {
+      "@softer-components/redux-adapter": path.resolve(
+        __dirname,
+        "../softer-components/packages/redux-adapter/src",
+      ),
+      "@softer-components/utils": path.resolve(
+        __dirname,
+        "../softer-components/packages/utils/src",
+      ),
+      "@softer-components/types": path.resolve(
+        __dirname,
+        "../softer-components/packages/types/src",
+      ),
+    },
+  },
+
   server: {
     open: true,
   },
@@ -25,7 +42,5 @@ export default defineConfig({
     },
 
     globals: true,
-    watch: false,
-    setupFiles: ["./src/setupTests.ts"],
   },
 });

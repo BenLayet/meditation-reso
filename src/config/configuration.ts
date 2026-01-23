@@ -4,12 +4,11 @@ import {
   assertIsUndefined,
 } from "../util/assert.functions.ts";
 import type { Effects } from "@softer-components/types";
-import type { SettingsContract } from "../components/timer/settings/settings.component.ts";
-import type { TimerContract } from "../components/timer/timer.component.ts";
-
+import { MeditationSessionContract } from "../components/meditation-session/meditation-session.component.ts";
+import { SettingsContract } from "../components/new-meditation/settings/settings.component.ts";
 export type Configuration = {
   settingsEffects: Effects<SettingsContract>;
-  timerEffects: Effects<TimerContract>;
+  meditationSessionEffects: Effects<MeditationSessionContract>;
 };
 let lazySingleton: Configuration | undefined = undefined;
 export const configuration = (

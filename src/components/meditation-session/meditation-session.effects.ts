@@ -1,16 +1,16 @@
 import type { Effects } from "@softer-components/types";
-import type { TimerContract } from "./timer.component";
-import type { TickingService } from "../../services/ticking.service.ts";
-import type { GongService } from "../../services/gong.service.ts";
 import type { FullscreenService } from "../../services/full-screen.service.ts";
+import type { GongService } from "../../services/gong.service.ts";
+import type { TickingService } from "../../services/ticking.service.ts";
 import type { WakeLockService } from "../../services/wake-lock.service.ts";
+import { MeditationSessionContract } from "./meditation-session.component.ts";
 const TICK_INTERVAL_MS = 1000;
-export const timerEffectsProvider = (
+export const meditationSessionEffectsProvider = (
   tickingService: TickingService,
   gongService: GongService,
   fullscreenService: FullscreenService,
   wakeLockService: WakeLockService,
-): Effects<TimerContract> => ({
+): Effects<MeditationSessionContract> => ({
   startTickingRequested: ({ timerTicked }) => {
     tickingService.startTicking(timerTicked, TICK_INTERVAL_MS);
   },
@@ -23,4 +23,7 @@ export const timerEffectsProvider = (
   releaseWakeLockRequested: wakeLockService.releaseWakeLock,
   enterFullScreenRequested: fullscreenService.enterFullscreen,
   exitFullScreenRequested: fullscreenService.exitFullscreen,
+  exitRequested: ({ exitConfirmed }) => {
+    setTimeout(exitConfirmed, 0);
+  },
 });

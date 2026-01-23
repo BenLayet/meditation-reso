@@ -5,21 +5,21 @@ import { configureSofterStore } from "@softer-components/redux-adapter";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
+import { appComponentDef } from "./components/app/app.component.ts";
 import { App } from "./components/app/App.tsx";
-import { timerComponentDef } from "./components/timer/timer.component.ts";
 import { configuration } from "./config/configuration.ts";
 import { mainConfiguration } from "./main-configuration.ts";
 
 configuration(mainConfiguration);
 
-export const store = configureSofterStore(timerComponentDef);
+export const store = configureSofterStore(appComponentDef);
 const container = document.getElementById("root");
 
 if (container) {
   createRoot(container).render(
     <StrictMode>
       <Provider store={store}>
-        <App />
+        <App path="/" />
       </Provider>
     </StrictMode>,
   );

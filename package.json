@@ -12,7 +12,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "vite",
-    "test": "vitest --run",
+    "ci:test": "vitest --run",
+    "test": "vitest",
+    "test-for-debug": "vitest --testTimeout=100000 --bail=1",
     "type-check": "tsc -b --noEmit"
   },
   "dependencies": {
@@ -20,7 +22,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",
     "@reduxjs/toolkit": "^2.6.1",
-    "@softer-components/redux-adapter": "^0.4.2",
+    "@softer-components/redux-adapter": "link:/home/ben/dev/repositories/softer-components/packages/redux-adapter",
     "i18next": "^23.0.0",
     "idb": "^8.0.3",
     "lodash": "^4.17.21",
@@ -35,6 +37,7 @@
   "devDependencies": {
     "@eslint/js": "^9.23.0",
     "@softer-components/types": "^0.4.2",
+    "@softer-components/utils": "^0.4.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",

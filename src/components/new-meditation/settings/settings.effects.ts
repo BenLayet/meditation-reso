@@ -1,5 +1,5 @@
 import type { Effects } from "@softer-components/types";
-import type { SettingsContract } from "./settings.component";
+import type { SettingsContract } from "./settings.component.ts";
 import type { SettingsPersistenceService } from "../../../services/settings-persistence.service.ts";
 
 export const settingsEffectsProvider = (
