@@ -1,5 +1,52 @@
 /* Checkbox and Radio */
-input[type="checkbox"],
+input[type="checkbox"] {
+  width: 5em;
+  height: 2.5em;
+  border: 1px solid var(--button-background-color);
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  cursor: pointer;
+  border-radius: 2.5em;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+input[type="checkbox"]::before {
+  content: "OFF";
+  color: #ffffff;
+  font-size: 1em;
+  position: absolute;
+  left: 0.3em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background-color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    left 0.3s,
+    background-color 0.3s,
+    color 0.3s;
+  z-index: 1;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #ffffff;
+}
+
+input[type="checkbox"]:checked::before {
+  content: "ON";
+  color: #ffffff;
+  background-color: var(--button-background-color);
+  left: calc(100% - 2.3em);
+}
+
 input[type="radio"] {
   width: 2em;
   height: 2em;
@@ -10,19 +57,9 @@ input[type="radio"] {
   background-color: var(--input-background-color);
   cursor: pointer;
   margin: 1em 0;
+  border-radius: 50%;
 }
 
-input[type="checkbox"]:checked::before {
-  content: "✓";
-  color: var(--text-color);
-  font-size: 4em;
-  position: absolute;
-  top: -0.5em;
-}
 label {
   cursor: pointer;
-}
-
-input[type="radio"] {
-  border-radius: 50%;
 }

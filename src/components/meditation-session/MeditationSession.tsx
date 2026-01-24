@@ -77,6 +77,7 @@ export const MeditationSession = ({ path } = { path: "/" }) => {
                       top: "41%",
                       fontSize: "1.5em",
                       background: "#0006",
+                      opacity: 0.5,
                     }}
                   >
                     {v.remainingTime}

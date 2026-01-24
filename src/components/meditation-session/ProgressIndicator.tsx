@@ -26,7 +26,7 @@ export const ProgressIndicator = ({
           r={r}
           strokeWidth="25"
           fill="#000"
-          stroke="#333"
+          stroke="#111"
         />
         {/* Animated arc using circular path */}
         <circle
@@ -35,7 +35,7 @@ export const ProgressIndicator = ({
           r={r}
           strokeWidth="25"
           fill="transparent"
-          stroke="#ffffffff"
+          stroke="#fff"
           strokeDasharray={circumference}
           strokeDashoffset={circumference}
           strokeLinecap="round"

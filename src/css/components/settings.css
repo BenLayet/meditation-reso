@@ -1,29 +1,17 @@
 .settings {
-  gap: 1em;
   width: fit-content;
 }
-.settings-row {
+.settings-secondary {
   align-items: start;
+  margin: 2em;
+}
+.settings-secondary label {
+  display: flex;
 }
 .settings-key {
-  align-items: start;
-  justify-content: start;
+  font-size: 1.2em;
 }
-.settings-value {
-  padding-left: 3em;
-  align-items: start;
-  justify-content: start;
-}
-.settings-value label {
-  font-size: 0.7em;
-  display: flex;
-  align-items: center;
-}
-@keyframes fillArc {
-  from {
-    stroke-dashoffset: 565.48; /* Hidden */
-  }
-  to {
-    stroke-dashoffset: 0; /* Fully visible */
-  }
+.settings-main {
+  flex-direction: column;
+  font-size: 2em;
 }

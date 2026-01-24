@@ -22,11 +22,11 @@ export const Settings = ({ path = "" }) => {
   return (
     <div className="settings">
       {/* Duration adjustment controls */}
-      <div className="settings-row">
+      <div className="settings-main">
         <div className="settings-key">{t("duration")}</div>
         <div className="settings-value">
-          <div style={{ maxWidth: "5em" }}>
-            <div style={{ fontSize: "1.5em" }}>{v.duration}</div>
+          <div>
+            <div>{v.duration}</div>
             <div className="horizontal">
               <button
                 className="round-btn"
@@ -50,12 +50,11 @@ export const Settings = ({ path = "" }) => {
           </div>
         </div>
       </div>
-      {/* Preparation adjustment controls */}
-      <div className="settings-row">
-        <div className="settings-key">{t("preparation")}</div>
-        <div className="settings-value">
-          <div style={{ maxWidth: "5em" }}>
-            <div style={{ fontSize: "1.5em" }}>{v.preparation}</div>
+      <div className="settings-secondary">
+        <div style={{ marginBottom: "1em" }}>
+          <div>{t("preparation")}</div>
+          <div style={{ fontSize: "1.3em" }}>
+            <div>{v.preparation}</div>
             <div className="horizontal">
               <button
                 className="round-btn"
@@ -78,48 +77,37 @@ export const Settings = ({ path = "" }) => {
             </div>
           </div>
         </div>
-      </div>
-      {/* Gong sound toggle */}
-      <div className="settings-row">
-        <div className="settings-key">{t("gong")}</div>
-        <div className="settings-value">
-          <label>
-            <input
-              type="checkbox"
-              checked={v.isGongOn}
-              onChange={e => {
-                d.isGongOnChanged(e.target.checked);
-              }}
-            />
-            &nbsp;
-            <FontAwesomeIcon icon={v.isGongOn ? faVolumeHigh : faVolumeXmark} />
-          </label>
-        </div>
-      </div>
-      <div className="settings-row">
-        <div className="settings-key">Afficher</div>
-        <div className="settings-value">
-          <label>
-            <input
-              type="checkbox"
-              checked={v.shouldDisplayProgress}
-              onChange={e => {
-                d.shouldDisplayProgressChanged(e.target.checked);
-              }}
-            />
-            &nbsp;{t("progression")}
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={v.shouldDisplayRemainingTime}
-              onChange={e => {
-                d.shouldDisplayRemainingTimeChanged(e.target.checked);
-              }}
-            />
-            &nbsp;{t("remainingTime")}
-          </label>
-        </div>
+        <label>
+          <input
+            type="checkbox"
+            checked={v.isGongOn}
+            onChange={e => {
+              d.isGongOnChanged(e.target.checked);
+            }}
+          />
+          &nbsp;{t("gong")}&nbsp;
+          <FontAwesomeIcon icon={v.isGongOn ? faVolumeHigh : faVolumeXmark} />
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={v.shouldDisplayProgress}
+            onChange={e => {
+              d.shouldDisplayProgressChanged(e.target.checked);
+            }}
+          />
+          &nbsp;{t("progression")}
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={v.shouldDisplayRemainingTime}
+            onChange={e => {
+              d.shouldDisplayRemainingTimeChanged(e.target.checked);
+            }}
+          />
+          &nbsp;{t("remainingTime")}
+        </label>
       </div>
     </div>
   );
