@@ -86,7 +86,9 @@ export const Settings = ({ path = "" }) => {
             }}
           />
           &nbsp;{t("gong")}&nbsp;
-          <FontAwesomeIcon icon={v.isGongOn ? faVolumeHigh : faVolumeXmark} />
+          <span>
+            <FontAwesomeIcon icon={v.isGongOn ? faVolumeHigh : faVolumeXmark} />
+          </span>
         </label>
         <label>
           <input
