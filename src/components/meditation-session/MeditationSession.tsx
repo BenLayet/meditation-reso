@@ -74,7 +74,7 @@ export const MeditationSession = ({ path } = { path: "/" }) => {
                   <span
                     style={{
                       position: "absolute",
-                      top: "47%",
+                      top: "41%",
                       fontSize: "1.5em",
                       background: "#0006",
                     }}
@@ -103,6 +103,7 @@ export const MeditationSession = ({ path } = { path: "/" }) => {
             style={{
               opacity: v.isCompletedPhase ? "0.9" : "0.4",
               fontSize: "2em",
+              marginTop: "2em",
             }}
             aria-label={t("stopMeditation")}
             onClick={() => {

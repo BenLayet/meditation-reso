@@ -25,9 +25,10 @@ export const NewMeditation = ({ path } = { path: "/" }) => {
         <Settings path={c.settings} />
       </div>
       {/* Timer display and start/stop controls */}
-      <div style={{ fontSize: "3em" }}>
+      <div>
         {/* Start button - shown when ready to begin */}
         <button
+          style={{ fontSize: "2em" }}
           aria-label={t("startMeditation")}
           onClick={() => {
             d.startClicked();
