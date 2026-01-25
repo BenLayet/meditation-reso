@@ -53,7 +53,6 @@ export const appComponentDef: ComponentDef<AppContract> = {
       state.isStarted = true;
     },
     meditationSessionEnded: ({ state }) => {
-      console.log("meditationSessionEnded");
       state.isStarted = false;
     },
   },

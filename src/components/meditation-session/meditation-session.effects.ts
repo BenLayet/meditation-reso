@@ -23,9 +23,7 @@ export const meditationSessionEffectsProvider = (
   releaseWakeLockRequested: wakeLockService.releaseWakeLock,
   enterFullScreenRequested: fullscreenService.enterFullscreen,
   exitFullScreenRequested: fullscreenService.exitFullscreen,
-  exitRequested: async ({ exitConfirmed }) => {
-    await wakeLockService.requestWakeLock();
-    wakeLockService.releaseWakeLock();
+  exitRequested: ({ exitConfirmed }) => {
     setTimeout(exitConfirmed, 0);
   },
 });
