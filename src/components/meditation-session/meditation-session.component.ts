@@ -129,6 +129,7 @@ export const meditationSessionComponentDef: ComponentDef<MeditationSessionContra
       timerTicked: ({ state }) => {
         state.remainingTimeInSeconds--;
       },
+      exitConfirmed: () => initialState,
     },
     eventForwarders: [
       {
