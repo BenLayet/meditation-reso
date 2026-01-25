@@ -5,21 +5,10 @@ export const nosleepWakeLockService = () => ({
   releaseWakeLock: _releaseWakeLock,
 });
 const noSleep = new NoSleep();
-let counter = 0;
 async function _requestWakeLock() {
-  noSleep.disable();
-  counter++;
-  await noSleep.enable();
-  if (
-    !noSleep.isEnabled ||
-    (counter >= 2 && navigator.userAgent.startsWith("mobile"))
-  ) {
-    alert(
-      "Le verrouillage d'écran n'a pas pu être activé sur cet appareil.\nL'écran peut s'éteindre pendant la méditation. \nVeuillez quitter et réessayer.",
-    );
-  }
+  noSleep.enable();
 }
 
 function _releaseWakeLock() {
-  noSleep.disable();
+  //noSleep.disable();
 }
