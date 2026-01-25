@@ -11,6 +11,7 @@ const noSleep = new NoSleep();
 
 async function _requestWakeLock() {
   await noSleep.enable();
+  await noSleep.enable();
 }
 
 function _releaseWakeLock() {
