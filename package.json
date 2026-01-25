@@ -11,7 +11,7 @@
     "lint:fix": "eslint --fix .",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "vite",
+    "start": "vite --host",
     "ci:test": "vitest --run",
     "test": "vitest",
     "test-for-debug": "vitest --testTimeout=100000 --bail=1",

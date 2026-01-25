@@ -3,10 +3,11 @@ body {
   font-family: var(--body-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100vh;
   position: relative;
   background-color: var(--background-color);
   color: var(--text-color);
+  font-size: 12px;
+  padding-top: 3em;
 }
 /* Body and containers */
 body,

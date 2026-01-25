@@ -4,17 +4,13 @@ import { useTranslation } from "react-i18next";
 import { Settings } from "./settings/Settings.tsx";
 
 import { useSofter } from "@softer-components/redux-adapter";
-import packageJson from "../../../package.json";
 import type { NewMeditationContract } from "./new-meditation.component.ts";
 
-const envBuild = import.meta.env.VITE_BUILD as string | undefined;
-const build = `${packageJson.version}-${envBuild ?? "dev"}`;
 export const NewMeditation = ({ path } = { path: "/" }) => {
   const [, d, c] = useSofter<NewMeditationContract>(path);
   const { t } = useTranslation();
   return (
     <div className="card" style={{ maxWidth: "25em" }}>
-      {/* Container for settings and progress visualization */}
       <div
         style={{
           minHeight: "200px",
@@ -24,9 +20,7 @@ export const NewMeditation = ({ path } = { path: "/" }) => {
       >
         <Settings path={c.settings} />
       </div>
-      {/* Timer display and start/stop controls */}
       <div>
-        {/* Start button - shown when ready to begin */}
         <button
           style={{ fontSize: "2em" }}
           aria-label={t("startMeditation")}
@@ -37,17 +31,6 @@ export const NewMeditation = ({ path } = { path: "/" }) => {
           <FontAwesomeIcon icon={faPlay} />
         </button>
       </div>
-      <p
-        style={{
-          fontSize: "0.8em",
-          opacity: 0.4,
-          position: "absolute",
-          bottom: "1em",
-          right: "1em",
-        }}
-      >
-        v{build}
-      </p>
     </div>
   );
 };
