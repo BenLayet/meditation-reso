@@ -1,16 +1,12 @@
-// NoSleep is loaded globally via script tag in index.html
-// @ts-ignore - NoSleep is a global variable
-declare const NoSleep: any;
+import NoSleep from "nosleep.js";
 
 export const nosleepWakeLockService = () => ({
   requestWakeLock: _requestWakeLock,
   releaseWakeLock: _releaseWakeLock,
 });
-// @ts-ignore
 const noSleep = new NoSleep();
 
 async function _requestWakeLock() {
-  await noSleep.enable();
   await noSleep.enable();
 }
 
