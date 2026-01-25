@@ -8,8 +8,8 @@ const TICK_INTERVAL_MS = 1000;
 export const meditationSessionEffectsProvider = (
   tickingService: TickingService,
   gongService: GongService,
-  fullscreenService: FullscreenService,
-  wakeLockService: WakeLockService,
+  _fullscreenService: FullscreenService,
+  _wakeLockService: WakeLockService,
 ): Effects<MeditationSessionContract> => ({
   startTickingRequested: ({ timerTicked }) => {
     tickingService.startTicking(timerTicked, TICK_INTERVAL_MS);
@@ -19,10 +19,10 @@ export const meditationSessionEffectsProvider = (
   playBeginningGongRequested: gongService.playBeginningAudio,
   playEndGongRequested: gongService.playEndAudio,
   stopGongRequested: gongService.stopAllAudio,
-  requestWakeLockRequested: wakeLockService.requestWakeLock,
-  releaseWakeLockRequested: wakeLockService.releaseWakeLock,
-  enterFullScreenRequested: fullscreenService.enterFullscreen,
-  exitFullScreenRequested: fullscreenService.exitFullscreen,
+  requestWakeLockRequested: console.log,
+  releaseWakeLockRequested: console.log,
+  enterFullScreenRequested: console.log,
+  exitFullScreenRequested: console.log,
   exitRequested: ({ exitConfirmed }) => {
     setTimeout(exitConfirmed, 0);
   },

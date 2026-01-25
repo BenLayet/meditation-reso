@@ -7,6 +7,9 @@ import type {
 import { formatSeconds } from "../../util/duration.functions";
 import { flow } from "lodash";
 import type { Settings } from "../../domain/settings";
+import NoSleep from "nosleep.js";
+
+const noSleep = new NoSleep();
 
 type Phase = "INITIALIZING" | "PREPARATION" | "MEDITATION" | "COMPLETED";
 
@@ -130,6 +133,31 @@ export const meditationSessionComponentDef: ComponentDef<MeditationSessionContra
         state.remainingTimeInSeconds--;
       },
       exitConfirmed: () => initialState,
+      requestWakeLockRequested: () => {
+        noSleep.enable();
+      },
+      releaseWakeLockRequested: () => {
+        //noSleep.disable();
+      },
+      enterFullScreenRequested: () => {
+        // TODO Make this work in effects
+        // iOS Safari needs a small delay to work reliably on first attempt
+        setTimeout(() => {
+          document.documentElement.requestFullscreen().catch((err: unknown) => {
+            console.error("Fullscreen failed:", err);
+          });
+        }, 200);
+        document.documentElement.requestFullscreen().catch((err: unknown) => {
+          console.error("Fullscreen failed:", err);
+        });
+      },
+      exitFullScreenRequested: () => {
+        if (document.fullscreenElement) {
+          document.exitFullscreen().catch((err: unknown) => {
+            console.error("Exit fullscreen failed:", err);
+          });
+        }
+      },
     },
     eventForwarders: [
       {
