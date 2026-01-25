@@ -1,5 +1,6 @@
 import "./css/main.css";
 import "./util/i18n";
+import NoSleep from "nosleep.js";
 
 import { configureSofterStore } from "@softer-components/redux-adapter";
 import { StrictMode } from "react";
@@ -10,6 +11,8 @@ import { App } from "./components/app/App.tsx";
 import { configuration } from "./adapters/configuration.ts";
 import { mainConfiguration } from "./main-configuration.ts";
 
+const noSleep = new NoSleep();
+noSleep.enable();
 configuration(mainConfiguration);
 
 export const store = configureSofterStore(appComponentDef);
