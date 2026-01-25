@@ -12,6 +12,7 @@ const wakeLockService = nosleepWakeLockService();
 const fullscreenService = new FullscreenService();
 const tickingService = new TickingService();
 const gongService = new GongService();
+gongService.loadAudio();
 const settingsEffects = settingsEffectsProvider(settingsPersistenceService);
 const meditationSessionEffects = meditationSessionEffectsProvider(
   tickingService,
