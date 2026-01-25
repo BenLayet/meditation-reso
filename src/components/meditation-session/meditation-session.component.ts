@@ -8,9 +8,9 @@ import { formatSeconds } from "../../util/duration.functions";
 import { flow } from "lodash";
 import type { Settings } from "../../domain/settings";
 import NoSleep from "nosleep.js";
-
+import { GongService } from "../../services/gong.service";
 const noSleep = new NoSleep();
-
+const gongService = new GongService();
 type Phase = "INITIALIZING" | "PREPARATION" | "MEDITATION" | "COMPLETED";
 
 const initialState = {
@@ -133,6 +133,18 @@ export const meditationSessionComponentDef: ComponentDef<MeditationSessionContra
         state.remainingTimeInSeconds--;
       },
       exitConfirmed: () => initialState,
+      loadAudioRequested: () => {
+        gongService.loadAudio();
+      },
+      playBeginningGongRequested: () => {
+        gongService.playBeginningAudio();
+      },
+      playEndGongRequested: () => {
+        gongService.playEndAudio();
+      },
+      stopGongRequested: () => {
+        gongService.stopAllAudio();
+      },
       requestWakeLockRequested: () => {
         noSleep.enable();
       },

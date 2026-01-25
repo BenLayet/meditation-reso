@@ -7,7 +7,7 @@ import type { MeditationSessionContract } from "./meditation-session.component.t
 const TICK_INTERVAL_MS = 1000;
 export const meditationSessionEffectsProvider = (
   tickingService: TickingService,
-  gongService: GongService,
+  _gongService: GongService,
   _fullscreenService: FullscreenService,
   _wakeLockService: WakeLockService,
 ): Effects<MeditationSessionContract> => ({
@@ -15,10 +15,10 @@ export const meditationSessionEffectsProvider = (
     tickingService.startTicking(timerTicked, TICK_INTERVAL_MS);
   },
   stopTickingRequested: tickingService.stopTicking,
-  loadAudioRequested: gongService.loadAudio,
-  playBeginningGongRequested: gongService.playBeginningAudio,
-  playEndGongRequested: gongService.playEndAudio,
-  stopGongRequested: gongService.stopAllAudio,
+  loadAudioRequested: console.log,
+  playBeginningGongRequested: console.log,
+  playEndGongRequested: console.log,
+  stopGongRequested: console.log,
   requestWakeLockRequested: console.log,
   releaseWakeLockRequested: console.log,
   enterFullScreenRequested: console.log,
