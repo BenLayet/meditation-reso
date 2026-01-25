@@ -7,7 +7,7 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { appComponentDef } from "./components/app/app.component.ts";
 import { App } from "./components/app/App.tsx";
-import { configuration } from "./config/configuration.ts";
+import { configuration } from "./adapters/configuration.ts";
 import { mainConfiguration } from "./main-configuration.ts";
 
 configuration(mainConfiguration);

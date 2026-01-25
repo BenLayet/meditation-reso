@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSofter, useSofterEffects } from "@softer-components/redux-adapter";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { configuration } from "../../../config/configuration.ts";
+import { configuration } from "../../../adapters/configuration.ts";
 import type { SettingsContract } from "./settings.component.ts";
 
 export const Settings = ({ path = "" }) => {
