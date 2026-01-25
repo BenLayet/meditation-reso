@@ -11,8 +11,11 @@ import { App } from "./components/app/App.tsx";
 import { configuration } from "./adapters/configuration.ts";
 import { mainConfiguration } from "./main-configuration.ts";
 
+// Initialize NoSleep to prevent the device from sleeping during meditation
+// TODO: make it work using wakelock service
 const noSleep = new NoSleep();
 noSleep.enable();
+
 configuration(mainConfiguration);
 
 export const store = configureSofterStore(appComponentDef);

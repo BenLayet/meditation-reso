@@ -6,6 +6,8 @@ export const nosleepWakeLockService = () => ({
 });
 //const noSleep = new NoSleep();
 async function _requestWakeLock() {
+  // Initialize NoSleep to prevent the device from sleeping during meditation
+  // TODO: make it work using wakelock service
   //noSleep.enabled();
 }
 
