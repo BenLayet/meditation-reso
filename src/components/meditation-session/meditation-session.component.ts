@@ -133,11 +133,11 @@ export const meditationSessionComponentDef: ComponentDef<MeditationSessionContra
     eventForwarders: [
       {
         from: "initialize",
-        to: "loadAudioRequested",
+        to: "requestWakeLockRequested",
       },
       {
         from: "initialize",
-        to: "requestWakeLockRequested",
+        to: "loadAudioRequested",
       },
       {
         from: "initialize",
