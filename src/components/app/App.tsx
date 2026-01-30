@@ -4,9 +4,9 @@ import type { AppContract } from "./app.component.ts";
 import { MeditationSession } from "../meditation-session/MeditationSession.tsx";
 import packageJson from "../../../package.json";
 const packageVersion = packageJson.version;
-const branch = import.meta.env.BRANCH as string | undefined;
-const head = import.meta.env.HEAD as string | undefined;
-const commitRef = import.meta.env.COMMIT_REF as string | undefined;
+const branch = process.env.BRANCH as string | undefined;
+const head = process.env.HEAD as string | undefined;
+const commitRef = process.env.COMMIT_REF as string | undefined;
 const build = [packageVersion, branch, head, commitRef].join("-");
 export const App = ({ path } = { path: "/" }) => {
   const [v, , c] = useSofter<AppContract>(path);
