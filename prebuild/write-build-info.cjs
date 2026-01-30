@@ -14,7 +14,7 @@ function exec(cmd) {
 const info = {
   branch: process.env.HEAD ?? exec("git rev-parse --abbrev-ref HEAD"),
   builtAt: new Date().toISOString(),
-  commit: process.env.COMMIT_REF ?? exec("git show -s --format=%h HEAD"),
+  commit: exec("git show -s --format=%h HEAD"),
   ci: process.env.CI ? "ci" : "local",
 };
 
