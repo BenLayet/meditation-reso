@@ -6,10 +6,6 @@ import packageJson from "./package.json" with { type: "json" };
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-
-  // Set base path for GitHub Pages
-  base: "/meditation-reso/",
-
   server: {
     open: true,
   },
