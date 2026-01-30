@@ -19,6 +19,14 @@ noSleep.enable();
 configuration(mainConfiguration);
 
 export const store = configureSofterStore(appComponentDef);
+store.configureEffects(
+  "/meditationSession",
+  mainConfiguration.meditationSessionEffects,
+);
+store.configureEffects(
+  "/newMeditation/settings",
+  mainConfiguration.settingsEffects,
+);
 const container = document.getElementById("root");
 
 if (container) {
