@@ -7,3 +7,8 @@
 .fadein {
   transition: opacity 1s ease-in-out;
 }
+
+.nearly-invisible {
+    font-size: 0.8em;
+    opacity: 0.05;
+}
