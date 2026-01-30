@@ -12,9 +12,10 @@ function exec(cmd) {
 }
 
 const info = {
-  commit: exec("git show -s --format=%h HEAD"),
+  branch: process.env.HEAD ?? exec("git rev-parse --abbrev-ref HEAD"),
   builtAt: new Date().toISOString(),
-  branch: exec("git rev-parse --abbrev-ref HEAD"),
+  commit: process.env.COMMIT_REF ?? exec("git show -s --format=%h HEAD"),
+  ci: process.env.CI ? "ci" : "local",
 };
 
 const outPath = path.join(__dirname, "..", "build-info.json");
