@@ -12,7 +12,8 @@ import { configuration } from "./adapters/configuration.ts";
 import { mainConfiguration } from "./main-configuration.ts";
 
 // Initialize NoSleep to prevent the device from sleeping during meditation
-// TODO: make it work using wakelock service
+// This is a workaround for the fact that on Android, within a web view the Wake Lock API seems buggy: it can activate,
+// deactivate but CANNOT reactivate after deactivation
 const noSleep = new NoSleep();
 noSleep.enable();
 
