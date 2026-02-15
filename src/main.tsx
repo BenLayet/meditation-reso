@@ -10,12 +10,15 @@ import { appComponentDef } from "./components/app/app.component.ts";
 import { App } from "./components/app/App.tsx";
 import { configuration } from "./adapters/configuration.ts";
 import { mainConfiguration } from "./main-configuration.ts";
+import { isAndroidOnWebView } from "./util/useragent.ts";
 
-// Initialize NoSleep to prevent the device from sleeping during meditation
-// This is a workaround for the fact that on Android, within a web view the Wake Lock API seems buggy: it can activate,
-// deactivate but CANNOT reactivate after deactivation
-const noSleep = new NoSleep();
-noSleep.enable();
+if (isAndroidOnWebView()) {
+  // Initialize NoSleep to prevent the device from sleeping during meditation
+  // This is a workaround for the fact that on Android, within a web view the Wake Lock API seems buggy: it can activate,
+  // deactivate but CANNOT reactivate after deactivation
+  const noSleep = new NoSleep();
+  noSleep.enable();
+}
 
 configuration(mainConfiguration);
 
