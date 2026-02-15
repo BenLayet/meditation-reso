@@ -1,6 +1,6 @@
 {
-  "branch": "develop",
-  "builtAt": "2026-01-30T18:40:59.597Z",
-  "commit": "fd32855",
+  "branch": "debug",
+  "builtAt": "2026-02-15T13:42:26.139Z",
+  "commit": "1873a19",
   "ci": "local"
 }

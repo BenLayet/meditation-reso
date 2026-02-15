@@ -1,8 +1,8 @@
 export class GongService {
   private beginningAudio: HTMLAudioElement | null = null;
   private endAudio: HTMLAudioElement | null = null;
-  // hold the resolved URL of the imported asset once loaded
-  private src: string | null = null;
+  // when served from public, the URL is fixed
+  private readonly publicUrl = "/gong.mp3";
 
   private createAudio(src: string) {
     const a = new Audio(src);
@@ -10,18 +10,11 @@ export class GongService {
     return a;
   }
 
-  // Dynamically import the asset only when we need to load/play it
+  // Load audio from public folder; no bundler import needed
   loadAudio = async () => {
-    if (!this.src) {
-      const mod = await import("../assets/gong.mp3");
-      // Vite/webpack will expose the URL as the default export
-      this.src = (mod as any).default ?? (mod as any);
-    }
-
-    // this.src is guaranteed to be set above, assert for the compiler
     if (!this.beginningAudio)
-      this.beginningAudio = this.createAudio(this.src as string);
-    if (!this.endAudio) this.endAudio = this.createAudio(this.src as string);
+      this.beginningAudio = this.createAudio(this.publicUrl);
+    if (!this.endAudio) this.endAudio = this.createAudio(this.publicUrl);
 
     this.beginningAudio.load();
     this.endAudio.load();
@@ -29,21 +22,13 @@ export class GongService {
 
   private async ensureBeginningAudio() {
     if (!this.beginningAudio) {
-      if (!this.src) {
-        const mod = await import("../assets/gong.mp3");
-        this.src = (mod as any).default ?? (mod as any);
-      }
-      this.beginningAudio = this.createAudio(this.src as string);
+      this.beginningAudio = this.createAudio(this.publicUrl);
     }
   }
 
   private async ensureEndAudio() {
     if (!this.endAudio) {
-      if (!this.src) {
-        const mod = await import("../assets/gong.mp3");
-        this.src = (mod as any).default ?? (mod as any);
-      }
-      this.endAudio = this.createAudio(this.src as string);
+      this.endAudio = this.createAudio(this.publicUrl);
     }
   }
 
