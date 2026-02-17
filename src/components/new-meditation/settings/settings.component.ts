@@ -2,7 +2,7 @@ import type {
   ComponentContract,
   ComponentDef,
   ComponentEventsContract,
-  EffectsDef,
+  Effects,
   ExtractComponentValuesContract,
 } from "@softer-components/types";
 import { formatSeconds } from "../../../util/duration.functions";
@@ -13,6 +13,7 @@ import {
   durationIncrementer,
   preparationIncrementer,
 } from "../../../domain/incrementer";
+import type { SettingsPersistenceService } from "../../../services/settings-persistence.service.ts";
 
 type Error = "LOAD_FAILED" | "SAVE_FAILED";
 
@@ -91,24 +92,61 @@ type Events = ComponentEventsContract<
   }
 >;
 
-const effects = {
+type ComponentEffects = {
   loadSettingsRequested: [
     "loadSettingsSucceeded",
     "loadSettingsFailed",
     "loadSettingsCompleted",
-  ],
-  saveSettingsRequested: ["saveSettingsSucceeded", "saveSettingsFailed"],
-} satisfies EffectsDef<EventNames>;
+  ];
+  saveSettingsRequested: ["saveSettingsSucceeded", "saveSettingsFailed"];
+};
 
-export type SettingsContract = {
+type Contract = {
   state: typeof initialState;
   events: Events;
   values: ExtractComponentValuesContract<typeof selectors>;
   children: Record<string, ComponentContract>;
-  effects: typeof effects;
+  effects: ComponentEffects;
 };
+
+// Effects
+type Dependencies = { settingsPersistenceService: SettingsPersistenceService };
+
+const effects = ({
+  settingsPersistenceService,
+}: Dependencies): Effects<Contract> => ({
+  loadSettingsRequested: async ({
+    loadSettingsFailed,
+    loadSettingsSucceeded,
+    loadSettingsCompleted,
+  }) => {
+    try {
+      const settings = await settingsPersistenceService.loadSettings();
+      if (settings) {
+        loadSettingsSucceeded(settings);
+      }
+    } catch (error: unknown) {
+      loadSettingsFailed();
+      console.error(error);
+    }
+    loadSettingsCompleted();
+  },
+  saveSettingsRequested: async (
+    { saveSettingsFailed, saveSettingsSucceeded },
+    { payload: settings },
+  ) => {
+    try {
+      await settingsPersistenceService.saveSettings(settings);
+      saveSettingsSucceeded();
+    } catch (error: unknown) {
+      saveSettingsFailed();
+      console.error(error);
+    }
+  },
+});
+
 // Component definition
-export const settingsComponentDef: ComponentDef<SettingsContract> = {
+const componentDef = (dependencies: Dependencies): ComponentDef<Contract> => ({
   initialState,
   selectors,
   uiEvents: [
@@ -235,5 +273,9 @@ export const settingsComponentDef: ComponentDef<SettingsContract> = {
     },
     { from: "settingsChanged", to: "saveSettingsRequested" },
   ],
-  effects,
-};
+  effects: effects(dependencies),
+});
+// exports
+export const settingsComponentDef = componentDef;
+export type SettingsContract = Contract;
+export type SettingsDependencies = Dependencies;

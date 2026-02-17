@@ -1,0 +1,15 @@
+- 15/02/2026 at 21:36: cfa41327
+    - tested iPhone, Reso App
+        - ✔️ nosleep 1 min
+        - KO sleep mode reactivated after 'Retour'
+        - ✔️ start gong
+        - ✔️ end gong
+        - ✔️ fullscreen (white strap at the bottom)
+        - ✔️ no bug 'page not found'
+    - tested on Android, Reso App
+        - ✔️ nosleep 1 min
+        - KO sleep mode reactivated after 'Retour'
+        - ✔️ start gong
+        - ✔️ end gong
+        - ✔️ fullscreen
+        - ✔️ no bug 'page not found'

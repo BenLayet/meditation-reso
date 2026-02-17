@@ -1,8 +1,13 @@
+export interface FullScreenService {
+  enterFullscreen: () => void;
+  exitFullscreen: () => void;
+}
+
 // Fullscreen helper functions
-export class FullscreenService {
+export class FullScreenServiceImpl implements FullScreenService {
   enterFullscreen = () => {
     document.documentElement.requestFullscreen().catch((err: unknown) => {
-      console.error("Fullscreen failed:", err);
+      console.error("Enter fullscreen failed:", err);
     });
   };
 

@@ -4,9 +4,15 @@ import type {
   ExtractComponentValuesContract,
 } from "@softer-components/types";
 import type { Settings } from "../../domain/settings";
-import type { NewMeditationContract } from "../new-meditation/new-meditation.component";
+import type {
+  NewMeditationContract,
+  NewMeditationDependencies,
+} from "../new-meditation/new-meditation.component";
 import { newMeditationComponentDef } from "../new-meditation/new-meditation.component";
-import type { MeditationSessionContract } from "../meditation-session/meditation-session.component";
+import type {
+  MeditationSessionContract,
+  MeditationSessionDependencies,
+} from "../meditation-session/meditation-session.component";
 import { meditationSessionComponentDef } from "../meditation-session/meditation-session.component";
 
 // Initial state definition
@@ -15,10 +21,6 @@ const initialState = {
 };
 type State = typeof initialState;
 //children
-const childrenComponentDefs = {
-  newMeditation: newMeditationComponentDef,
-  meditationSession: meditationSessionComponentDef,
-};
 type Children = {
   newMeditation: NewMeditationContract & { isOptional: false };
   meditationSession: MeditationSessionContract & { isOptional: false };
@@ -44,8 +46,11 @@ type Contract = {
   values: ExtractComponentValuesContract<typeof selectors>;
   children: Children;
 };
+
+type Dependencies = MeditationSessionDependencies & NewMeditationDependencies;
+
 // Component definition
-const componentDef: ComponentDef<Contract> = {
+const componentDef = (dependencies: Dependencies): ComponentDef<Contract> => ({
   initialState,
   selectors,
   updaters: {
@@ -56,7 +61,10 @@ const componentDef: ComponentDef<Contract> = {
       state.isStarted = false;
     },
   },
-  childrenComponentDefs,
+  childrenComponentDefs: {
+    newMeditation: newMeditationComponentDef(dependencies),
+    meditationSession: meditationSessionComponentDef(dependencies),
+  },
   childrenConfig: {
     newMeditation: {
       listeners: [
@@ -81,7 +89,8 @@ const componentDef: ComponentDef<Contract> = {
       ],
     },
   },
-};
+});
 // Exporting the component definition
 export const appComponentDef = componentDef;
 export type AppContract = Contract;
+export type AppDependencies = Dependencies;

@@ -3,7 +3,8 @@ import { NewMeditation } from "../new-meditation/NewMeditation.tsx";
 import type { AppContract } from "./app.component.ts";
 import { MeditationSession } from "../meditation-session/MeditationSession.tsx";
 import { VERSION } from "../../util/version.ts";
-export const App = ({ path } = { path: "/" }) => {
+
+export const App = ({ path }: { path: string }) => {
   const [v, , c] = useSofter<AppContract>(path);
   return (
     <div>

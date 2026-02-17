@@ -1,40 +1,67 @@
-import { givenRootComponent } from "@softer-components/utils/test-utilities";
 import { describe, it } from "vitest";
+import {
+  TestStore,
+  initTestStore,
+} from "@softer-components/utils/test-utilities";
 
-import { appComponentDef } from "../src/components/app/app.component";
+import {
+  appComponentDef,
+  AppContract,
+} from "../src/components/app/app.component";
 import {
   BACK_CLICKED,
+  DISPLAYED,
   MEDITATION_SESSION_PATH,
   SETTINGS_PATH,
   START_CLICKED,
-  TIMER_TICKED,
 } from "./app.component.steps.ts";
+import { MockDependencies, mockDependencies } from "./mock-dependencies.ts";
 
 describe("app.component", () => {
-  it("before starting meditation duration should be 20 minutes", () => {
-    givenRootComponent(appComponentDef)
-      .thenExpect(SETTINGS_PATH)
-      .durationInMinutes.toBe(20);
+  let testStore: TestStore<AppContract>;
+  let configuration: MockDependencies;
+  beforeEach(() => {
+    configuration = mockDependencies();
+    testStore = initTestStore(appComponentDef(configuration));
   });
-  it("when just started remaining time is 1200 seconds", () => {
-    givenRootComponent(appComponentDef)
-      .when(START_CLICKED())
-      .thenExpect(MEDITATION_SESSION_PATH)
-      .remainingTimeInSeconds.toBe(1200);
+
+  it("before starting meditation duration should be 20 minutes", async () => {
+    //WHEN
+    await testStore.when(DISPLAYED());
+
+    //THEN
+    expect(testStore.getValues(SETTINGS_PATH).durationInMinutes()).toBe(20);
   });
-  it("when timer ticked once remaining time is 1199 seconds", () => {
-    givenRootComponent(appComponentDef)
-      .when(START_CLICKED())
-      .and(TIMER_TICKED())
-      .thenExpect(MEDITATION_SESSION_PATH)
-      .remainingTimeInSeconds.toBe(1199);
+  it("when just started remaining time is 1200 seconds", async () => {
+    //WHEN
+    await testStore.when(DISPLAYED());
+    await testStore.when(START_CLICKED());
+
+    //THEN
+    expect(
+      testStore.getValues(MEDITATION_SESSION_PATH).remainingTimeInSeconds(),
+    ).toBe(1200);
   });
-  it("when back is clicked then user should see new meditation screen", () => {
-    givenRootComponent(appComponentDef)
-      .when(START_CLICKED())
-      .and(TIMER_TICKED())
-      .and(BACK_CLICKED())
-      .thenExpect(SETTINGS_PATH)
-      .durationInMinutes.toBe(20);
+  it("when timer ticked once remaining time is 1199 seconds", async () => {
+    //GIVEN
+    configuration.tickingService.mockTickCount = 1;
+
+    //WHEN
+    await testStore.when(DISPLAYED());
+    await testStore.when(START_CLICKED());
+
+    //THEN
+    expect(
+      testStore.getValues(MEDITATION_SESSION_PATH).remainingTimeInSeconds(),
+    ).toBe(1199);
+  });
+  it("when back is clicked then user should see new meditation screen", async () => {
+    //WHEN
+    await testStore.when(DISPLAYED());
+    await testStore.when(START_CLICKED());
+    await testStore.and(BACK_CLICKED());
+
+    //THEN
+    expect(testStore.getValues(SETTINGS_PATH).durationInMinutes()).toBe(20);
   });
 });

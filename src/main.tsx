@@ -8,8 +8,7 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { appComponentDef } from "./components/app/app.component.ts";
 import { App } from "./components/app/App.tsx";
-import { configuration } from "./adapters/configuration.ts";
-import { mainConfiguration } from "./main-configuration.ts";
+import { configuration } from "./configuration.ts";
 import { isAndroidOnWebView } from "./util/useragent.ts";
 
 if (isAndroidOnWebView()) {
@@ -19,25 +18,15 @@ if (isAndroidOnWebView()) {
   const noSleep = new NoSleep();
   noSleep.enable();
 }
+export const store = configureSofterStore(appComponentDef(configuration));
 
-configuration(mainConfiguration);
-
-export const store = configureSofterStore(appComponentDef);
-store.configureEffects(
-  "/meditationSession",
-  mainConfiguration.meditationSessionEffects,
-);
-store.configureEffects(
-  "/newMeditation/settings",
-  mainConfiguration.settingsEffects,
-);
 const container = document.getElementById("root");
 
 if (container) {
   createRoot(container).render(
     <StrictMode>
       <Provider store={store}>
-        <App path="/" />
+        <App path="" />
       </Provider>
     </StrictMode>,
   );

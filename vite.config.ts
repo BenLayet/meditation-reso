@@ -44,6 +44,14 @@ export default defineConfig({
       },
     }),
   ],
+
+  resolve: {
+    alias: {
+      '@softer-components/redux-adapter': path.resolve(__dirname, '../softer-components/packages/redux-adapter/src'),
+      '@softer-components/types': path.resolve(__dirname, '../softer-components/packages/types/src'),
+      '@softer-components/utils': path.resolve(__dirname, '../softer-components/packages/utils/src'),
+    },
+  },
   server: {
     open: true,
   },

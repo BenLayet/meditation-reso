@@ -3,7 +3,10 @@ import type {
   ComponentEventsContract,
   ExtractComponentValuesContract,
 } from "@softer-components/types";
-import type { SettingsContract } from "./settings/settings.component";
+import {
+  SettingsContract,
+  SettingsDependencies,
+} from "./settings/settings.component";
 import { settingsComponentDef } from "./settings/settings.component";
 import type { Settings } from "../../domain/settings";
 
@@ -21,14 +24,17 @@ type EventNames = "startClicked" | "startRequested";
 
 type Events = ComponentEventsContract<EventNames, { startRequested: Settings }>;
 
-export type NewMeditationContract = {
+type Contract = {
   state: State;
   events: Events;
   values: ExtractComponentValuesContract<typeof selectors>;
   children: Children;
 };
+type Dependencies = SettingsDependencies;
 // Component definition
-export const newMeditationComponentDef: ComponentDef<NewMeditationContract> = {
+export const componentDef = (
+  dependencies: Dependencies,
+): ComponentDef<Contract> => ({
   initialState,
   selectors,
   uiEvents: ["startClicked"],
@@ -41,6 +47,10 @@ export const newMeditationComponentDef: ComponentDef<NewMeditationContract> = {
     },
   ],
   childrenComponentDefs: {
-    settings: settingsComponentDef,
+    settings: settingsComponentDef(dependencies),
   },
-};
+});
+// Exports
+export type NewMeditationContract = Contract;
+export type NewMeditationDependencies = Dependencies;
+export const newMeditationComponentDef = componentDef;

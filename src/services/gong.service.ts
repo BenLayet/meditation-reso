@@ -1,7 +1,13 @@
-export class GongService {
+export interface GongService {
+  loadAudio: () => Promise<void>;
+  playBeginningAudio: () => Promise<void>;
+  playEndAudio: () => Promise<void>;
+  stopAllAudio: () => void;
+}
+
+export class GongServiceImpl implements GongService {
   private beginningAudio: HTMLAudioElement | null = null;
   private endAudio: HTMLAudioElement | null = null;
-  // when served from public, the URL is fixed
   private readonly publicUrl = "/gong.mp3";
 
   private createAudio(src: string) {

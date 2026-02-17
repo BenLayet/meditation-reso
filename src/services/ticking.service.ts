@@ -1,4 +1,9 @@
-export class TickingService {
+export interface TickingService {
+  startTicking: (callback: () => void, delayInMs: number) => void;
+  stopTicking: () => void;
+}
+
+export class TickingServiceImpl implements TickingService {
   private intervalId: NodeJS.Timeout | undefined;
 
   startTicking = (callback: () => void, delayInMs: number) => {
