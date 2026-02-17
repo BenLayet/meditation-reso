@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { Settings } from "./settings/Settings.tsx";
 
 import { useSofter } from "@softer-components/redux-adapter";
-import type { Contract } from "./new-meditation.component.ts";
+import { NewMeditationContract } from "./";
 
 export const NewMeditation = ({ path } = { path: "/" }) => {
-  const [, d, c] = useSofter<Contract>(path);
+  const [, d, c] = useSofter<NewMeditationContract>(path);
   const { t } = useTranslation();
   return (
     <div className="card" style={{ maxWidth: "25em" }}>

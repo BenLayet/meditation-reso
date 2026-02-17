@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { ProgressIndicator } from "./ProgressIndicator.tsx";
 
 import { useSofter } from "@softer-components/redux-adapter";
-import type { MeditationSessionContract } from "./meditation-session.component.ts";
+import type { MeditationSessionContract } from "./";
 
 export const MeditationSession = ({ path } = { path: "/" }) => {
   const [v, d] = useSofter<MeditationSessionContract>(path);

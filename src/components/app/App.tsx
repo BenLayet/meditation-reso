@@ -1,6 +1,6 @@
 import { useSofter } from "@softer-components/redux-adapter";
 import { NewMeditation } from "../new-meditation/NewMeditation.tsx";
-import type { AppContract } from "./app.component.ts";
+import type { AppContract } from "./";
 import { MeditationSession } from "../meditation-session/MeditationSession.tsx";
 import { VERSION } from "../../util/version.ts";
 
