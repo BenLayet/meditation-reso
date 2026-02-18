@@ -1,4 +1,4 @@
-import type { ComponentEventsContract } from "@softer-components/types";
+import type { EventsContract } from "@softer-components/types";
 import type { Settings } from "../../domain/settings.ts";
 
 export type EventNames =
@@ -24,7 +24,7 @@ export type EventNames =
   | "exitRequested"
   | "exitConfirmed";
 
-export type Events = ComponentEventsContract<
+export type Events = EventsContract<
   EventNames,
   { initialize: Settings; preparationStarted: { preparationInSeconds: number } }
 >;

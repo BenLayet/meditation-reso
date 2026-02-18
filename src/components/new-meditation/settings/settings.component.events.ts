@@ -1,5 +1,5 @@
 //Events
-import { ComponentEventsContract } from "@softer-components/types";
+import { EventsContract } from "@softer-components/types";
 import { Settings } from "../../../domain/settings.ts";
 
 type EventNames =
@@ -33,7 +33,7 @@ export const uiEvents = [
   "shouldDisplayProgressChanged",
 ] satisfies EventNames[];
 
-export type Events = ComponentEventsContract<
+export type Events = EventsContract<
   EventNames,
   {
     settingsChanged: Settings;
@@ -46,12 +46,3 @@ export type Events = ComponentEventsContract<
     loadSettingsSucceeded: Settings;
   }
 >;
-
-export type Effects = {
-  loadSettingsRequested: [
-    "loadSettingsSucceeded",
-    "loadSettingsFailed",
-    "loadSettingsCompleted",
-  ];
-  saveSettingsRequested: ["saveSettingsSucceeded", "saveSettingsFailed"];
-};

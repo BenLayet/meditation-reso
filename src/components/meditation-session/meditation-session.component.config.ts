@@ -4,7 +4,7 @@ import {
   Dependencies,
   effects,
 } from "./meditation-session.component.effects.ts";
-import { initialState } from "./meditation-session.component.state.ts";
+import { initialState, State } from "./meditation-session.component.state.ts";
 import { selectors } from "./meditation-session.component.selectors.ts";
 import { eventForwarders } from "./meditation-session.component.forwarders.ts";
 import { updaters } from "./meditation-session.component.updaters.ts";
@@ -12,7 +12,7 @@ import { uiEvents } from "./meditation-session.component.events.ts";
 
 export const componentDef = (
   dependencies: Dependencies,
-): ComponentDef<Contract> => ({
+): ComponentDef<Contract, State> => ({
   initialState,
   selectors,
   uiEvents,
