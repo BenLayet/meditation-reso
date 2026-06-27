@@ -1,5 +1,5 @@
 import react from "@vitejs/plugin-react";
-import * as path from "node:path";
+import path from "node:path";
 import { defineConfig } from "vitest/config";
 import packageJson from "./package.json" with { type: "json" };
 import { VitePWA } from "vite-plugin-pwa";
@@ -45,15 +45,6 @@ export default defineConfig({
     }),
   ],
 
-  resolve: {
-    alias: {
-      '@softer-components/redux-adapter': path.resolve(__dirname, '../softer-components/packages/adapters/redux-adapter/src'),
-      '@softer-components/base-adapter': path.resolve(__dirname, '../softer-components/packages/adapters/base-adapter/src'),
-      '@softer-components/types': path.resolve(__dirname, '../softer-components/packages/types/src'),
-      '@softer-components/test-utilities': path.resolve(__dirname, '../softer-components/packages/utilities/test-utilities/src'),
-      '@softer-components/app-utilities': path.resolve(__dirname, '../softer-components/packages/utilities/app-utilities/src'),
-    },
-  },
   server: {
     open: true,
   },

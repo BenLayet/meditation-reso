@@ -26,9 +26,12 @@ importers:
       '@reduxjs/toolkit':
         specifier: ^2.6.1
         version: 2.9.1(react-redux@9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1))(react@19.2.0)
+      '@softer-components/app-utilities':
+        specifier: ^0.9.0
+        version: 0.9.0
       '@softer-components/redux-adapter':
-        specifier: ^0.6.1
-        version: 0.6.1(@types/react@19.2.2)(redux@5.0.1)
+        specifier: ^0.9.0
+        version: 0.9.0(@types/react@19.2.2)(redux@5.0.1)
       i18next:
         specifier: ^23.0.0
         version: 23.16.8
@@ -63,12 +66,12 @@ importers:
       '@eslint/js':
         specifier: ^9.23.0
         version: 9.38.0
+      '@softer-components/test-utilities':
+        specifier: ^0.9.0
+        version: 0.9.0
       '@softer-components/types':
-        specifier: ^0.6.1
-        version: 0.6.1
-      '@softer-components/utils':
-        specifier: ^0.6.1
-        version: 0.6.1
+        specifier: ^0.9.0
+        version: 0.9.0
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.1
@@ -1186,14 +1189,20 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@softer-components/redux-adapter@0.6.1':
-    resolution: {integrity: sha512-byW4OvqJlhoWrDTydLZHKD0gifvwdo+IyWNawO434ulY0dhMmfQ4U6IpKvY5dyriJBf/2E9jIK6Nyye8Ok1WOQ==}
+  '@softer-components/app-utilities@0.9.0':
+    resolution: {integrity: sha512-LBeRMsIMQ/bMu7NkJJYOFySiTrl4vT6NOgIDBu2ucNpMQHSSEQZCtyhBhmO7XURUpb/aP9AbCD6ZwF7rn9525Q==}
 
-  '@softer-components/types@0.6.1':
-    resolution: {integrity: sha512-eKfrjH7Pu1aAr8VYIxBB1v+pcBDpTj78o8JNyA7zUxm7SMgYpYQjsYlUWcgdkNBy8beChUhv59Nvn/jvPSInHA==}
+  '@softer-components/base-adapter@0.9.0':
+    resolution: {integrity: sha512-Hheo75xG0t6EZBT8n3EmXSut1UrUrUK5BhKLZ4tA7RVOs4OIaC8F4CB8QaGqTYNkFnEcsHTTfk1G5OC5/Bxv5A==}
 
-  '@softer-components/utils@0.6.1':
-    resolution: {integrity: sha512-SPTTFtZnjIvGRF2R34TW8tC2GgrSjmgIH75pHMFroZst1vYBBnvPHqNzzk9jdMpklL965YVAuxgzwEVgW34qLg==}
+  '@softer-components/redux-adapter@0.9.0':
+    resolution: {integrity: sha512-U9miKeS7e0osCaGPMiVDftTg9C2UqGrr61v/AYtpkH34jgHcCrMoWxg6KXbBuEoIc8p1VIwuuU7qtyo3S7PTaw==}
+
+  '@softer-components/test-utilities@0.9.0':
+    resolution: {integrity: sha512-0QAYMzjEzXrqlRynIKcwOTWaC+ZVzD6WVdZSGUDSyCoWmLEfmlQ4aSm8vDRO2HsAMxAEH+GyTxZsuQnjnMDFkw==}
+
+  '@softer-components/types@0.9.0':
+    resolution: {integrity: sha512-vdU8J98r724r+iU6EJN4VGq/EMSFfkBKDhHSvyd6OnlPis3luPZMCt3wKp6OiazVp2Kxsp8mIxpHRjTqPN6xyQ==}
 
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
@@ -4394,12 +4403,20 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.52.5':
     optional: true
 
-  '@softer-components/redux-adapter@0.6.1(@types/react@19.2.2)(redux@5.0.1)':
+  '@softer-components/app-utilities@0.9.0':
+    dependencies:
+      '@softer-components/types': 0.9.0
+
+  '@softer-components/base-adapter@0.9.0':
+    dependencies:
+      '@softer-components/types': 0.9.0
+      immer: 10.2.0
+      lodash: 4.17.23
+
+  '@softer-components/redux-adapter@0.9.0(@types/react@19.2.2)(redux@5.0.1)':
     dependencies:
       '@reduxjs/toolkit': 2.9.1(react-redux@9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1))(react@19.2.0)
-      '@softer-components/types': 0.6.1
-      '@softer-components/utils': 0.6.1
-      lodash: 4.17.23
+      '@softer-components/base-adapter': 0.9.0
       react: 19.2.0
       react-redux: 9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1)
       reselect: 5.1.1
@@ -4407,13 +4424,13 @@ snapshots:
       - '@types/react'
       - redux
 
-  '@softer-components/types@0.6.1': {}
-
-  '@softer-components/utils@0.6.1':
+  '@softer-components/test-utilities@0.9.0':
     dependencies:
-      '@softer-components/types': 0.6.1
+      '@softer-components/base-adapter': 0.9.0
       immer: 10.2.0
       lodash: 4.17.23
+
+  '@softer-components/types@0.9.0': {}
 
   '@standard-schema/spec@1.0.0': {}
 
