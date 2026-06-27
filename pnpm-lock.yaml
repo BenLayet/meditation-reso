@@ -30,8 +30,8 @@ importers:
         specifier: ^0.9.0
         version: 0.9.0
       '@softer-components/redux-adapter':
-        specifier: ^0.9.0
-        version: 0.9.0(@types/react@19.2.2)(redux@5.0.1)
+        specifier: ^0.9.1
+        version: 0.9.1(@types/react@19.2.2)(redux@5.0.1)
       i18next:
         specifier: ^23.0.0
         version: 23.16.8
@@ -981,8 +981,8 @@ packages:
   '@softer-components/base-adapter@0.9.0':
     resolution: {integrity: sha512-Hheo75xG0t6EZBT8n3EmXSut1UrUrUK5BhKLZ4tA7RVOs4OIaC8F4CB8QaGqTYNkFnEcsHTTfk1G5OC5/Bxv5A==}
 
-  '@softer-components/redux-adapter@0.9.0':
-    resolution: {integrity: sha512-U9miKeS7e0osCaGPMiVDftTg9C2UqGrr61v/AYtpkH34jgHcCrMoWxg6KXbBuEoIc8p1VIwuuU7qtyo3S7PTaw==}
+  '@softer-components/redux-adapter@0.9.1':
+    resolution: {integrity: sha512-p0ViFcJC9FNSbU/EhI/EfgiToSXAycw0w1srsm/stGptrSQ2gFbx8TvRr5oeZOtikpyNhqX51Grb7Bczdf/QhA==}
 
   '@softer-components/test-utilities@0.9.0':
     resolution: {integrity: sha512-0QAYMzjEzXrqlRynIKcwOTWaC+ZVzD6WVdZSGUDSyCoWmLEfmlQ4aSm8vDRO2HsAMxAEH+GyTxZsuQnjnMDFkw==}
@@ -4108,7 +4108,7 @@ snapshots:
       immer: 10.2.0
       lodash: 4.17.23
 
-  '@softer-components/redux-adapter@0.9.0(@types/react@19.2.2)(redux@5.0.1)':
+  '@softer-components/redux-adapter@0.9.1(@types/react@19.2.2)(redux@5.0.1)':
     dependencies:
       '@reduxjs/toolkit': 2.9.1(react-redux@9.2.0(@types/react@19.2.2)(react@19.2.0)(redux@5.0.1))(react@19.2.0)
       '@softer-components/base-adapter': 0.9.0
