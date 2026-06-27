@@ -1,10 +1,9 @@
-// updaters
-import type { Updaters } from "@softer-components/types";
+import type { StateUpdaters } from "@softer-components/types";
 import { Contract } from "./settings.component.contract.ts";
 import { State } from "./settings.component.state.ts";
 import { defaultSettings } from "../../../domain/settings.ts";
 
-export const updaters: Updaters<Contract, State> = {
+export const stateUpdaters: StateUpdaters<Contract, State> = {
   setDurationInMinutesRequested: ({ state, payload: durationInMinutes }) => {
     state.settings.durationInMinutes = durationInMinutes;
   },

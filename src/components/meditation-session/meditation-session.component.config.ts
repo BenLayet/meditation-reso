@@ -1,22 +1,14 @@
-import type { ComponentDef } from "@softer-components/types";
+import type { ComponentDefConfig } from "@softer-components/types";
 import { Contract } from "./meditation-session.component.contract.ts";
 import {
   Dependencies,
   effects,
 } from "./meditation-session.component.effects.ts";
-import { initialState, State } from "./meditation-session.component.state.ts";
-import { selectors } from "./meditation-session.component.selectors.ts";
-import { eventForwarders } from "./meditation-session.component.forwarders.ts";
-import { updaters } from "./meditation-session.component.updaters.ts";
-import { uiEvents } from "./meditation-session.component.events.ts";
 
-export const componentDef = (
+export type { Dependencies };
+
+export const config = (
   dependencies: Dependencies,
-): ComponentDef<Contract, State> => ({
-  initialState,
-  selectors,
-  uiEvents,
-  updaters,
-  eventForwarders,
+): ComponentDefConfig<Contract> => ({
   effects: effects(dependencies),
 });

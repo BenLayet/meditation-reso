@@ -1,9 +1,13 @@
 import type { EventsContract } from "@softer-components/types";
 import type { Settings } from "../../domain/settings.ts";
 
-type EventNames = "meditationSessionStarted" | "meditationSessionEnded";
+export const allEvents = [
+  "meditationSessionStarted",
+  "meditationSessionEnded",
+] as const;
 
 export type Events = EventsContract<
-  EventNames,
-  { meditationSessionStarted: Settings }
+  typeof allEvents,
+  { meditationSessionStarted: Settings },
+  []
 >;

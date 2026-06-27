@@ -1,31 +1,34 @@
 import type { EventsContract } from "@softer-components/types";
 import type { Settings } from "../../domain/settings.ts";
 
-export type EventNames =
-  | "initialize"
-  | "startTickingRequested"
-  | "stopTickingRequested"
-  | "timerTicked"
-  | "loadAudioRequested"
-  | "playBeginningGongRequested"
-  | "playEndGongRequested"
-  | "stopGongRequested"
-  | "requestWakeLockRequested"
-  | "releaseWakeLockRequested"
-  | "enterFullScreenRequested"
-  | "exitFullScreenRequested"
-  | "preparationStarted"
-  | "preparationInterrupted"
-  | "preparationCompleted"
-  | "actualMeditationInterrupted"
-  | "actualMeditationStarted"
-  | "actualMeditationCompleted"
-  | "backClicked"
-  | "exitRequested"
-  | "exitConfirmed";
+export const uiEvents = ["backClicked"] as const;
+
+export const allEvents = [
+  ...uiEvents,
+  "initialize",
+  "startTickingRequested",
+  "stopTickingRequested",
+  "timerTicked",
+  "loadAudioRequested",
+  "playBeginningGongRequested",
+  "playEndGongRequested",
+  "stopGongRequested",
+  "requestWakeLockRequested",
+  "releaseWakeLockRequested",
+  "enterFullScreenRequested",
+  "exitFullScreenRequested",
+  "preparationStarted",
+  "preparationInterrupted",
+  "preparationCompleted",
+  "actualMeditationInterrupted",
+  "actualMeditationStarted",
+  "actualMeditationCompleted",
+  "exitRequested",
+  "exitConfirmed",
+] as const;
 
 export type Events = EventsContract<
-  EventNames,
-  { initialize: Settings; preparationStarted: { preparationInSeconds: number } }
+  typeof allEvents,
+  { initialize: Settings; preparationStarted: { preparationInSeconds: number } },
+  typeof uiEvents
 >;
-export const uiEvents = ["backClicked"] satisfies EventNames[];

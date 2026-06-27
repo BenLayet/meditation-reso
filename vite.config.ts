@@ -47,9 +47,11 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@softer-components/redux-adapter': path.resolve(__dirname, '../softer-components/packages/redux-adapter/src'),
+      '@softer-components/redux-adapter': path.resolve(__dirname, '../softer-components/packages/adapters/redux-adapter/src'),
+      '@softer-components/base-adapter': path.resolve(__dirname, '../softer-components/packages/adapters/base-adapter/src'),
       '@softer-components/types': path.resolve(__dirname, '../softer-components/packages/types/src'),
-      '@softer-components/utils': path.resolve(__dirname, '../softer-components/packages/utils/src'),
+      '@softer-components/test-utilities': path.resolve(__dirname, '../softer-components/packages/utilities/test-utilities/src'),
+      '@softer-components/app-utilities': path.resolve(__dirname, '../softer-components/packages/utilities/app-utilities/src'),
     },
   },
   server: {

@@ -2,9 +2,11 @@
   "compilerOptions": {
 
     "paths": {
-      "@softer-components/redux-adapter": ["../softer-components/packages/redux-adapter/src"],
+      "@softer-components/redux-adapter": ["../softer-components/packages/adapters/redux-adapter/src"],
+      "@softer-components/base-adapter": ["../softer-components/packages/adapters/base-adapter/src"],
       "@softer-components/types": ["../softer-components/packages/types/src"],
-      "@softer-components/utils": ["../softer-components/packages/utils/src"]
+      "@softer-components/test-utilities": ["../softer-components/packages/utilities/test-utilities/src"],
+      "@softer-components/app-utilities": ["../softer-components/packages/utilities/app-utilities/src"]
     },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",

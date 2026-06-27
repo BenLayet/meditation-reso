@@ -1,8 +1,8 @@
-import { Updaters } from "@softer-components/types";
+import { StateUpdaters } from "@softer-components/types";
 import { Contract } from "./meditation-session.component.contract.ts";
-import { initialState } from "./meditation-session.component.state.ts";
+import { initialState, State } from "./meditation-session.component.state.ts";
 
-export const updaters: Updaters<Contract> = {
+export const stateUpdaters: StateUpdaters<Contract, State> = {
   initialize: ({ payload: settings, state }) => {
     state.isGongOn = settings.isGongOn;
     state.shouldDisplayRemainingTime = settings.shouldDisplayRemainingTime;

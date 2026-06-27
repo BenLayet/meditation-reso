@@ -1,13 +1,10 @@
 import { describe, it } from "vitest";
 import {
-  TestStore,
+  type TestStore,
   initTestStore,
-} from "@softer-components/utils/test-utilities";
+} from "@softer-components/test-utilities";
 
-import {
-  appComponentDef,
-  AppContract,
-} from "../src/components/app/app.component";
+import { appComponentDef, AppContract } from "../src/components/app";
 import {
   BACK_CLICKED,
   DISPLAYED,

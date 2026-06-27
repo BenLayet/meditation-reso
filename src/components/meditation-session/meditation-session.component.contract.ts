@@ -6,6 +6,4 @@ export type Contract = {
   state: State;
   events: Events;
   values: Values;
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  children: {};
 };

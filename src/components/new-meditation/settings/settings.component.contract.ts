@@ -6,5 +6,4 @@ export type Contract = {
   state: State;
   events: Events;
   values: Values;
-  children: {};
 };

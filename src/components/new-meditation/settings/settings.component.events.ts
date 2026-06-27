@@ -1,26 +1,5 @@
-//Events
-import { EventsContract } from "@softer-components/types";
-import { Settings } from "../../../domain/settings.ts";
-
-type EventNames =
-  | "incrementDurationClicked"
-  | "decrementDurationClicked"
-  | "incrementPreparationClicked"
-  | "decrementPreparationClicked"
-  | "settingsChanged"
-  | "setDurationInMinutesRequested"
-  | "setPreparationInSecondsRequested"
-  | "isGongOnChanged"
-  | "shouldDisplayProgressChanged"
-  | "shouldDisplayRemainingTimeChanged"
-  | "saveSettingsRequested"
-  | "saveSettingsFailed"
-  | "saveSettingsSucceeded"
-  | "loadSettingsRequested"
-  | "loadSettingsFailed"
-  | "loadSettingsSucceeded"
-  | "loadSettingsCompleted"
-  | "displayed";
+import type { EventsContract } from "@softer-components/types";
+import type { Settings } from "../../../domain/settings.ts";
 
 export const uiEvents = [
   "incrementDurationClicked",
@@ -31,10 +10,24 @@ export const uiEvents = [
   "displayed",
   "shouldDisplayRemainingTimeChanged",
   "shouldDisplayProgressChanged",
-] satisfies EventNames[];
+] as const;
+
+export const allEvents = [
+  ...uiEvents,
+  "settingsChanged",
+  "setDurationInMinutesRequested",
+  "setPreparationInSecondsRequested",
+  "saveSettingsRequested",
+  "saveSettingsFailed",
+  "saveSettingsSucceeded",
+  "loadSettingsRequested",
+  "loadSettingsFailed",
+  "loadSettingsSucceeded",
+  "loadSettingsCompleted",
+] as const;
 
 export type Events = EventsContract<
-  EventNames,
+  typeof allEvents,
   {
     settingsChanged: Settings;
     setDurationInMinutesRequested: number;
@@ -44,5 +37,6 @@ export type Events = EventsContract<
     shouldDisplayRemainingTimeChanged: boolean;
     saveSettingsRequested: Settings;
     loadSettingsSucceeded: Settings;
-  }
+  },
+  typeof uiEvents
 >;
