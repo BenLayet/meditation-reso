@@ -45,13 +45,6 @@ export default defineConfig({
     }),
   ],
 
-  optimizeDeps: {
-    include: [
-      "@softer-components/redux-adapter",
-      "@softer-components/base-adapter",
-    ],
-  },
-
   server: {
     open: true,
   },
