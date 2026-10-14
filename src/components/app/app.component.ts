@@ -38,14 +38,14 @@ type Events = ComponentEventsContract<
   { meditationSessionStarted: Settings }
 >;
 
-export type AppContract = {
+type Contract = {
   state: State;
   events: Events;
   values: ExtractComponentValuesContract<typeof selectors>;
   children: Children;
 };
 // Component definition
-export const appComponentDef: ComponentDef<AppContract> = {
+const componentDef: ComponentDef<Contract> = {
   initialState,
   selectors,
   updaters: {
@@ -82,3 +82,6 @@ export const appComponentDef: ComponentDef<AppContract> = {
     },
   },
 };
+// Exporting the component definition
+export const appComponentDef = componentDef;
+export type AppContract = Contract;
